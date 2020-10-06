@@ -84,14 +84,13 @@ InterventionSentByEMail=以電子郵件發送的干預措施%s
 ProposalDeleted=提案/建議書已刪除
 OrderDeleted=訂單已刪除
 InvoiceDeleted=發票已刪除
-DraftInvoiceDeleted=發票草稿已刪除
 PRODUCT_CREATEInDolibarr=產品 %s 已建立
 PRODUCT_MODIFYInDolibarr=產品 %s 已修改
 PRODUCT_DELETEInDolibarr=產品 %s 已刪除
 HOLIDAY_CREATEInDolibarr=休假申請%s已建立
 HOLIDAY_MODIFYInDolibarr=休假申請%s已修改
 HOLIDAY_APPROVEInDolibarr=休假申請%s已核准
-HOLIDAY_VALIDATEInDolibarr=休假申請%s已驗證
+HOLIDAY_VALIDATEDInDolibarr=休假申請%s已驗證
 HOLIDAY_DELETEInDolibarr=休假申請%s已刪除
 EXPENSE_REPORT_CREATEInDolibarr=費用報表 %s 已建立
 EXPENSE_REPORT_VALIDATEInDolibarr=費用報表 %s 已驗證
@@ -112,10 +111,8 @@ BOM_CLOSEInDolibarr=物料清單(BOM)已禁用
 BOM_REOPENInDolibarr=物料清單(BOM)重新打開
 BOM_DELETEInDolibarr=物料清單(BOM)已刪除
 MRP_MO_VALIDATEInDolibarr=MO已驗證
-MRP_MO_UNVALIDATEInDolibarr=MO set to draft status
 MRP_MO_PRODUCEDInDolibarr=MO已生產
 MRP_MO_DELETEInDolibarr=MO已刪除
-MRP_MO_CANCELInDolibarr=MO canceled
 ##### End agenda events #####
 AgendaModelModule=事件的文件範本
 DateActionStart=開始日期
@@ -126,7 +123,6 @@ AgendaUrlOptionsNotAdmin=<b>logina=!%s</b> 將限制輸出非用戶<b>%s</b>擁�
 AgendaUrlOptions4=<b>logint = %s</b>將限制輸出分配給用戶<b>%s</b> （所有者和其他用戶）的操作。
 AgendaUrlOptionsProject=<b>project=PROJECT_ID</b> 將限制輸出為已連結專案操作 <b>PROJECT_ID</b>.
 AgendaUrlOptionsNotAutoEvent=<b>notactiontype = systemauto</b>排除自動事件。
-AgendaUrlOptionsIncludeHolidays=設定<b>includeholidays=1</b>以包括假期活動。
 AgendaShowBirthdayEvents=顯示連絡人生日
 AgendaHideBirthdayEvents=隱藏連絡人生日
 Busy=忙錄
@@ -154,6 +150,3 @@ EveryMonth=每月
 DayOfMonth=一個月中的某天
 DayOfWeek=星期幾
 DateStartPlusOne=開始日 +1 小時
-SetAllEventsToTodo=Set all events to todo
-SetAllEventsToInProgress=Set all events to in progress
-SetAllEventsToFinished=Set all events to finished

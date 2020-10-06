@@ -49,7 +49,7 @@ require_once DOL_DOCUMENT_ROOT.'/core/lib/functions.lib.php';
 $langs->loadLangs(array("banks", "categories", "companies", "bills", "trips", "donations", "loan"));
 
 $action = GETPOST('action', 'alpha');
-$id = GETPOST('account', 'int') ? GETPOST('account', 'int') : GETPOST('id', 'int');
+$id = GETPOST('account', 'int');
 $ref = GETPOST('ref', 'alpha');
 $dvid = GETPOST('dvid', 'alpha');
 $numref = GETPOST('num', 'alpha');
@@ -80,7 +80,7 @@ if ($user->rights->banque->consolidate && $action == 'dvprev' && !empty($dvid))
 $limit = GETPOST('limit', 'int') ?GETPOST('limit', 'int') : $conf->liste_limit;
 $sortfield = GETPOST("sortfield", 'alpha');
 $sortorder = GETPOST("sortorder", 'alpha');
-$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
+$page = GETPOST("page", 'int');
 $pageplusone = GETPOST("pageplusone", 'int');
 if ($pageplusone) $page = $pageplusone - 1;
 if (empty($page) || $page == -1) { $page = 0; }     // If $page is not defined, or '' or -1
@@ -125,7 +125,8 @@ if ($_GET["rel"] == 'prev')
 			$found = true;
 		}
 	}
-} elseif ($_GET["rel"] == 'next')
+}
+elseif ($_GET["rel"] == 'next')
 {
 	// Recherche valeur pour num = numero releve precedent
 	$sql = "SELECT DISTINCT(b.num_releve) as num";
@@ -146,7 +147,8 @@ if ($_GET["rel"] == 'prev')
 			$found = true;
 		}
 	}
-} else {
+}
+else {
 	// On veut le releve num
 	$found = true;
 }
@@ -177,7 +179,7 @@ $sqlrequestforbankline = $sql;
 if ($action == 'confirm_editbankreceipt' && !empty($oldbankreceipt) && !empty($newbankreceipt))
 {
 	// TODO Add a test to check newbankreceipt does not exists yet
-	$sqlupdate = 'UPDATE '.MAIN_DB_PREFIX.'bank SET num_releve = "'.$db->escape($newbankreceipt).'" WHERE num_releve = "'.$db->escape($oldbankreceipt).'" AND fk_account = '.$id;
+	$sqlupdate = 'UPDATE '.MAIN_DB_PREFIX.'bank SET num_releve = "'.$db->escape($newbankreceipt).'" WHERE num_releve = "'.$db->escape($oldbankreceipt).'"';
 	$result = $db->query($sqlupdate);
 	if ($result < 0) dol_print_error($db);
 
@@ -203,9 +205,9 @@ $paymentvatstatic = new TVA($db);
 $bankstatic = new Account($db);
 $banklinestatic = new AccountLine($db);
 $remisestatic = new RemiseCheque($db);
-$paymentdonationstatic = new PaymentDonation($db);
-$paymentloanstatic = new PaymentLoan($db);
-$paymentvariousstatic = new PaymentVarious($db);
+$paymentdonationstatic=new PaymentDonation($db);
+$paymentloanstatic=new PaymentLoan($db);
+$paymentvariousstatic=new PaymentVarious($db);
 
 // Must be before button action
 $param = '';
@@ -293,13 +295,17 @@ if (empty($numref))
 			if (!isset($objp->numr))
 			{
 				//
-			} else {
+			}
+			else
+			{
 				print '<tr class="oddeven">';
 				print '<td>';
 				if ($action != 'editbankreceipt' || $objp->numr != $brref)
 				{
 					print '<a href="releve.php?num='.$objp->numr.'&account='.$object->id.'">'.$objp->numr.'</a>';
-				} else {
+				}
+				else
+				{
 					print '<input type="hidden" name="oldbankreceipt" value="'.$objp->numr.'">';
 					print '<input type="text" name="newbankreceipt" value="'.$objp->numr.'">';
 					print '<input type="submit" class="button" name="actionnewbankreceipt" value="'.$langs->trans("Rename").'">';
@@ -349,10 +355,14 @@ if (empty($numref))
 		print '</form>';
 
 		print "\n</div>\n";
-	} else {
+	}
+	else
+	{
 		dol_print_error($db);
 	}
-} else {
+}
+else
+{
 	/**
 	 *   Show list of record into a bank statement
 	 */
@@ -373,7 +383,7 @@ if (empty($numref))
 
     $title = $langs->trans("AccountStatement").' '.$numref.' - '.$langs->trans("BankAccount").' '.$object->getNomUrl(1, 'receipts');
 	print load_fiche_titre($title, $mesprevnext, '');
-	//print_barre_liste($title, $page, $_SERVER["PHP_SELF"], $param, $sortfield, $sortorder, $massactionbutton, 0, $nbtotalofrecords, 'bank_account', 0, '', '', 0, 1);
+	//print_barre_liste($title, $page, $_SERVER["PHP_SELF"], $param, $sortfield, $sortorder, $massactionbutton, 0, $nbtotalofrecords, 'title_bank.png', 0, '', '', 0, 1);
 
 	print "<form method=\"post\" action=\"releve.php\">";
 	print '<input type="hidden" name="token" value="'.newToken().'">';
@@ -478,50 +488,58 @@ if (empty($numref))
 					$paymentstatic->ref = $langs->trans("Payment");
 					print ' '.$paymentstatic->getNomUrl(1);
 					$newline = 0;
-				} elseif ($links[$key]['type'] == 'payment_supplier')
+				}
+				elseif ($links[$key]['type'] == 'payment_supplier')
 				{
 					$paymentsupplierstatic->id = $links[$key]['url_id'];
 					$paymentsupplierstatic->ref = $langs->trans("Payment");
 					print ' '.$paymentsupplierstatic->getNomUrl(1);
 					$newline = 0;
-				} elseif ($links[$key]['type'] == 'payment_sc')
+				}
+				elseif ($links[$key]['type'] == 'payment_sc')
 				{
 					print '<a href="'.DOL_URL_ROOT.'/compta/payment_sc/card.php?id='.$links[$key]['url_id'].'">';
 					print ' '.img_object($langs->trans('ShowPayment'), 'payment').' ';
 					print $langs->trans("SocialContributionPayment");
 					print '</a>';
 					$newline = 0;
-				} elseif ($links[$key]['type'] == 'payment_vat')
+				}
+				elseif ($links[$key]['type'] == 'payment_vat')
 				{
 					$paymentvatstatic->id = $links[$key]['url_id'];
 					$paymentvatstatic->ref = $langs->trans("Payment");
 					print ' '.$paymentvatstatic->getNomUrl(1);
-				} elseif ($links[$key]['type'] == 'payment_salary')
+				}
+				elseif ($links[$key]['type'] == 'payment_salary')
 				{
 					print '<a href="'.DOL_URL_ROOT.'/salaries/card.php?id='.$links[$key]['url_id'].'">';
 					print ' '.img_object($langs->trans('ShowPayment'), 'payment').' ';
 					print $langs->trans("Payment");
 					print '</a>';
 					$newline = 0;
-				} elseif ($links[$key]['type'] == 'payment_donation')
+				}
+				elseif ($links[$key]['type']=='payment_donation')
 				{
-					$paymentdonationstatic->id = $links[$key]['url_id'];
-					$paymentdonationstatic->ref = $langs->trans("Payment");
+					$paymentdonationstatic->id=$links[$key]['url_id'];
+					$paymentdonationstatic->ref=$langs->trans("Payment");
 					print ' '.$paymentdonationstatic->getNomUrl(1);
 					$newline = 0;
-				} elseif ($links[$key]['type'] == 'payment_loan')
+				}
+				elseif ($links[$key]['type']=='payment_loan')
 				{
-					$paymentloanstatic->id = $links[$key]['url_id'];
-					$paymentloanstatic->ref = $langs->trans("Payment");
+					$paymentloanstatic->id=$links[$key]['url_id'];
+					$paymentloanstatic->ref=$langs->trans("Payment");
 					print ' '.$paymentloanstatic->getNomUrl(1);
 					$newline = 0;
-				} elseif ($links[$key]['type'] == 'payment_various')
+				}
+				elseif ($links[$key]['type']=='payment_various')
 				{
-					$paymentvariousstatic->id = $links[$key]['url_id'];
-					$paymentvariousstatic->ref = $langs->trans("Payment");
+					$paymentvariousstatic->id=$links[$key]['url_id'];
+					$paymentvariousstatic->ref=$langs->trans("Payment");
 					print ' '.$paymentvariousstatic->getNomUrl(1);
 					$newline = 0;
-				} elseif ($links[$key]['type'] == 'banktransfert') {
+				}
+				elseif ($links[$key]['type']=='banktransfert') {
 					// Do not show link to transfer since there is no transfer card (avoid confusion). Can already be accessed from transaction detail.
 					if ($objp->amount > 0)
 					{
@@ -535,7 +553,9 @@ if (empty($numref))
 						$bankstatic->label = $objp->bankref;
 						print $bankstatic->getNomUrl(1, '');
 						print ')';
-					} else {
+					}
+					else
+					{
 						$bankstatic->id = $objp->bankid;
 						$bankstatic->label = $objp->bankref;
 						print ' ('.$langs->trans("from").' ';
@@ -547,30 +567,35 @@ if (empty($numref))
 						print $bankstatic->getNomUrl(1, 'transactions');
 						print ')';
 					}
-				} elseif ($links[$key]['type'] == 'company') {
+				}
+				elseif ($links[$key]['type'] == 'company') {
                     $societestatic->id = $links[$key]['url_id'];
                     $societestatic->name = $links[$key]['label'];
                     print $societestatic->getNomUrl(1, 'company', 24);
 					$newline = 0;
-				} elseif ($links[$key]['type'] == 'member') {
+				}
+				elseif ($links[$key]['type'] == 'member') {
 					print '<a href="'.DOL_URL_ROOT.'/adherents/card.php?rowid='.$links[$key]['url_id'].'">';
 					print img_object($langs->trans('ShowMember'), 'user').' ';
 					print $links[$key]['label'];
 					print '</a>';
 					$newline = 0;
-				} elseif ($links[$key]['type'] == 'user') {
+				}
+				elseif ($links[$key]['type'] == 'user') {
 					print '<a href="'.DOL_URL_ROOT.'/user/card.php?id='.$links[$key]['url_id'].'">';
 					print img_object($langs->trans('ShowUser'), 'user').' ';
 					print $links[$key]['label'];
 					print '</a>';
 					$newline = 0;
-				} elseif ($links[$key]['type'] == 'sc') {
+				}
+				elseif ($links[$key]['type'] == 'sc') {
 					print '<a href="'.DOL_URL_ROOT.'/compta/sociales/card.php?id='.$links[$key]['url_id'].'">';
 					print img_object($langs->trans('ShowBill'), 'bill').' ';
 					print $langs->trans("SocialContribution");
 					print '</a>';
 					$newline = 0;
-				} else {
+				}
+				else {
 					print '<a href="'.$links[$key]['url'].$links[$key]['url_id'].'">';
 					print $links[$key]['label'];
 					print '</a>';
@@ -600,7 +625,9 @@ if (empty($numref))
 						print "<br>-&nbsp;<i>".$objc->label."</i>";
 						$ii++;
 					}
-				} else {
+				}
+				else
+				{
 					dol_print_error($db);
 				}
 			}
@@ -611,7 +638,9 @@ if (empty($numref))
 			{
 				$totald = $totald + abs($objp->amount);
 				print '<td class="nowrap right">'.price($objp->amount * -1)."</td><td>&nbsp;</td>\n";
-			} else {
+			}
+			else
+			{
 				$totalc = $totalc + abs($objp->amount);
 				print '<td>&nbsp;</td><td class="nowrap right">'.price($objp->amount)."</td>\n";
 			}
@@ -623,7 +652,9 @@ if (empty($numref))
 				print '<td class="center"><a href="'.DOL_URL_ROOT.'/compta/bank/line.php?rowid='.$objp->rowid.'&account='.$object->id.'&backtopage='.urlencode($_SERVER["PHP_SELF"].'?account='.$object->id.'&num='.$numref).'">';
 				print img_edit();
 				print "</a></td>";
-			} else {
+			}
+			else
+			{
 				print "<td class=\"center\">&nbsp;</td>";
 			}
 			print "</tr>";

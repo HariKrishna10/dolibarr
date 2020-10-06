@@ -46,8 +46,8 @@ $sref = GETPOST('search_ref', 'alpha');
 $snom = GETPOST('search_nom', 'alpha');
 $suser = GETPOST('search_user', 'alpha');
 $sttc = GETPOST('search_ttc', 'alpha');
-$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
-$search_product = GETPOST('search_product', 'int');
+$page = GETPOST('page', 'int');
+$sproduct = GETPOST('sproduct', 'int');
 $search_dateyear = GETPOST('search_dateyear', 'int');
 $search_datemonth = GETPOST('search_datemonth', 'int');
 $search_dateday = GETPOST('search_dateday', 'int');
@@ -78,7 +78,7 @@ if (GETPOST('button_removefilter_x', 'alpha') || GETPOST('button_removefilter.x'
     $search_datemonth = '';
     $search_dateday = '';
     $search_dateyear = '';
-    $search_product = 0;
+    $sproduct = 0;
 }
 
 
@@ -94,14 +94,12 @@ $texte = $langs->trans('ReplenishmentOrders');
 
 llxHeader('', $texte, $helpurl, '');
 
-print load_fiche_titre($langs->trans('Replenishment'), '', 'stock');
+print load_fiche_titre($langs->trans('Replenishment'), '', 'generic');
 
 $head = array();
-
 $head[0][0] = DOL_URL_ROOT.'/product/stock/replenish.php';
-$head[0][1] = $langs->trans('MissingStocks');
+$head[0][1] = $langs->trans('Status');
 $head[0][2] = 'replenish';
-
 $head[1][0] = DOL_URL_ROOT.'/product/stock/replenishorders.php';
 $head[1][1] = $texte;
 $head[1][2] = 'replenishorders';
@@ -143,7 +141,7 @@ if (GETPOST('statut', 'int')) {
 $sql .= ' GROUP BY cf.rowid, cf.ref, cf.date_creation, cf.fk_statut';
 $sql .= ', cf.total_ttc, cf.fk_user_author, u.login, s.rowid, s.nom';
 $sql .= $db->order($sortfield, $sortorder);
-if (!$search_product) {
+if (!$sproduct) {
 	$sql .= $db->plimit($limit + 1, $offset);
 }
 
@@ -153,11 +151,9 @@ if ($resql)
     $num = $db->num_rows($resql);
     $i = 0;
 
-	print '<span class="opacitymedium">'.$langs->trans("ReplenishmentOrdersDesc").'</span><br><br>';
+	print $langs->trans("ReplenishmentOrdersDesc").'<br><br>';
 
-	print '<form action="'.$_SERVER["PHP_SELF"].'" method="GET">';
-
-	print_barre_liste('', $page, $_SERVER["PHP_SELF"], '', $sortfield, $sortorder, '', $num, 0, '');
+    print_barre_liste('', $page, $_SERVER["PHP_SELF"], '', $sortfield, $sortorder, '', $num, 0, '');
 
     $param = '';
     if (!empty($contextpage) && $contextpage != $_SERVER["PHP_SELF"]) $param .= '&contextpage='.urlencode($contextpage);
@@ -171,25 +167,28 @@ if ($resql)
     if ($search_dateday) $param .= '&search_dateday='.urlencode($search_dateday);
     if ($optioncss != '')     $param .= '&optioncss='.urlencode($optioncss);
 
+
+    print '<form action="'.$_SERVER["PHP_SELF"].'" method="GET">';
+
     print '<table class="noborder centpercent">';
 
     print '<tr class="liste_titre_filter">';
-    print '<td class="liste_titre">';
-    print '<input type="text" class="flat" name="search_ref" value="'.dol_escape_htmltag($sref).'">';
-    print '</td>';
-    print '<td class="liste_titre">';
-    print '<input type="text" class="flat" name="search_nom" value="'.dol_escape_htmltag($snom).'">';
-    print '</td>';
-    print '<td class="liste_titre">';
-    print '<input type="text" class="flat" name="search_user" value="'.dol_escape_htmltag($suser).'">';
-    print '</td>';
-    print '<td class="liste_titre">';
-    print '<input type="text" class="flat" name="search_ttc" value="'.dol_escape_htmltag($sttc).'">';
-    print '</td>';
-    print '<td class="liste_titre">';
-    print $form->selectDate($search_date, 'search_date', 0, 0, 1, '', 1, 0, 0, '');
-    print '</td>';
-    print '<td class="liste_titre right">';
+    print '<td class="liste_titre">'.
+         '<input type="text" class="flat" name="search_ref" value="'.dol_escape_htmltag($sref).'">'.
+         '</td>'.
+         '<td class="liste_titre">'.
+         '<input type="text" class="flat" name="search_nom" value="'.dol_escape_htmltag($snom).'">'.
+         '</td>'.
+         '<td class="liste_titre">'.
+         '<input type="text" class="flat" name="search_user" value="'.dol_escape_htmltag($suser).'">'.
+         '</td>'.
+         '<td class="liste_titre">'.
+         '<input type="text" class="flat" name="search_ttc" value="'.dol_escape_htmltag($sttc).'">'.
+         '</td>'.
+         '<td class="liste_titre">'.
+         $form->selectDate($search_date, 'search_date', 0, 0, 1, '', 1, 0, 0, '').
+         '</td>'.
+         '<td class="liste_titre right">';
     $searchpicto = $form->showFilterAndCheckAddButtons(0);
     print $searchpicto;
     print '</td>';
@@ -261,18 +260,16 @@ if ($resql)
 
     $userstatic = new User($db);
 
-	while ($i < min($num, $search_product ? $num : $conf->liste_limit))
+	while ($i < min($num, $sproduct ? $num : $conf->liste_limit))
     {
         $obj = $db->fetch_object($resql);
 
-        $showline = dolDispatchToDo($obj->rowid) && (!$search_product || in_array($search_product, getProducts($obj->rowid)));
+        $showline = dolDispatchToDo($obj->rowid) && (!$sproduct || in_array($sproduct, getProducts($obj->rowid)));
 
         if ($showline)
         {
             $href = DOL_URL_ROOT.'/fourn/commande/card.php?id='.$obj->rowid;
-
             print '<tr>';
-
             // Ref
             print '<td>';
             print '<a href="'.$href.'">'.img_object($langs->trans('ShowOrder'), 'order').' '.$obj->ref.'</a>';
@@ -280,7 +277,10 @@ if ($resql)
 
             // Company
             $href = DOL_URL_ROOT.'/fourn/card.php?socid='.$obj->socid;
-            print '<td><a href="'.$href.'">'.img_object($langs->trans('ShowCompany'), 'company').' '.$obj->name.'</a></td>';
+            print '<td>'.
+                 '<a href="'.$href.'">'.
+                 img_object($langs->trans('ShowCompany'), 'company').' '.
+                 $obj->name.'</a></td>';
 
             // Author
             $userstatic->id = $obj->fk_user_author;
@@ -291,7 +291,6 @@ if ($resql)
                 $txt = '&nbsp;';
             }
             print '<td>'.$txt.'</td>';
-
             // Amount
             print '<td>'.price($obj->total_ttc).'</td>';
 
@@ -302,10 +301,8 @@ if ($resql)
                 $date = '-';
             }
             print '<td>'.$date.'</td>';
-
             // Statut
             print '<td class="right">'.$commandestatic->LibStatut($obj->fk_statut, 5).'</td>';
-
             print '</tr>';
         }
         $i++;
@@ -316,7 +313,9 @@ if ($resql)
     $db->free($resql);
 
     dol_fiche_end();
-} else {
+}
+else
+{
     dol_print_error($db);
 }
 

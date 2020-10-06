@@ -50,7 +50,7 @@ $mesg = '';
 $limit = GETPOST('limit', 'int') ?GETPOST('limit', 'int') : $conf->liste_limit;
 $sortfield = GETPOST('sortfield', 'alpha');
 $sortorder = GETPOST('sortorder', 'alpha');
-$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
+$page = GETPOST('page', 'int');
 if (empty($page) || $page == -1) { $page = 0; }     // If $page is not defined, or '' or -1
 $offset = $limit * $page;
 $pageprev = $page - 1;
@@ -61,7 +61,9 @@ if (!$sortfield)
 	{
 		$sortfield = "f.datef";
 		$sortorder = "DESC";
-	} else {
+	}
+	else
+	{
 	    $sortfield = "p.ref";
 	    $sortorder = "ASC";
 	}
@@ -111,7 +113,8 @@ if ($id > 0) {
 
     if (!$sortorder) $sortorder = "DESC";
     if (!$sortfield) $sortfield = "f.datef";
-} else {
+}
+else {
 	print '<tr><td class="titlefield">'.$langs->trans('ChooseProduct/Service').'</td>';
 	print '<td class="maxwidthonsmartphone" colspan="4">';
 	$form->select_produits('', 'id', '', 20, 0, 1, 2, '', 1, array(), 0, 'All');
@@ -223,7 +226,7 @@ if ($result)
 	//var_dump($conf->global->MARGIN_TYPE);
 	if ($conf->global->MARGIN_TYPE == "1")
 	    $labelcostprice = 'BuyingPrice';
-	else // value is 'costprice' or 'pmp'
+	else   // value is 'costprice' or 'pmp'
 	    $labelcostprice = 'CostPrice';
 
 	$moreforfilter = '';
@@ -236,7 +239,9 @@ if ($result)
 	if ($id > 0) {
   		print_liste_field_titre("Invoice", $_SERVER["PHP_SELF"], "f.ref", "", "&amp;id=".$id, '', $sortfield, $sortorder);
   		print_liste_field_titre("DateInvoice", $_SERVER["PHP_SELF"], "f.datef", "", "&amp;id=".$id, 'align="center"', $sortfield, $sortorder);
-  	} else {
+  	}
+  	else
+  	{
   		print_liste_field_titre("ProductService", $_SERVER["PHP_SELF"], "p.ref", "", "&amp;id=".$id, '', $sortfield, $sortorder);
   	}
 	print_liste_field_titre("SellingPrice", $_SERVER["PHP_SELF"], "selling_price", "", "&amp;id=".$id, 'align="right"', $sortfield, $sortorder);
@@ -264,7 +269,9 @@ if ($result)
 			{
 				$marginRate = ($pa != 0) ?-1 * (100 * $marge / $pa) : '';
 				$markRate = ($pv != 0) ?-1 * (100 * $marge / $pv) : '';
-			} else {
+			}
+			else
+			{
 				$marginRate = ($pa != 0) ? (100 * $marge / $pa) : '';
 				$markRate = ($pv != 0) ? (100 * $marge / $pv) : '';
 			}
@@ -278,7 +285,8 @@ if ($result)
 				print "</td>\n";
 				print "<td class=\"center\">";
 				print dol_print_date($db->jdate($objp->datef), 'day')."</td>";
-			} else {
+			}
+			else {
 				print '<td>';
 				if ($objp->rowid > 0)
 				{
@@ -289,7 +297,9 @@ if ($result)
     				$product_static->entity = $objp->pentity;
     				$text = $product_static->getNomUrl(1);
     				print $text .= ' - '.$objp->label;
-				} else {
+				}
+				else
+				{
 				    print img_object('', 'product').' '.$langs->trans("NotPredefinedProducts");
 				}
 				print "</td>\n";
@@ -320,7 +330,8 @@ if ($result)
 	print '<tr class="liste_total">';
 	if ($id > 0)
 		print '<td colspan=2>';
-	else print '<td>';
+	else
+		print '<td>';
 	print $langs->trans('TotalMargin')."</td>";
 	print "<td class=\"right\">".price(price2num($cumul_vente, 'MT'))."</td>\n";
 	print "<td class=\"right\">".price(price2num($cumul_achat, 'MT'))."</td>\n";
@@ -333,7 +344,9 @@ if ($result)
 
 	print "</table>";
 	print '</div>';
-} else {
+}
+else
+{
 	dol_print_error($db);
 }
 $db->free($result);

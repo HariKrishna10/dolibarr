@@ -96,7 +96,9 @@ if (empty($date_start) || empty($date_end)) // We define date_start and date_end
 	if ($q == 2) { $date_start = dol_get_first_day($year_start, 4, false); $date_end = dol_get_last_day($year_start, 6, false); }
 	if ($q == 3) { $date_start = dol_get_first_day($year_start, 7, false); $date_end = dol_get_last_day($year_start, 9, false); }
 	if ($q == 4) { $date_start = dol_get_first_day($year_start, 10, false); $date_end = dol_get_last_day($year_start, 12, false); }
-} else {
+}
+else
+{
 	// TODO We define q
 }
 // $date_start and $date_end are defined. We force $year_start and $nbofyear
@@ -152,10 +154,11 @@ if ($modecompta == "CREANCES-DETTES") {
     //$calcmode.='<br>('.$langs->trans("SeeReportInInputOutputMode",'<a href="'.$_SERVER["PHP_SELF"].'?year='.$year_start.'&modecompta=RECETTES-DEPENSES">','</a>').')';
     $description = $langs->trans("RulesCADue");
 	if (!empty($conf->global->FACTURE_DEPOSITS_ARE_JUST_PAYMENTS)) $description .= $langs->trans("DepositsAreNotIncluded");
-	else $description .= $langs->trans("DepositsAreIncluded");
+	else  $description .= $langs->trans("DepositsAreIncluded");
     $builddate = dol_now();
     //$exportlink=$langs->trans("NotYetAvailable");
-} elseif ($modecompta == "RECETTES-DEPENSES")
+}
+elseif ($modecompta == "RECETTES-DEPENSES")
 {
 	$name = $langs->trans("TurnoverCollected").', '.$langs->trans("ByUserAuthorOfInvoice");
 	$calcmode = $langs->trans("CalcModeEngagement");
@@ -164,10 +167,12 @@ if ($modecompta == "CREANCES-DETTES") {
 	$description .= $langs->trans("DepositsAreIncluded");
     $builddate = dol_now();
     //$exportlink=$langs->trans("NotYetAvailable");
-} elseif ($modecompta == "BOOKKEEPING")
+}
+elseif ($modecompta == "BOOKKEEPING")
 {
 	// TODO
-} elseif ($modecompta == "BOOKKEEPINGCOLLECTED")
+}
+elseif ($modecompta == "BOOKKEEPINGCOLLECTED")
 {
 	// TODO
 }
@@ -190,7 +195,6 @@ $name = array();
 
 // Show array
 print '<form method="POST" action="'.$_SERVER["PHP_SELF"].'">';
-print '<input type="hidden" name="token" value="'.newToken().'">'."\n";
 // Extra parameters management
 foreach ($headerparams as $key => $value)
 {
@@ -391,7 +395,8 @@ if (count($amount)) {
             } else {
                 //print '<a href="'.DOL_URL_ROOT.'/compta/paiement/list.php?userid=-1">';
             }
-        } elseif ($modecompta == 'CREANCES-DETTES') {
+        }
+        elseif ($modecompta == 'CREANCES-DETTES') {
             if ($key > 0) {
                 print '<a href="'.DOL_URL_ROOT.'/compta/facture/list.php?userid='.$key.'">';
             } else {
@@ -410,7 +415,8 @@ if (count($amount)) {
             } else {
                 //print '<a href="'.DOL_URL_ROOT.'/compta/paiement/list.php?userid=-1">';
             }
-        } elseif ($modecompta == 'CREANCES-DETTES') {
+        }
+        elseif ($modecompta == 'CREANCES-DETTES') {
             if ($key > 0) {
                 print '<a href="'.DOL_URL_ROOT.'/compta/facture/list.php?userid='.$key.'">';
             } else {
@@ -424,7 +430,8 @@ if (count($amount)) {
         	} else {
         		//print '</a>';
         	}
-        } elseif ($modecompta == 'CREANCES-DETTES') {
+        }
+        elseif ($modecompta == 'CREANCES-DETTES') {
         	if ($key > 0) {
         		print '</a>';
         	}
@@ -454,7 +461,7 @@ if (count($amount)) {
     print '<tr class="liste_total">';
     print '<td>'.$langs->trans("Total").'</td>';
     if ($modecompta != 'CREANCES-DETTES') {
-        print '<td></td>';
+        print '<td colspan="1"></td>';
     } else {
         print '<td class="right">'.price($catotal_ht).'</td>';
     }

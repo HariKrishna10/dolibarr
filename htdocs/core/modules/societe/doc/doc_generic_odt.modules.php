@@ -117,7 +117,8 @@ class doc_generic_odt extends ModeleThirdPartyDoc
 			$tmpdir = preg_replace('/DOL_DATA_ROOT/', DOL_DATA_ROOT, $tmpdir);
 			if (!$tmpdir) { unset($listofdir[$key]); continue; }
 			if (!is_dir($tmpdir)) $texttitle .= img_warning($langs->trans("ErrorDirNotFound", $tmpdir), 0);
-			else {
+			else
+			{
 				$tmpfiles = dol_dir_list($tmpdir, 'files', 0, '\.od(s|t)$', '', 'name', SORT_ASC, 0, true); // Disable hook for the moment
 				if (count($tmpfiles)) $listoffiles = array_merge($listoffiles, $tmpfiles);
 			}
@@ -248,7 +249,9 @@ class doc_generic_odt extends ModeleThirdPartyDoc
 				    $format = $conf->global->MAIN_DOC_USE_TIMING;
 				    if ($format == '1') $format = '%Y%m%d%H%M%S';
 					$filename = $newfiletmp.'-'.dol_print_date(dol_now(), $format).'.'.$newfileformat;
-				} else {
+				}
+				else
+				{
 					$filename = $newfiletmp.'.'.$newfileformat;
 				}
 				$file = $dir.'/'.$filename;
@@ -274,7 +277,8 @@ class doc_generic_odt extends ModeleThirdPartyDoc
 	    					'DELIMITER_RIGHT' => '}'
 						)
 					);
-				} catch (Exception $e)
+				}
+				catch (Exception $e)
 				{
 					$this->error = $e->getMessage();
 					dol_syslog($e->getMessage(), LOG_INFO);
@@ -309,7 +313,8 @@ class doc_generic_odt extends ModeleThirdPartyDoc
                 }
                 if ((is_array($contact_arrray) && count($contact_arrray) > 0))
                 {
-                	try {
+                	try
+                	{
                 		$listlines = $odfHandler->setSegment('companycontacts');
 
                 		foreach ($contact_arrray as $array_key => $contact_id)
@@ -318,12 +323,15 @@ class doc_generic_odt extends ModeleThirdPartyDoc
                 			$tmparray = $this->get_substitutionarray_contact($contactstatic, $outputlangs, 'contact');
                 			foreach ($tmparray as $key => $val)
                 			{
-                				try {
+                				try
+                				{
                 					$listlines->setVars($key, $val, true, 'UTF-8');
-                				} catch (OdfException $e)
+                				}
+                				catch (OdfException $e)
                 				{
 									dol_syslog($e->getMessage(), LOG_INFO);
-                				} catch (SegmentException $e)
+                				}
+                				catch (SegmentException $e)
                 				{
 									dol_syslog($e->getMessage(), LOG_INFO);
                 				}
@@ -331,7 +339,8 @@ class doc_generic_odt extends ModeleThirdPartyDoc
                 			$listlines->merge();
                 		}
                 		$odfHandler->mergeSegment($listlines);
-                	} catch (OdfException $e)
+                	}
+                	catch (OdfException $e)
                 	{
                 		$this->error = $e->getMessage();
                 		dol_syslog($this->error, LOG_WARNING);
@@ -360,11 +369,13 @@ class doc_generic_odt extends ModeleThirdPartyDoc
 						{
 							if (file_exists($value)) $odfHandler->setImage($key, $value);
 							else $odfHandler->setVars($key, 'ErrorFileNotFound', true, 'UTF-8');
-						} else // Text
+						}
+						else	// Text
 						{
 							$odfHandler->setVars($key, $value, true, 'UTF-8');
 						}
-					} catch (OdfException $e)
+					}
+					catch (OdfException $e)
 					{
 						// setVars failed, probably because key not found
                         dol_syslog($e->getMessage(), LOG_INFO);
@@ -377,7 +388,8 @@ class doc_generic_odt extends ModeleThirdPartyDoc
 				{
 					try {
 						$odfHandler->setVars($key, $value, true, 'UTF-8');
-					} catch (OdfException $e)
+					}
+					catch (OdfException $e)
 					{
                         dol_syslog($e->getMessage(), LOG_INFO);
 					}
@@ -396,7 +408,8 @@ class doc_generic_odt extends ModeleThirdPartyDoc
                         dol_syslog($e->getMessage(), LOG_INFO);
 						return -1;
 					}
-				} else {
+				}
+				else {
 				    try {
                         $odfHandler->creator = $user->getFullName($outputlangs);
                         $odfHandler->title = $object->builddoc_filename;
@@ -425,7 +438,9 @@ class doc_generic_odt extends ModeleThirdPartyDoc
 				$this->result = array('fullpath'=>$file);
 
 				return 1; // Success
-			} else {
+			}
+			else
+			{
 				$this->error = $langs->transnoentities("ErrorCanNotCreateDir", $dir);
 				return -1;
 			}

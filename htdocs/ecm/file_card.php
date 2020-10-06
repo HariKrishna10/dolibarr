@@ -33,7 +33,6 @@ $langs->loadLangs(array('ecm', 'companies', 'other', 'users', 'orders', 'propal'
 
 $action = GETPOST('action', 'aZ09');
 $cancel = GETPOST('cancel', 'alpha');
-$backtopage = GETPOST('backtopage', 'alpha');
 
 if (!$user->rights->ecm->setup) accessforbidden();
 
@@ -47,12 +46,11 @@ if ($user->socid > 0)
     $socid = $user->socid;
 }
 
-$limit = GETPOST('limit', 'int') ? GETPOST('limit', 'int') : $conf->liste_limit;
 $sortfield = GETPOST("sortfield", 'alpha');
 $sortorder = GETPOST("sortorder", 'alpha');
-$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
+$page = GETPOST("page", 'int');
 if (empty($page) || $page == -1) { $page = 0; }     // If $page is not defined, or '' or -1
-$offset = $limit * $page;
+$offset = $conf->liste_limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (!$sortorder) $sortorder = "ASC";
@@ -114,7 +112,9 @@ if ($cancel)
     {
         header("Location: ".$backtopage);
         exit;
-    } else {
+    }
+    else
+    {
     	header('Location: '.$_SERVER["PHP_SELF"].'?urlfile='.urlencode($urlfile).'&section='.urlencode($section).($module ? '&module='.urlencode($module) : ''));
         exit;
     }
@@ -139,12 +139,6 @@ if ($action == 'update')
 
     $oldfile = $olddir.$oldlabel;
     $newfile = $newdir.$newlabel;
-    $newfileformove = $newfile;
-    // If old file end with .noexe, new file must also end with .noexe
-    if (preg_match('/\.noexe$/', $oldfile) && ! preg_match('/\.noexe$/', $newfileformove)) {
-    	$newfileformove .= '.noexe';
-    }
-    //var_dump($oldfile);var_dump($newfile);exit;
 
     // Now we update index of file
     $db->begin();
@@ -152,7 +146,7 @@ if ($action == 'update')
     //print $oldfile.' - '.$newfile;
     if ($newlabel != $oldlabel)
     {
-    	$result = dol_move($oldfile, $newfileformove); // This include update of database
+        $result = dol_move($oldfile, $newfile); // This include update of database
         if (!$result)
         {
             $langs->load('errors');
@@ -175,7 +169,9 @@ if ($action == 'update')
 		{
 			require_once DOL_DOCUMENT_ROOT.'/core/lib/security2.lib.php';
 			$object->share = getRandomPassword(true);
-		} else {
+		}
+		else
+		{
 			$object->share = '';
 		}
 
@@ -187,12 +183,14 @@ if ($action == 'update')
 			{
 				setEventMessages($object->error, $object->errors, 'warnings');
 			}
-		} else {
+		}
+		else
+		{
 			// Call create to insert record
 			$object->entity = $conf->entity;
 			$object->filepath = preg_replace('/[\\/]+$/', '', $newdirrelativetodocument);
 			$object->filename = $newlabel;
-			$object->label = md5_file(dol_osencode($newfileformove)); // hash of file content
+			$object->label = md5_file(dol_osencode($newfile)); // hash of file content
 			$object->fullpath_orig = '';
 			$object->gen_or_uploaded = 'unknown';
 			$object->description = ''; // indexed content
@@ -210,14 +208,11 @@ if ($action == 'update')
         $db->commit();
 
         $urlfile = $newlabel;
-        // If old file end with .noexe, new file must also end with .noexe
-        if (preg_match('/\.noexe$/', $newfileformove)) {
-        	$urlfile .= '.noexe';
-        }
-
         header('Location: '.$_SERVER["PHP_SELF"].'?urlfile='.urlencode($urlfile).'&section='.urlencode($section));
         exit;
-    } else {
+    }
+    else
+    {
         $db->rollback();
     }
 }
@@ -261,25 +256,20 @@ while ($tmpecmdir && $result > 0)
 	{
 		$s = ' -> '.$s;
 		$result = $tmpecmdir->fetch($tmpecmdir->fk_parent);
-	} else {
+	}
+	else
+	{
 		$tmpecmdir = 0;
 	}
 	$i++;
 }
 
-$urlfiletoshow = preg_replace('/\.noexe$/', '', $urlfile);
-
 $s = img_picto('', 'object_dir').' <a href="'.DOL_URL_ROOT.'/ecm/index.php">'.$langs->trans("ECMRoot").'</a> -> '.$s.' -> ';
-if ($action == 'edit') $s .= '<input type="text" name="label" class="quatrevingtpercent" value="'.$urlfiletoshow.'">';
-else $s .= $urlfiletoshow;
-
-$linkback = '';
-if ($backtopage) {
-	$linkback = '<a href="'.$backtopage.'">'.$langs->trans("BackToTree").'</a>';
-}
+if ($action == 'edit') $s .= '<input type="text" name="label" class="quatrevingtpercent" value="'.$urlfile.'">';
+else $s .= $urlfile;
 
 $object->ref = ''; // Force to hide ref
-dol_banner_tab($object, '', $linkback, 0, '', '', $s);
+dol_banner_tab($object, '', $morehtml, 0, '', '', $s);
 
 print '<div class="fichecenter">';
 
@@ -299,14 +289,17 @@ print dol_print_size($totalsize);
 print '</td></tr>';
 */
 
-// Hash of file content
 print '<tr><td>'.$langs->trans("HashOfFileContent").'</td><td>';
 $object = new EcmFiles($db);
+//$filenametosearch=basename($filepath);
+//$filedirtosearch=basedir($filepath);
 $object->fetch(0, '', $filepathtodocument);
 if (!empty($object->label))
 {
 	print $object->label;
-} else {
+}
+else
+{
 	print img_warning().' '.$langs->trans("FileNotYetIndexedInDatabase");
 }
 print '</td></tr>';
@@ -354,14 +347,20 @@ if (!empty($object->share))
 		if ($action != 'edit') print '<input type="text" class="quatrevingtpercent" id="downloadlink" name="downloadexternallink" value="'.dol_escape_htmltag($fulllink).'">';
 		else print $fulllink;
 		if ($action != 'edit') print ' <a href="'.$fulllink.'">'.$langs->trans("Download").'</a>'; // No target here
-	} else {
+	}
+	else
+	{
 		print '<input type="checkbox" name="shareenabled"'.($object->share ? ' checked="checked"' : '').' /> ';
 	}
-} else {
+}
+else
+{
 	if ($action != 'edit')
 	{
 		print '<span class="opacitymedium">'.$langs->trans("FileNotShared").'</span>';
-	} else {
+	}
+	else
+	{
 		print '<input type="checkbox" name="shareenabled"'.($object->share ? ' checked="checked"' : '').' /> ';
 	}
 }

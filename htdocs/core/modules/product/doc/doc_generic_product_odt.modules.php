@@ -141,7 +141,8 @@ class doc_generic_product_odt extends ModelePDFProduct
 				unset($listofdir[$key]); continue;
 			}
 			if (!is_dir($tmpdir)) $texttitle .= img_warning($langs->trans("ErrorDirNotFound", $tmpdir), 0);
-			else {
+			else
+			{
 				$tmpfiles = dol_dir_list($tmpdir, 'files', 0, '\.(ods|odt)');
 				if (count($tmpfiles)) $listoffiles = array_merge($listoffiles, $tmpfiles);
 			}
@@ -292,7 +293,9 @@ class doc_generic_product_odt extends ModelePDFProduct
 				    $format = $conf->global->MAIN_DOC_USE_TIMING;
 				    if ($format == '1') $format = '%Y%m%d%H%M%S';
 					$filename = $newfiletmp.'-'.dol_print_date(dol_now(), $format).'.'.$newfileformat;
-				} else {
+				}
+				else
+				{
 					$filename = $newfiletmp.'.'.$newfileformat;
 				}
 				$file = $dir.'/'.$filename;
@@ -325,7 +328,9 @@ class doc_generic_product_odt extends ModelePDFProduct
                         // if we have a CUSTOMER contact and we dont use it as recipient we store the contact object for later use
                         $contactobject = $object->contact;
                     }
-				} else {
+				}
+				else
+				{
 					$socobject = $object->thirdparty;
 				}
 				// Make substitution
@@ -361,7 +366,8 @@ class doc_generic_product_odt extends ModelePDFProduct
 							'DELIMITER_RIGHT' => '}'
 						)
 					);
-				} catch (Exception $e)
+				}
+				catch (Exception $e)
 				{
 					$this->error = $e->getMessage();
 					dol_syslog($e->getMessage(), LOG_INFO);
@@ -378,7 +384,8 @@ class doc_generic_product_odt extends ModelePDFProduct
 				// Make substitutions into odt of freetext
 				try {
 					$odfHandler->setVars('free_text', $newfreetext, true, 'UTF-8');
-				} catch (OdfException $e)
+				}
+				catch (OdfException $e)
 				{
 					dol_syslog($e->getMessage(), LOG_INFO);
 				}
@@ -409,17 +416,20 @@ class doc_generic_product_odt extends ModelePDFProduct
 						{
 							if (file_exists($value)) $odfHandler->setImage($key, $value);
 							else $odfHandler->setVars($key, 'ErrorFileNotFound', true, 'UTF-8');
-						} else // Text
+						}
+						else    // Text
 						{
 							$odfHandler->setVars($key, $value, true, 'UTF-8');
 						}
-					} catch (OdfException $e)
+					}
+					catch (OdfException $e)
 					{
                         dol_syslog($e->getMessage(), LOG_INFO);
 					}
 				}
 				// Replace tags of lines
-				try {
+				try
+				{
 					$listlines = $odfHandler->setSegment('supplierprices');
 					if (!empty($object->supplierprices)) {
 						foreach ($object->supplierprices as $supplierprice)
@@ -431,12 +441,15 @@ class doc_generic_product_odt extends ModelePDFProduct
 							$reshook = $hookmanager->executeHooks('ODTSubstitutionLine', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
 							foreach ($array_lines as $key => $val)
 							{
-								try {
+								try
+								{
 									$listlines->setVars($key, $val, true, 'UTF-8');
-								} catch (OdfException $e)
+								}
+								catch (OdfException $e)
 								{
 									dol_syslog($e->getMessage(), LOG_INFO);
-								} catch (SegmentException $e)
+								}
+								catch (SegmentException $e)
 								{
 									dol_syslog($e->getMessage(), LOG_INFO);
 								}
@@ -445,7 +458,8 @@ class doc_generic_product_odt extends ModelePDFProduct
 						}
 					}
 					$odfHandler->mergeSegment($listlines);
-				} catch (OdfException $e)
+				}
+				catch (OdfException $e)
 				{
 					$this->error = $e->getMessage();
 					dol_syslog($this->error, LOG_WARNING);
@@ -458,7 +472,8 @@ class doc_generic_product_odt extends ModelePDFProduct
 				{
 					try {
 						$odfHandler->setVars($key, $value, true, 'UTF-8');
-					} catch (OdfException $e)
+					}
+					catch (OdfException $e)
 					{
                         dol_syslog($e->getMessage(), LOG_INFO);
 					}
@@ -477,7 +492,8 @@ class doc_generic_product_odt extends ModelePDFProduct
                         dol_syslog($e->getMessage(), LOG_INFO);
 						return -1;
 					}
-				} else {
+				}
+				else {
 					try {
 						$odfHandler->saveToDisk($file);
 					} catch (Exception $e) {
@@ -497,7 +513,9 @@ class doc_generic_product_odt extends ModelePDFProduct
 				$this->result = array('fullpath'=>$file);
 
 				return 1; // Success
-			} else {
+			}
+			else
+			{
 				$this->error = $langs->transnoentities("ErrorCanNotCreateDir", $dir);
 				return -1;
 			}

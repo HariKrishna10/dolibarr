@@ -66,10 +66,14 @@ if ($action == 'updateMask')
  	if (!$error)
     {
         setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
-    } else {
+    }
+    else
+    {
         setEventMessages($langs->trans("Error"), null, 'errors');
     }
-} elseif ($action == 'specimen')
+}
+
+elseif ($action == 'specimen')
 {
 	$modele = GETPOST('module', 'alpha');
 
@@ -100,11 +104,15 @@ if ($action == 'updateMask')
 		{
 			header("Location: ".DOL_URL_ROOT."/document.php?modulepart=commande&file=SPECIMEN.pdf");
 			return;
-		} else {
+		}
+		else
+		{
 			setEventMessages($module->error, null, 'errors');
 			dol_syslog($module->error, LOG_ERR);
 		}
-	} else {
+	}
+	else
+	{
 		setEventMessages($langs->trans("ErrorModuleNotFound"), null, 'errors');
 		dol_syslog($langs->trans("ErrorModuleNotFound"), LOG_ERR);
 	}
@@ -114,7 +122,9 @@ if ($action == 'updateMask')
 elseif ($action == 'set')
 {
 	$ret = addDocumentModel($value, $type, $label, $scandir);
-} elseif ($action == 'del')
+}
+
+elseif ($action == 'del')
 {
 	$ret = delDocumentModel($value, $type);
 	if ($ret > 0)
@@ -139,13 +149,17 @@ elseif ($action == 'setdoc')
 	{
 		$ret = addDocumentModel($value, $type, $label, $scandir);
 	}
-} elseif ($action == 'setmod')
+}
+
+elseif ($action == 'setmod')
 {
 	// TODO Check if numbering module chosen can be activated
 	// by calling method canBeActivated
 
 	dolibarr_set_const($db, "COMMANDE_ADDON", $value, 'chaine', 0, '', $conf->entity);
-} elseif ($action == 'set_COMMANDE_DRAFT_WATERMARK')
+}
+
+elseif ($action == 'set_COMMANDE_DRAFT_WATERMARK')
 {
 	$draft = GETPOST("COMMANDE_DRAFT_WATERMARK");
 	$res = dolibarr_set_const($db, "COMMANDE_DRAFT_WATERMARK", trim($draft), 'chaine', 0, '', $conf->entity);
@@ -155,10 +169,14 @@ elseif ($action == 'setdoc')
  	if (!$error)
     {
         setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
-    } else {
+    }
+    else
+    {
         setEventMessages($langs->trans("Error"), null, 'errors');
     }
-} elseif ($action == 'set_ORDER_FREE_TEXT')
+}
+
+elseif ($action == 'set_ORDER_FREE_TEXT')
 {
 	$freetext = GETPOST("ORDER_FREE_TEXT", 'none'); // No alpha here, we want exact string
 
@@ -169,7 +187,9 @@ elseif ($action == 'setdoc')
  	if (!$error)
     {
         setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
-    } else {
+    }
+    else
+    {
         setEventMessages($langs->trans("Error"), null, 'errors');
     }
 } elseif ($action == "setshippableiconinlist") {
@@ -182,22 +202,6 @@ elseif ($action == 'setdoc')
     } else {
         setEventMessages($langs->trans("Error"), null, 'errors');
     }
-} elseif ($action == 'setribchq')
-{
-	$rib = GETPOST('rib', 'alpha');
-	$chq = GETPOST('chq', 'alpha');
-
-	$res = dolibarr_set_const($db, "FACTURE_RIB_NUMBER", $rib, 'chaine', 0, '', $conf->entity);
-	$res = dolibarr_set_const($db, "FACTURE_CHQ_NUMBER", $chq, 'chaine', 0, '', $conf->entity);
-
-	if (!$res > 0) $error++;
-
-	if (!$error)
-	{
-		setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
-	} else {
-		setEventMessages($langs->trans("Error"), null, 'errors');
-	}
 }
 
 // Activate ask for payment bank
@@ -210,7 +214,9 @@ elseif ($action == 'set_BANK_ASK_PAYMENT_BANK_DURING_ORDER')
     if (!$error)
     {
         setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
-    } else {
+    }
+    else
+    {
         setEventMessages($langs->trans("Error"), null, 'errors');
     }
 }
@@ -225,7 +231,9 @@ elseif ($action == 'set_WAREHOUSE_ASK_WAREHOUSE_DURING_ORDER')
     if (!$error)
     {
         setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
-    } else {
+    }
+    else
+    {
         setEventMessages($langs->trans("Error"), null, 'errors');
     }
 }
@@ -306,7 +314,9 @@ foreach ($dirmodels as $reldir)
 						if ($conf->global->COMMANDE_ADDON == $file)
 						{
 							print img_picto($langs->trans("Activated"), 'switch_on');
-						} else {
+						}
+						else
+						{
 							print '<a href="'.$_SERVER["PHP_SELF"].'?action=setmod&amp;value='.$file.'">';
 							print img_picto($langs->trans("Disabled"), 'switch_off');
 							print '</a>';
@@ -370,7 +380,9 @@ if ($resql)
 		array_push($def, $array[0]);
 		$i++;
 	}
-} else {
+}
+else
+{
 	dol_print_error($db);
 }
 
@@ -439,7 +451,9 @@ foreach ($dirmodels as $reldir)
 	                            	print img_picto($langs->trans("Enabled"), 'switch_on');
 	                            	print '</a>';
 	                            	print '</td>';
-	                            } else {
+	                            }
+	                            else
+	                            {
 	                                print '<td class="center">'."\n";
 	                                print '<a href="'.$_SERVER["PHP_SELF"].'?action=set&value='.$name.'&amp;scan_dir='.$module->scandir.'&amp;label='.urlencode($module->name).'">'.img_picto($langs->trans("Disabled"), 'switch_off').'</a>';
 	                                print "</td>";
@@ -450,7 +464,9 @@ foreach ($dirmodels as $reldir)
 	                            if ($conf->global->COMMANDE_ADDON_PDF == $name)
 	                            {
 	                                print img_picto($langs->trans("Default"), 'on');
-	                            } else {
+	                            }
+	                            else
+	                            {
 	                                print '<a href="'.$_SERVER["PHP_SELF"].'?action=setdoc&value='.$name.'&amp;scan_dir='.$module->scandir.'&amp;label='.urlencode($module->name).'" alt="'.$langs->trans("Default").'">'.img_picto($langs->trans("Disabled"), 'off').'</a>';
 	                            }
 	                            print '</td>';
@@ -483,7 +499,9 @@ foreach ($dirmodels as $reldir)
 	                            if ($module->type == 'pdf')
 	                            {
 	                                print '<a href="'.$_SERVER["PHP_SELF"].'?action=specimen&module='.$name.'">'.img_object($langs->trans("Preview"), 'bill').'</a>';
-	                            } else {
+	                            }
+	                            else
+	                            {
 	                                print img_object($langs->trans("PreviewNotAvailable"), 'generic');
 	                            }
 	                            print '</td>';
@@ -499,116 +517,7 @@ foreach ($dirmodels as $reldir)
 }
 
 print '</table>';
-
-
-/*
- *  Payment mode
- */
-
-print '<br>';
-print load_fiche_titre($langs->trans("SuggestedPaymentModesIfNotDefinedInOrder"), '', '');
-
-print '<form action="'.$_SERVER["PHP_SELF"].'" method="POST">';
-print '<input type="hidden" name="token" value="'.newToken().'" />';
-
-print '<table class="noborder centpercent">';
-
-print '<tr class="liste_titre">';
-print '<td>';
-print '<input type="hidden" name="action" value="setribchq">';
-print $langs->trans("PaymentMode").'</td>';
-print '<td align="right">';
-if (empty($conf->facture->enabled)) {
-	print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
-}
-print '</td>';
-print "</tr>\n";
-
-print '<tr class="oddeven">';
-print "<td>".$langs->trans("SuggestPaymentByRIBOnAccount")."</td>";
-print "<td>";
-if (empty($conf->facture->enabled))
-{
-	if (!empty($conf->banque->enabled))
-	{
-		$sql = "SELECT rowid, label";
-		$sql .= " FROM ".MAIN_DB_PREFIX."bank_account";
-		$sql .= " WHERE clos = 0";
-		$sql .= " AND courant = 1";
-		$sql .= " AND entity IN (".getEntity('bank_account').")";
-		$resql = $db->query($sql);
-		if ($resql)
-		{
-			$num = $db->num_rows($resql);
-			$i = 0;
-			if ($num > 0)
-			{
-				print '<select name="rib" class="flat" id="rib">';
-				print '<option value="0">'.$langs->trans("DoNotSuggestPaymentMode").'</option>';
-				while ($i < $num)
-				{
-					$row = $db->fetch_row($resql);
-
-					print '<option value="'.$row[0].'"';
-					print $conf->global->FACTURE_RIB_NUMBER == $row[0] ? ' selected' : '';
-					print '>'.$row[1].'</option>';
-
-					$i++;
-				}
-				print "</select>";
-			} else {
-				print "<i>".$langs->trans("NoActiveBankAccountDefined")."</i>";
-			}
-		}
-	} else {
-		print '<span class="opacitymedium">'.$langs->trans("BankModuleNotActive").'</span>';
-	}
-} else {
-	print '<span class="opacitymedium">'.$langs->trans("SeeSetupOfModule", $langs->transnoentitiesnoconv("Module30Name")).'</span>';
-}
-print "</td></tr>";
-
-print '<tr class="oddeven">';
-print "<td>".$langs->trans("SuggestPaymentByChequeToAddress")."</td>";
-print "<td>";
-if (empty($conf->facture->enabled))
-{
-	print '<select class="flat" name="chq" id="chq">';
-	print '<option value="0">'.$langs->trans("DoNotSuggestPaymentMode").'</option>';
-	print '<option value="-1"'.($conf->global->FACTURE_CHQ_NUMBER ? ' selected' : '').'>'.$langs->trans("MenuCompanySetup").' ('.($mysoc->name ? $mysoc->name : $langs->trans("NotDefined")).')</option>';
-
-	$sql = "SELECT rowid, label";
-	$sql .= " FROM ".MAIN_DB_PREFIX."bank_account";
-	$sql .= " WHERE clos = 0";
-	$sql .= " AND courant = 1";
-	$sql .= " AND entity IN (".getEntity('bank_account').")";
-
-	$resql = $db->query($sql);
-	if ($resql)
-	{
-		$num = $db->num_rows($resql);
-		$i = 0;
-		while ($i < $num)
-		{
-			$row = $db->fetch_row($resql);
-
-			print '<option value="'.$row[0].'"';
-			print $conf->global->FACTURE_CHQ_NUMBER == $row[0] ? ' selected' : '';
-			print '>'.$langs->trans("OwnerOfBankAccount", $row[1]).'</option>';
-
-			$i++;
-		}
-	}
-	print "</select>";
-} else {
-	print '<span class="opacitymedium">'.$langs->trans("SeeSetupOfModule", $langs->transnoentitiesnoconv("Module30Name")).'</span>';
-}
-print "</td></tr>";
-print "</table>";
-print "</form>";
-
-
-print '<br>';
+print "<br>";
 
 /*
  * Other options
@@ -637,7 +546,9 @@ $variablename = 'ORDER_FREE_TEXT';
 if (empty($conf->global->PDF_ALLOW_HTML_FOR_FREE_TEXT))
 {
     print '<textarea name="'.$variablename.'" class="flat" cols="120">'.$conf->global->$variablename.'</textarea>';
-} else {
+}
+else
+{
     include_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
     $doleditor = new DolEditor($variablename, $conf->global->$variablename, '', 80, 'dolibarr_notes');
     print $doleditor->Create();

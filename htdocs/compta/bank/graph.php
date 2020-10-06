@@ -84,7 +84,9 @@ if ($result < 0)
 	$langs->load("errors");
 	$error++;
 	setEventMessages($langs->trans("ErrorFailedToCreateDir"), null, 'errors');
-} else {
+}
+else
+{
 	// Calcul $min and $max
 	$sql = "SELECT MIN(b.datev) as min, MAX(b.datev) as max";
 	$sql .= " FROM ".MAIN_DB_PREFIX."bank as b";
@@ -100,7 +102,9 @@ if ($result < 0)
 		$obj = $db->fetch_object($resql);
 		$min = $db->jdate($obj->min);
 		$max = $db->jdate($obj->max);
-	} else {
+	}
+	else
+	{
 		dol_print_error($db);
 	}
 	if (empty($min)) $min = dol_now() - 3600 * 24;
@@ -147,7 +151,9 @@ if ($result < 0)
 				$i++;
 			}
 			$db->free($resql);
-		} else {
+		}
+		else
+		{
 			dol_print_error($db);
 		}
 
@@ -168,7 +174,9 @@ if ($result < 0)
 			$row = $db->fetch_row($resql);
 			$solde = $row[0];
 			$db->free($resql);
-		} else {
+		}
+		else
+		{
 			dol_print_error($db);
 		}
 
@@ -191,7 +199,9 @@ if ($result < 0)
 			if ($day > time())
 			{
 				$datas[$i] = ''; // Valeur speciale permettant de ne pas tracer le graph
-			} else {
+			}
+			else
+			{
 				$datas[$i] = $solde + $subtotal;
 			}
 			$datamin[$i] = $object->min_desired;
@@ -245,14 +255,13 @@ if ($result < 0)
 		$px1->draw($file, $fileurl);
 
 		$show1 = $px1->show();
-
-		$px1 = null;
-		$graph_datas = null;
-		$datas = null;
-		$datamin = null;
-		$dataall = null;
-		$labels = null;
-		$amounts = null;
+		unset($graph_datas);
+		unset($px1);
+		unset($datas);
+		unset($datamin);
+		unset($dataall);
+		unset($labels);
+		unset($amounts);
 	}
 
 	// Graph Balance for the year
@@ -284,7 +293,9 @@ if ($result < 0)
 				$i++;
 			}
 			$db->free($resql);
-		} else {
+		}
+		else
+		{
 			dol_print_error($db);
 		}
 
@@ -305,7 +316,9 @@ if ($result < 0)
 			$row = $db->fetch_row($resql);
 			$solde = $row[0];
 			$db->free($resql);
-		} else {
+		}
+		else
+		{
 			dol_print_error($db);
 		}
 
@@ -329,16 +342,17 @@ if ($result < 0)
 			if ($day > $now)
 			{
 				$datas[$i] = ''; // Valeur speciale permettant de ne pas tracer le graph
-			} else {
+			}
+			else
+			{
 				$datas[$i] = $solde + $subtotal;
 			}
 			$datamin[$i] = $object->min_desired;
 			$dataall[$i] = $object->min_allowed;
-			/*if ($xday == '15')	// Set only some label for jflot
+			if ($xday == '15')
 			{
 				$labels[$i] = dol_print_date($day, "%b");
-			}*/
-			$labels[$i] = dol_print_date($day, "%Y%m");
+			}
 			$day += 86400;
 			$textdate = strftime("%Y%m%d", $day);
 			$xyear = substr($textdate, 0, 4);
@@ -378,13 +392,13 @@ if ($result < 0)
 
 		$show2 = $px2->show();
 
-		$px2 = null;
-		$graph_datas = null;
-		$datas = null;
-		$datamin = null;
-		$dataall = null;
-		$labels = null;
-		$amounts = null;
+		unset($px2);
+		unset($graph_datas);
+		unset($datas);
+		unset($datamin);
+		unset($dataall);
+		unset($labels);
+		unset($amounts);
 	}
 
 	// Graph 3 - Balance for all time line
@@ -415,7 +429,9 @@ if ($result < 0)
 				$amounts[$row[0]] = $row[1];
 				$i++;
 			}
-		} else {
+		}
+		else
+		{
 			dol_print_error($db);
 		}
 
@@ -441,16 +457,17 @@ if ($result < 0)
 			if ($day > ($max + 86400))
 			{
 				$datas[$i] = ''; // Valeur speciale permettant de ne pas tracer le graph
-			} else {
-				$datas[$i] = 0 + $solde + $subtotal;
+			}
+			else
+			{
+				$datas[$i] = '' +$solde + $subtotal;
 			}
 			$datamin[$i] = $object->min_desired;
 			$dataall[$i] = $object->min_allowed;
-			/*if (substr($textdate, 6, 2) == '01' || $i == 0)	// Set only few label for jflot
+			if (substr($textdate, 6, 2) == '01' || $i == 0)
 			{
-				$labels[$i] = substr($textdate, 0, 6);
-			}*/
-			$labels[$i] = substr($textdate, 0, 6);
+				$labels[$i] = substr($textdate, 4, 2);
+			}
 
 			$day += 86400;
 			$textdate = strftime("%Y%m%d", $day);
@@ -488,13 +505,13 @@ if ($result < 0)
 
 		$show3 = $px3->show();
 
-		$px3 = null;
-		$graph_datas = null;
-		$datas = null;
-		$datamin = null;
-		$dataall = null;
-		$labels = null;
-		$amounts = null;
+		unset($px3);
+		unset($graph_datas);
+		unset($datas);
+		unset($datamin);
+		unset($dataall);
+		unset($labels);
+		unset($amounts);
 	}
 
 	// Tableau 4a - Credit/Debit
@@ -537,7 +554,9 @@ if ($result < 0)
 				$i++;
 			}
 			$db->free($resql);
-		} else {
+		}
+		else
+		{
 			dol_print_error($db);
 		}
 
@@ -569,7 +588,9 @@ if ($result < 0)
 				$debits[$row[0]] = abs($row[1]);
 			}
 			$db->free($resql);
-		} else {
+		}
+		else
+		{
 			dol_print_error($db);
 		}
 
@@ -613,10 +634,10 @@ if ($result < 0)
 
 		$show4 = $px4->show();
 
-		$px4 = null;
-		$graph_datas = null;
-		$debits = null;
-		$credits = null;
+		unset($graph_datas);
+		unset($px4);
+		unset($debits);
+		unset($credits);
 	}
 
 	// Tableau 4b - Credit/Debit
@@ -650,7 +671,9 @@ if ($result < 0)
 				$i++;
 			}
 			$db->free($resql);
-		} else {
+		}
+		else
+		{
 			dol_print_error($db);
 		}
 		$sql = "SELECT date_format(b.datev,'%m')";
@@ -673,7 +696,9 @@ if ($result < 0)
 				$debits[$row[0]] = abs($row[1]);
 			}
 			$db->free($resql);
-		} else {
+		}
+		else
+		{
 			dol_print_error($db);
 		}
 
@@ -717,10 +742,10 @@ if ($result < 0)
 
 		$show5 = $px5->show();
 
-		$px5 = null;
-		$graph_datas = null;
-		$debits = null;
-		$credits = null;
+		unset($graph_datas);
+		unset($px5);
+		unset($debits);
+		unset($credits);
 	}
 }
 
@@ -742,12 +767,16 @@ if ($account)
 		{
 			$morehtml = '<a href="'.$_SERVER["PHP_SELF"].'?account='.$account.'&option=all'.$moreparam.'">'.$langs->trans("ShowAllAccounts").'</a>';
     		dol_banner_tab($object, 'ref', $linkback, 1, 'ref', 'ref', '', $moreparam, 0, '', '', 1);
-		} else {
+		}
+		else
+		{
 			$morehtml = '<a href="'.$_SERVER["PHP_SELF"].'?account='.$account.$moreparam.'">'.$langs->trans("BackToAccount").'</a>';
 			print $langs->trans("AllAccounts");
 			//print $morehtml;
 		}
-	} else {
+	}
+	else
+	{
 	    $bankaccount = new Account($db);
 		$listid = explode(',', $account);
 		foreach ($listid as $key => $id)
@@ -758,7 +787,9 @@ if ($account)
 			if ($key < (count($listid) - 1)) print ', ';
 		}
 	}
-} else {
+}
+else
+{
 	print $langs->trans("AllAccounts");
 }
 
@@ -774,14 +805,14 @@ if ($mode == 'showalltime')
 	print '<a href="'.$_SERVER["PHP_SELF"].'?account='.$account.'">';
 	print $langs->trans("GoBack");
 	print '</a>';
-} else {
+}
+else
+{
 	print '<a href="'.$_SERVER["PHP_SELF"].'?mode=showalltime&account='.$account.'">';
 	print $langs->trans("ShowAllTimeBalance");
 	print '</a>';
 }
 print '<br><br></td></tr>';
-
-print '</table>';
 
 
 // Graphs
@@ -794,39 +825,39 @@ if ($mode == 'standard')
 
 	// For month
 	$link = "<a href='".$_SERVER["PHP_SELF"]."?account=".$account.($_GET["option"] != 'all' ? '' : '&option=all')."&year=".$prevyear."&month=".$prevmonth."'>".img_previous('', 'class="valignbottom"')."</a> ".$langs->trans("Month")." <a href='".$_SERVER["PHP_SELF"]."?account=".$account."&year=".$nextyear."&month=".$nextmonth."'>".img_next('', 'class="valignbottom"')."</a>";
-	print '<div class="right clearboth">'.$link.'</div>';
+	print '<tr><td class="right">'.$link.'</td></tr>';
 
-	print '<div class="center clearboth margintoponly">';
+	print '<tr><td class="center">';
 	$file = "movement".$account."-".$year.$month.".png";
 	print $show4;
-	print '</div>';
+	print '</td></tr>';
 
-	print '<div class="center clearboth margintoponly">';
+	print '<tr><td class="center">';
 	print $show1;
-	print '</div>';
+	print '</td></tr>';
 
 	// For year
 	$prevyear = $year - 1; $nextyear = $year + 1;
 	$link = "<a href='".$_SERVER["PHP_SELF"]."?account=".$account.($_GET["option"] != 'all' ? '' : '&option=all')."&year=".($prevyear)."'>".img_previous('', 'class="valignbottom"')."</a> ".$langs->trans("Year")." <a href='".$_SERVER["PHP_SELF"]."?account=".$account."&year=".($nextyear)."'>".img_next('', 'class="valignbottom"')."</a>";
+	print '<tr><td class="right">'.$link.'</td></tr>';
 
-	print '<div class="right clearboth margintoponly">'.$link.'</div>';
-
-	print '<div class="center clearboth margintoponly">';
+	print '<tr><td class="center">';
 	print $show5;
-	print '</div>';
+	print '</td></tr>';
 
-	print '<div class="center clearboth margintoponly">';
+	print '<tr><td class="center">';
 	print $show2;
-	print '</div>';
+	print '</td></tr>';
 }
 
 if ($mode == 'showalltime')
 {
-	print '<div class="center clearboth margintoponly">';
+	print '<tr><td class="center">';
 	print $show3;
-	print '</div>';
+	print '</td></tr>';
 }
 
+print '</table>';
 
 // End of page
 llxFooter();

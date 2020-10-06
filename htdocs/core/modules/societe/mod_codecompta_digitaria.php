@@ -163,12 +163,15 @@ class mod_codecompta_digitaria extends ModeleAccountancyCode
                 $codetouse = $societe->name;
                 $prefix = $this->prefixsupplieraccountancycode;
                 $width = $this->supplieraccountancycodecharacternumber;
-			} elseif ($type == 'customer')
+			}
+			elseif ($type == 'customer')
             {
                 $codetouse = $societe->name;
                 $prefix = $this->prefixcustomeraccountancycode;
                 $width = $this->customeraccountancycodecharacternumber;
-            } else {
+            }
+            else
+            {
                 $this->error = 'Bad value for parameter type';
                 return -1;
             }
@@ -217,7 +220,9 @@ class mod_codecompta_digitaria extends ModeleAccountancyCode
         if ($disponibility == 0)
         {
             return 0; // return ok
-        } else {
+        }
+        else
+        {
             return -1; // return ko
         }
 	}
@@ -235,10 +240,13 @@ class mod_codecompta_digitaria extends ModeleAccountancyCode
         if ($type == 'supplier')
         {
             $typethirdparty = 'code_compta_fournisseur';
-        } elseif ($type == 'customer')
+        }
+        elseif ($type == 'customer')
         {
             $typethirdparty = 'code_compta';
-        } else {
+        }
+        else
+        {
             $this->error = 'Bad value for parameter type';
             return -1;
         }
@@ -253,11 +261,15 @@ class mod_codecompta_digitaria extends ModeleAccountancyCode
             {
                 dol_syslog("mod_codecompta_digitaria::checkIfAccountancyCodeIsAlreadyUsed '".$code."' available");
                 return 0; // Available
-            } else {
+            }
+            else
+            {
                 dol_syslog("mod_codecompta_digitaria::checkIfAccountancyCodeIsAlreadyUsed '".$code."' not available");
                 return -1; // Not available
             }
-        } else {
+        }
+        else
+        {
             $this->error = $db->error()." sql=".$sql;
             return -2; // Error
         }

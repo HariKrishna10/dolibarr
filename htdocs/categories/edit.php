@@ -90,7 +90,8 @@ if ($action == 'update' && $user->rights->categorie->creer)
 
 	if ($parent != "-1")
 		$object->fk_parent = $parent;
-	else $object->fk_parent = "";
+	else
+		$object->fk_parent = "";
 
 
 	if (empty($object->label))
@@ -108,10 +109,14 @@ if ($action == 'update' && $user->rights->categorie->creer)
 		{
 			header('Location: '.DOL_URL_ROOT.'/categories/viewcat.php?id='.$object->id.'&type='.$type);
 			exit;
-		} else {
+		}
+		else
+		{
 			setEventMessages($object->error, $object->errors, 'errors');
 		}
-	} else {
+	}
+	else
+	{
 		setEventMessages($object->error, $object->errors, 'errors');
 	}
 }

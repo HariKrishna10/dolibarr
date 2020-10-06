@@ -179,7 +179,8 @@ class Categories extends DolibarrApi
                 }
                 $i++;
             }
-        } else {
+        }
+        else {
             throw new RestException(503, 'Error when retrieve category list : '.$db->lasterror());
         }
         if (!count($obj_ret)) {
@@ -230,7 +231,7 @@ class Categories extends DolibarrApi
             throw new RestException(404, 'category not found');
         }
 
-        if (!DolibarrApi::_checkAccessToResource('categorie', $this->category->id)) {
+        if (!DolibarrApi::_checkAccessToResource('category', $this->category->id)) {
             throw new RestException(401, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
         }
 
@@ -242,7 +243,9 @@ class Categories extends DolibarrApi
         if ($this->category->update(DolibarrApiAccess::$user) > 0)
         {
             return $this->get($id);
-        } else {
+        }
+        else
+        {
             throw new RestException(500, $this->category->error);
         }
     }
@@ -263,7 +266,7 @@ class Categories extends DolibarrApi
             throw new RestException(404, 'category not found');
         }
 
-        if (!DolibarrApi::_checkAccessToResource('categorie', $this->category->id)) {
+        if (!DolibarrApi::_checkAccessToResource('category', $this->category->id)) {
             throw new RestException(401, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
         }
 
@@ -752,7 +755,7 @@ class Categories extends DolibarrApi
             throw new RestException(404, 'category not found');
         }
 
-		if (!DolibarrApi::_checkAccessToResource('categorie', $this->category->id)) {
+		if (!DolibarrApi::_checkAccessToResource('category', $this->category->id)) {
 			throw new RestException(401, 'Access not allowed for login '.DolibarrApiAccess::$user->login);
 		}
 

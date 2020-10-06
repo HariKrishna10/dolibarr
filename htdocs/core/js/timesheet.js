@@ -120,11 +120,7 @@ function updateTotal(days,mode)
         total.setHours(0);
         total.setMinutes(0);
         var nbline = document.getElementById('numberOfLines').value;
-        var startline = 0;
-        if (document.getElementById('numberOfFirstLine')) {
-        	startline = parseInt(document.getElementById('numberOfFirstLine').value);
-        }
-        for (var i=-1; i < nbline; i++)
+        for (var i=-1; i<nbline; i++)
         {
             var id='timespent['+i+']['+days+']';
             var taskTime= new Date(0);
@@ -217,27 +213,17 @@ function updateTotal(days,mode)
         		console.log(total.getMinutes())
             }
         });
-        
-        var stringdays = days;
-        if (startline >= 1 && startline <= 9 && stringdays < 10) {
-        	stringdays = '0'+stringdays;
-        }
-        
-        if (total.getHours() || total.getMinutes()) jQuery('.totalDay'+stringdays).addClass("bold");
-        else jQuery('.totalDay'+stringdays).removeClass("bold");
-    	jQuery('.totalDay'+stringdays).text(pad(total.getHours())+':'+pad(total.getMinutes()));
+
+        if (total.getHours() || total.getMinutes()) jQuery('.totalDay'+days).addClass("bold");
+        else jQuery('.totalDay'+days).removeClass("bold");
+    	jQuery('.totalDay'+days).text(pad(total.getHours())+':'+pad(total.getMinutes()));
 
     	var totalhour = 0;
     	var totalmin = 0;
         for (var i=0; i<7; i++)
         {
-        	stringdays = (i + startline);
-            if (startline >= 1 && startline <= 9 && stringdays < 10) {
-            	stringdays = '0'+stringdays;
-            }
-
         	var taskTime= new Date(0);
-       		result=parseTime(jQuery('.totalDay'+stringdays).text(),taskTime);
+        	result=parseTime(jQuery('.totalDay'+i).text(),taskTime);
         	if (result >= 0)
         	{
         		totalhour = totalhour + taskTime.getHours();
@@ -287,14 +273,8 @@ function updateTotal(days,mode)
             }
         }
 
-        var stringdays = days;
-        if (startline >= 1 && startline <= 9 && stringdays < 10) {
-        	stringdays = '0'+stringdays;
-        	console.log(stringdays);
-        }
-        
-        if (total) jQuery('.totalDay'+stringdays).addClass("bold");
-        else jQuery('.totalDay'+stringdays).removeClass("bold");
-    	jQuery('.totalDay'+stringdays).text(total);
+        if (total) jQuery('.totalDay'+days).addClass("bold");
+        else jQuery('.totalDay'+days).removeClass("bold");
+    	jQuery('.totalDay'+days).text(total);
     }
 }

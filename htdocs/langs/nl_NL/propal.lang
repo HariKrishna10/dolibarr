@@ -76,8 +76,8 @@ TypeContact_propal_external_BILLING=Afnemersfactuurcontactpersoon
 TypeContact_propal_external_CUSTOMER=Afnemerscontactpersoon follow-up voorstel
 TypeContact_propal_external_SHIPPING=Klant contact voor levering
 # Document models
-DocModelAzurDescription=Een compleet offertemodel (oude implementatie van Cyaan sjabloon)
-DocModelCyanDescription=Een compleet offertemodel
+DocModelAzurDescription=A complete proposal model 
+DocModelCyanDescription=A complete proposal model
 DefaultModelPropalCreate=Standaard model aanmaken
 DefaultModelPropalToBill=Standaard sjabloon bij het sluiten van een zakelijk voorstel (te factureren)
 DefaultModelPropalClosed=Standaard sjabloon bij het sluiten van een zakelijk voorstel (nog te factureren)

@@ -152,7 +152,9 @@ if ($_socid > 0)
 		}
 		$db->free($resql);
 		print "</table>";
-	} else {
+	}
+	else
+	{
 		dol_print_error($db);
 	}
 }

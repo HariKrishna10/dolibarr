@@ -38,8 +38,8 @@ $action = GETPOST('action', 'alpha');
 $cancel = GETPOST('cancel', 'alpha');
 $backtopage = GETPOST('backtopage', 'alpha');
 
-$codeventil = GETPOST('codeventil', 'int');
-$id = GETPOST('id', 'int');
+$codeventil = GETPOST('codeventil');
+$id = GETPOST('id');
 
 // Security check
 if ($user->socid > 0)
@@ -63,7 +63,9 @@ if ($action == 'ventil' && $user->rights->accounting->bind->write)
 		$resql = $db->query($sql);
 		if (!$resql) {
 			setEventMessages($db->lasterror(), null, 'errors');
-		} else {
+		}
+		else
+		{
 		    setEventMessages($langs->trans("RecordModifiedSuccessfully"), null, 'mesgs');
 		    if ($backtopage)
 		    {

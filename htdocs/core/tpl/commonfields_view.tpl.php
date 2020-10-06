@@ -83,7 +83,8 @@ foreach ($object->fields as $key => $val)
 	{
 		if (!empty($keyforbreak) && $key == $keyforbreak) {
 			$alreadyoutput = 0; // key used for break on second column
-		} else {
+		}
+		else {
 			continue;
 		}
 	}

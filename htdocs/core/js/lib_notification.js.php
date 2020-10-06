@@ -1,7 +1,6 @@
 <?php
 /* Copyright (C) 2016	   Sergio Sanchis		<sergiosanchis@hotmail.com>
  * Copyright (C) 2017	   Juanjo Menent		<jmenent@2byte.es>
- * Copyright (C) 2020	   Destailleur Laurent  <eldy@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,17 +28,33 @@ if (!defined('NOREQUIREHTML')) define('NOREQUIREHTML', 1);
 
 require_once '../../main.inc.php';
 
-if (!($_SERVER['HTTP_REFERER'] === $dolibarr_main_url_root.'/' || $_SERVER['HTTP_REFERER'] === $dolibarr_main_url_root.'/index.php'
+if (! ($_SERVER['HTTP_REFERER'] === $dolibarr_main_url_root . '/' || $_SERVER['HTTP_REFERER'] === $dolibarr_main_url_root . '/index.php'
     || preg_match('/getmenu_div\.php/', $_SERVER['HTTP_REFERER'])))
 {
     global $langs, $conf;
 
     top_httphead('text/javascript; charset=UTF-8');
 
-    print 'var login = \''.$_SESSION['dol_login'].'\';'."\n";
-	print 'var nowtime = Date.now();';
-    print 'var time_auto_update = '.$conf->global->MAIN_BROWSER_NOTIFICATION_FREQUENCY.';'."\n"; // Always defined
-    print 'var time_js_next_test = (nowtime + time_auto_update);'."\n";
+    $nowtime = time();
+    //$nowtimeprevious = floor($nowtime / 60) * 60;   // auto_check_events_not_before is rounded to previous minute
+
+    // TODO Try to make a solution with only a javascript timer that is easier. Difficulty is to avoid notification twice when.
+    /* session already started into main
+    session_cache_limiter('public');
+    header('Cache-Control: no-cache');
+    session_set_cookie_params(0, '/', null, false, true);   // Add tag httponly on session cookie
+    session_start();*/
+    if (! isset($_SESSION['auto_check_events_not_before']))
+    {
+        print 'console.log("_SESSION[auto_check_events_not_before] is not set");'."\n";
+        // Round to eliminate the seconds
+        $_SESSION['auto_check_events_not_before'] = $nowtime;
+    }
+    print 'var nowtime = ' . $nowtime . ';' . "\n";
+    print 'var login = \'' . $_SESSION['dol_login'] . '\';' . "\n";
+    print 'var auto_check_events_not_before = '.$_SESSION['auto_check_events_not_before']. ';'."\n";
+    print 'var time_js_next_test = Math.max(nowtime, auto_check_events_not_before);'."\n";
+    print 'var time_auto_update = '.$conf->global->MAIN_BROWSER_NOTIFICATION_FREQUENCY.';'."\n";   // Always defined
     ?>
 
 	/* Check if permission ok */
@@ -51,7 +66,7 @@ if (!($_SERVER['HTTP_REFERER'] === $dolibarr_main_url_root.'/' || $_SERVER['HTTP
    	// We set a delay before launching first test so next check will arrive after the time_auto_update compared to previous one.
     var time_first_execution = (time_auto_update - (nowtime - time_js_next_test)) * 1000;	//need milliseconds
     if (login != '') {
-    	console.log("Launch browser notif check: setTimeout is set to launch 'first_execution' function after a wait of time_first_execution="+time_first_execution+". nowtime (time php page generation) = "+nowtime+" time_js_next_test = "+time_js_next_test+" time_auto_update="+time_auto_update);
+    	console.log("Launch browser notif check: setTimeout is set to launch 'first_execution' function after a wait of time_first_execution="+time_first_execution+". nowtime (time php page generation) = "+nowtime+" auto_check_events_not_before (val in session)= "+auto_check_events_not_before+" time_js_next_test (max now,auto_check_events_not_before) = "+time_js_next_test+" time_auto_update="+time_auto_update);
     	setTimeout(first_execution, time_first_execution);
     } //first run auto check
 
@@ -75,10 +90,10 @@ if (!($_SERVER['HTTP_REFERER'] === $dolibarr_main_url_root.'/' || $_SERVER['HTTP
                     if (arr.length > 0) {
                     	var audio = null;
                         <?php
-						if (!empty($conf->global->AGENDA_REMINDER_BROWSER_SOUND)) {
-							print 'audio = new Audio(\''.DOL_URL_ROOT.'/theme/common/sound/notification_agenda.wav\');';
-						}
-						?>
+                        if (! empty($conf->global->AGENDA_REMINDER_BROWSER_SOUND)) {
+                            print 'audio = new Audio(\''.DOL_URL_ROOT.'/theme/common/sound/notification_agenda.wav'.'\');';
+                        }
+                        ?>
 
                         $.each(arr, function (index, value) {
                             var url="notdefined";

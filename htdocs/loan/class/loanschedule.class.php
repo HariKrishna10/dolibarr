@@ -56,8 +56,8 @@ class LoanSchedule extends CommonObject
      */
     public $datep;
 
-    public $amounts = array(); // Array of amounts
-    public $amount_capital; // Total amount of payment
+    public $amounts=array();   // Array of amounts
+    public $amount_capital;    // Total amount of payment
 	public $amount_insurance;
 	public $amount_interest;
 
@@ -75,11 +75,6 @@ class LoanSchedule extends CommonObject
      * @var int Bank ID
      */
     public $fk_bank;
-
-    /**
-     * @var int Loan Payment ID
-     */
-    public $fk_payment_loan;
 
     /**
      * @var int Bank ID
@@ -175,7 +170,9 @@ class LoanSchedule extends CommonObject
 			if ($resql)
 			{
 				$this->id = $this->db->last_insert_id(MAIN_DB_PREFIX."payment_loan");
-			} else {
+			}
+			else
+			{
                 $this->error = $this->db->lasterror();
 				$error++;
 			}
@@ -186,7 +183,9 @@ class LoanSchedule extends CommonObject
 		    $this->amount_capital = $totalamount;
 		    $this->db->commit();
 			return $this->id;
-		} else {
+		}
+		else
+		{
 			$this->errors[] = $this->db->lasterror();
 			$this->db->rollback();
 			return -1;
@@ -216,7 +215,6 @@ class LoanSchedule extends CommonObject
         $sql.= " t.note_private,";
         $sql.= " t.note_public,";
 		$sql.= " t.fk_bank,";
-		$sql.= " t.fk_payment_loan,";
 		$sql.= " t.fk_user_creat,";
 		$sql.= " t.fk_user_modif,";
 		$sql.= " pt.code as type_code, pt.libelle as type_label,";
@@ -227,7 +225,7 @@ class LoanSchedule extends CommonObject
 		$sql.= " WHERE t.rowid = ".$id;
 
 		dol_syslog(get_class($this)."::fetch", LOG_DEBUG);
-		$resql = $this->db->query($sql);
+		$resql=$this->db->query($sql);
 		if ($resql) {
             if ($this->db->num_rows($resql)) {
                 $obj = $this->db->fetch_object($resql);
@@ -247,7 +245,6 @@ class LoanSchedule extends CommonObject
                 $this->note_private = $obj->note_private;
                 $this->note_public = $obj->note_public;
                 $this->fk_bank = $obj->fk_bank;
-				$this->fk_payment_loan = $obj->fk_payment_loan;
                 $this->fk_user_creat = $obj->fk_user_creat;
                 $this->fk_user_modif = $obj->fk_user_modif;
 
@@ -260,7 +257,9 @@ class LoanSchedule extends CommonObject
             $this->db->free($resql);
 
 			return 1;
-		} else {
+		}
+		else
+		{
 			$this->error = "Error ".$this->db->lasterror();
 			return -1;
 		}
@@ -277,7 +276,7 @@ class LoanSchedule extends CommonObject
 	public function update($user = 0, $notrigger = 0)
 	{
 		global $conf, $langs;
-		$error = 0;
+		$error=0;
 
 		// Clean parameters
 		if (isset($this->amount_capital)) $this->amount_capital=trim($this->amount_capital);
@@ -287,7 +286,6 @@ class LoanSchedule extends CommonObject
 		if (isset($this->note_private)) $this->note_private=trim($this->note_private);
 		if (isset($this->note_public)) $this->note_public=trim($this->note_public);
 		if (isset($this->fk_bank)) $this->fk_bank=trim($this->fk_bank);
-		if (isset($this->fk_payment_loan)) $this->fk_payment_loan = (int) $this->fk_payment_loan;
 
 		// Check parameters
 		// Put here code to add control on parameters values
@@ -307,7 +305,6 @@ class LoanSchedule extends CommonObject
 		$sql .= " note_private=".(isset($this->note_private) ? "'".$this->db->escape($this->note_private)."'" : "null").",";
 		$sql .= " note_public=".(isset($this->note_public) ? "'".$this->db->escape($this->note_public)."'" : "null").",";
 		$sql .= " fk_bank=".(isset($this->fk_bank) ? $this->fk_bank : "null").",";
-		$sql .= " fk_payment_loan=".(isset($this->fk_payment_loan) ? $this->fk_payment_loan : "null").",";
 		$sql .= " fk_user_creat=".(isset($this->fk_user_creat) ? $this->fk_user_creat : "null").",";
 		$sql .= " fk_user_modif=".(isset($this->fk_user_modif) ? $this->fk_user_modif : "null")."";
 
@@ -319,12 +316,30 @@ class LoanSchedule extends CommonObject
 		$resql = $this->db->query($sql);
 		if (!$resql) { $error++; $this->errors[] = "Error ".$this->db->lasterror(); }
 
+		if (!$error)
+		{
+			if (!$notrigger)
+			{
+				// Uncomment this and change MYOBJECT to your own tag if you
+				// want this action call a trigger.
+
+				//// Call triggers
+				//include_once DOL_DOCUMENT_ROOT . '/core/class/interfaces.class.php';
+				//$interface=new Interfaces($this->db);
+				//$result=$interface->run_triggers('MYOBJECT_MODIFY',$this,$user,$langs,$conf);
+				//if ($result < 0) { $error++; $this->errors=$interface->errors; }
+				//// End call triggers
+			}
+		}
+
 		// Commit or rollback
 		if ($error)
 		{
 			$this->db->rollback();
 			return -1 * $error;
-		} else {
+		}
+		else
+		{
 			$this->db->commit();
 			return 1;
 		}
@@ -354,6 +369,22 @@ class LoanSchedule extends CommonObject
 			if (!$resql) { $error++; $this->errors[] = "Error ".$this->db->lasterror(); }
         }
 
+		if (!$error)
+		{
+			if (!$notrigger)
+			{
+				// Uncomment this and change MYOBJECT to your own tag if you
+				// want this action call a trigger.
+
+				//// Call triggers
+				//include_once DOL_DOCUMENT_ROOT . '/core/class/interfaces.class.php';
+				//$interface=new Interfaces($this->db);
+				//$result=$interface->run_triggers('MYOBJECT_DELETE',$this,$user,$langs,$conf);
+				//if ($result < 0) { $error++; $this->errors=$interface->errors; }
+				//// End call triggers
+			}
+		}
+
 		// Commit or rollback
 		if ($error)
 		{
@@ -364,7 +395,9 @@ class LoanSchedule extends CommonObject
 			}
 			$this->db->rollback();
 			return -1 * $error;
-		} else {
+		}
+		else
+		{
 			$this->db->commit();
 			return 1;
 		}
@@ -414,7 +447,6 @@ class LoanSchedule extends CommonObject
 		$sql .= " t.note_private,";
 		$sql .= " t.note_public,";
 		$sql .= " t.fk_bank,";
-		$sql .= " t.fk_payment_loan,";
 		$sql .= " t.fk_user_creat,";
 		$sql .= " t.fk_user_modif";
 		$sql .= " FROM ".MAIN_DB_PREFIX.$this->table_element." as t";
@@ -443,7 +475,6 @@ class LoanSchedule extends CommonObject
 				$line->note_private = $obj->note_private;
 				$line->note_public = $obj->note_public;
 				$line->fk_bank = $obj->fk_bank;
-				$line->fk_payment_loan = $obj->fk_payment_loan;
 				$line->fk_user_creat = $obj->fk_user_creat;
 				$line->fk_user_modif = $obj->fk_user_modif;
 
@@ -451,7 +482,9 @@ class LoanSchedule extends CommonObject
 			}
 			$this->db->free($resql);
 			return 1;
-		} else {
+		}
+		else
+		{
 			$this->error = "Error ".$this->db->lasterror();
 			return -1;
 		}
@@ -532,7 +565,7 @@ class LoanSchedule extends CommonObject
 	public function paimenttorecord($loanid, $datemax)
 	{
 
-		$result = array();
+		$result=array();
 
 		$sql = "SELECT p.rowid";
 		$sql .= " FROM ".MAIN_DB_PREFIX.$this->table_element." as p ";

@@ -26,7 +26,7 @@
 
 require_once DOL_DOCUMENT_ROOT.'/core/class/comment.class.php';
 
-$varpage = empty($contextpage) ? $_SERVER["PHP_SELF"] : $contextpage;
+$varpage=empty($contextpage)?$_SERVER["PHP_SELF"]:$contextpage;
 $comment = new Comment($db);
 
 /*
@@ -47,11 +47,13 @@ if ($action == 'addcomment')
 		if ($comment->create($user) > 0)
 		{
 			setEventMessages($langs->trans("CommentAdded"), null, 'mesgs');
-			header('Location: '.$varpage.'?id='.$id.($withproject ? '&withproject=1' : ''));
+			header('Location: '.$varpage.'?id='.$id.($withproject?'&withproject=1':''));
 			exit;
-		} else {
+		}
+		else
+		{
 			setEventMessages($comment->error, $comment->errors, 'errors');
-			$action = '';
+			$action='';
 		}
 	}
 }
@@ -63,11 +65,13 @@ if ($action === 'updatecomment')
         if ($comment->update($user) > 0)
         {
             setEventMessages($langs->trans("CommentAdded"), null, 'mesgs');
-            header('Location: '.$varpage.'?id='.$id.($withproject ? '&withproject=1#comment' : ''));
+            header('Location: '.$varpage.'?id='.$id.($withproject?'&withproject=1#comment':''));
             exit;
-        } else {
+        }
+        else
+        {
             setEventMessages($comment->error, $comment->errors, 'errors');
-            $action = '';
+            $action='';
         }
     }
 }
@@ -78,11 +82,13 @@ if ($action == 'deletecomment')
 		if ($comment->delete($user) > 0)
 		{
 			setEventMessages($langs->trans("CommentDeleted"), null, 'mesgs');
-			header('Location: '.$varpage.'?id='.$id.($withproject ? '&withproject=1' : ''));
+			header('Location: '.$varpage.'?id='.$id.($withproject?'&withproject=1':''));
 			exit;
-		} else {
+		}
+		else
+		{
 			setEventMessages($comment->error, $comment->errors, 'errors');
-			$action = '';
+			$action='';
 		}
 	}
 }

@@ -1,8 +1,6 @@
 # Dolibarr language file - Source file is en_US - projects
-ProjectRef=Chance
 ProjectsArea=Projektbereiche
 PrivateProject=Projekt Kontakte
-ProjectsImContactFor=Projects for I am explicitly a contact
 AllProjects=Alle Projekte
 TasksOnProjectsPublicDesc=Diese Ansicht zeigt alle Projektaufgaben, die Sie Lesenberechtigt sind.
 TasksOnProjectsDesc=Es werden alle Projekteaufgaben aller Projekte angezeigt (Ihre Berechtigungen berechtigen Sie alles zu sehen).
@@ -27,4 +25,3 @@ CloneTaskFiles=Aufgabe (n) clonen beigetreten Dateien (falls Aufgabe (n) geklont
 ProjectModifiedInDolibarr=Projekt %s bearbeitet
 ProjectReferers=Verknüpfte Objekte
 ResourceNotAssignedToTheTask=Nicht der Aufgabe zugewiesen
-TimeSpentForInvoice=Zeitaufwände

@@ -34,9 +34,6 @@ require_once DOL_DOCUMENT_ROOT.'/product/class/html.formproduct.class.php';
 // Load translation files required by the page
 $langs->loadLangs(array('products', 'stocks', 'orders', 'productbatch'));
 
-//init Hook
-$hookmanager->initHooks(array('massstockmove'));
-
 // Security check
 if ($user->socid) {
     $socid = $user->socid;
@@ -55,7 +52,7 @@ $idline = GETPOST('idline');
 
 $sortfield = GETPOST('sortfield', 'alpha');
 $sortorder = GETPOST('sortorder', 'alpha');
-$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
+$page = GETPOST('page', 'int');
 if (empty($page) || $page == -1) { $page = 0; }     // If $page is not defined, or '' or -1
 
 if (!$sortfield) {
@@ -128,7 +125,9 @@ if ($action == 'addline')
 		// Warning, don't forget lines already added into the $_SESSION['massstockmove']
 		if ($producttmp->hasbatch())
 		{
-		} else {
+		}
+		else
+		{
 		}
 	}
 
@@ -226,7 +225,9 @@ if ($action == 'createmovements')
 						$error++;
 						setEventMessages($product->errors, $product->errorss, 'errors');
 					}
-				} else {
+				}
+				else
+				{
 					$arraybatchinfo = $product->loadBatchInfo($batch);
 					if (count($arraybatchinfo) > 0)
 					{
@@ -234,7 +235,9 @@ if ($action == 'createmovements')
 						$dlc = $firstrecord['eatby'];
 						$dluo = $firstrecord['sellby'];
 						//var_dump($batch); var_dump($arraybatchinfo); var_dump($firstrecord); var_dump($dlc); var_dump($dluo); exit;
-					} else {
+					}
+					else
+					{
 						$dlc = '';
 						$dluo = '';
 					}
@@ -277,7 +280,9 @@ if ($action == 'createmovements')
 						setEventMessages($product->errors, $product->errorss, 'errors');
 					}
 				}
-			} else {
+			}
+			else
+			{
 				// dol_print_error('',"Bad value saved into sessions");
 				$error++;
 			}
@@ -292,7 +297,9 @@ if ($action == 'createmovements')
 		setEventMessages($langs->trans("StockMovementRecorded"), null, 'mesgs');
 		header("Location: ".DOL_URL_ROOT.'/product/stock/index.php'); // Redirect to avoid pb when using back
 		exit;
-	} else {
+	}
+	else
+	{
 		$db->rollback();
 		setEventMessages($langs->trans("Error"), null, 'errors');
 	}
@@ -316,7 +323,7 @@ $title = $langs->trans('MassMovement');
 
 llxHeader('', $title);
 
-print load_fiche_titre($langs->trans("MassStockTransferShort"), '', 'stock');
+print load_fiche_titre($langs->trans("MassStockTransferShort"));
 
 $titletoadd = $langs->trans("Select");
 $buttonrecord = $langs->trans("RecordMovement");
@@ -356,7 +363,9 @@ $filtertype = 0;
 if (!empty($conf->global->STOCK_SUPPORTS_SERVICES)) $filtertype = '';
 if ($conf->global->PRODUIT_LIMIT_SIZE <= 0) {
 	$limit = '';
-} else {
+}
+else
+{
 	$limit = $conf->global->PRODUIT_LIMIT_SIZE;
 }
 
@@ -422,26 +431,30 @@ print '</form>';
 print '<br>';
 
 
-print '<form action="'.$_SERVER["PHP_SELF"].'" method="POST" name="formulaire2" class="formconsumeproduce">';
+print '<form action="'.$_SERVER["PHP_SELF"].'" method="POST" name="formulaire2">';
 print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="createmovements">';
 
 // Button to record mass movement
-$codemove = (isset($_POST["codemove"]) ? GETPOST("codemove", 'alpha') : dol_print_date(dol_now(), '%Y%m%d%H%M%S'));
-$labelmovement = GETPOST("label") ? GETPOST('label') : $langs->trans("StockTransfer").' '.dol_print_date($now, '%Y-%m-%d %H:%M');
+$codemove = (isset($_POST["codemove"]) ?GETPOST("codemove", 'alpha') : dol_print_date(dol_now(), '%Y%m%d%H%M%S'));
+$labelmovement = GETPOST("label") ?GETPOST('label') : $langs->trans("StockTransfer").' '.dol_print_date($now, '%Y-%m-%d %H:%M');
 
-print '<div class="center">';
-print '<span class="fieldrequired">'.$langs->trans("InventoryCode").':</span> ';
-print '<input type="text" name="codemove" class="maxwidth300" value="'.dol_escape_htmltag($codemove).'"> &nbsp; ';
-print '<span class="clearbothonsmartphone"></span>';
-print $langs->trans("MovementLabel").': ';
-print '<input type="text" name="label" class="minwidth300" value="'.dol_escape_htmltag($labelmovement).'"><br>';
-print '<br>';
+print '<table class="noborder centpercent">';
+	print '<tr>';
+	print '<td class="titlefield fieldrequired">'.$langs->trans("InventoryCode").'</td>';
+	print '<td>';
+	print '<input type="text" name="codemove" size="15" value="'.dol_escape_htmltag($codemove).'">';
+	print '</td>';
+	print '</tr>';
+	print '<tr>';
+	print '<td>'.$langs->trans("MovementLabel").'</td>';
+	print '<td>';
+	print '<input type="text" name="label" class="quatrevingtpercent" value="'.dol_escape_htmltag($labelmovement).'">';
+	print '</td>';
+	print '</tr>';
+print '</table><br>';
 
 print '<div class="center"><input class="button" type="submit" name="valid" value="'.dol_escape_htmltag($buttonrecord).'"></div>';
-
-print '<br>';
-print '</div>';
 
 print '</form>';
 

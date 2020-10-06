@@ -29,7 +29,7 @@
  */
 
 require_once DOL_DOCUMENT_ROOT.'/core/class/commondocgenerator.class.php';
-require_once DOL_DOCUMENT_ROOT.'/compta/bank/class/account.class.php'; // required for use by classes that inherit
+require_once DOL_DOCUMENT_ROOT.'/compta/bank/class/account.class.php';	// required for use by classes that inherit
 
 
 /**
@@ -38,20 +38,20 @@ require_once DOL_DOCUMENT_ROOT.'/compta/bank/class/account.class.php'; // requir
 abstract class ModelePDFMyObject extends CommonDocGenerator
 {
 
-	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
-	/**
-	 *  Return list of active generation modules
-	 *
-	 *  @param	DoliDB	$db     			Database handler
-	 *  @param  integer	$maxfilenamelength  Max length of value to show
-	 *  @return	array						List of templates
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+    /**
+     *  Return list of active generation modules
+     *
+     *  @param	DoliDB	$db     			Database handler
+     *  @param  integer	$maxfilenamelength  Max length of value to show
+     *  @return	array						List of templates
 	 */
 	public static function liste_modeles($db, $maxfilenamelength = 0)
 	{
-		// phpcs:enable
+        // phpcs:enable
 		global $conf;
 
-		$type = 'myobject';
+		$type = 'mymodule_myobject';
 		$list = array();
 
 		include_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
@@ -71,7 +71,7 @@ abstract class ModeleNumRefMyObject
 	/**
 	 * @var string Error code (or message)
 	 */
-	public $error = '';
+	public $error='';
 
 	/**
 	 *	Return if a module can be used or not
@@ -108,13 +108,12 @@ abstract class ModeleNumRefMyObject
 	}
 
 	/**
-	 *  Checks if the numbers already in the database do not
-	 *  cause conflicts that would prevent this numbering working.
+	 *  Checks if the numbers already in force in the data base do not
+     *  cause conflicts that would prevent this numbering from working.
 	 *
-	 *	@param	Object		$object		Object we need next value for
-	 *	@return boolean     			false if conflict, true if ok
+	 *	@return     boolean     false if conflict, true if ok
 	 */
-	public function canBeActivated($object)
+	public function canBeActivated()
 	{
 		return true;
 	}
@@ -122,10 +121,11 @@ abstract class ModeleNumRefMyObject
 	/**
 	 *	Returns next assigned value
 	 *
+	 *	@param	Societe		$objsoc     Object thirdparty
 	 *	@param	Object		$object		Object we need next value for
 	 *	@return	string      Valeur
 	 */
-	public function getNextValue($object)
+	public function getNextValue($objsoc, $object)
 	{
 		global $langs;
 		return $langs->trans("NotAvailable");

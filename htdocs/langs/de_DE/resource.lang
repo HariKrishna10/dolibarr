@@ -34,6 +34,3 @@ IdResource=Ressourcen ID
 AssetNumber=Seriennummer
 ResourceTypeCode=Ressourcen-Typ Code
 ImportDataset_resource_1=Ressourcen
-
-ErrorResourcesAlreadyInUse=Einige Ressourcen werden verwendet
-ErrorResourceUseInEvent=%s wird im Ereignis %s verwendet

@@ -57,49 +57,41 @@ class BankAccounts extends DolibarrApi
      * @param string    $sortorder  Sort order
      * @param int       $limit      Limit for list
      * @param int       $page       Page number
-	 * @param  int    	$category   Use this param to filter list by category
      * @param string    $sqlfilters Other criteria to filter answers separated by a comma. Syntax example "(t.ref:like:'SO-%') and (t.import_key:<:'20160101')"
      * @return array                List of account objects
      *
      * @throws RestException
      */
-    public function index($sortfield = "t.rowid", $sortorder = 'ASC', $limit = 100, $page = 0, $category = 0, $sqlfilters = '')
+    public function index($sortfield = "t.rowid", $sortorder = 'ASC', $limit = 100, $page = 0, $sqlfilters = '')
     {
         $list = array();
 
-        if (!DolibarrApiAccess::$user->rights->banque->lire) {
+        if (! DolibarrApiAccess::$user->rights->banque->lire) {
             throw new RestException(401);
         }
 
         $sql = "SELECT rowid FROM ".MAIN_DB_PREFIX."bank_account as t";
-    	if ($category > 0) {
-            $sql .= ", ".MAIN_DB_PREFIX."categorie_account as c";
-		}
-        $sql .= ' WHERE t.entity IN ('.getEntity('bank_account').')';
-    	// Select accounts of given category
-    	if ($category > 0) {
-            $sql .= " AND c.fk_categorie = ".$this->db->escape($category)." AND c.fk_account = t.rowid ";
-		}
+        $sql.= ' WHERE t.entity IN ('.getEntity('bank_account').')';
         // Add sql filters
         if ($sqlfilters)
         {
-            if (!DolibarrApi::_checkFilters($sqlfilters))
+            if (! DolibarrApi::_checkFilters($sqlfilters))
             {
                 throw new RestException(503, 'Error when validating parameter sqlfilters '.$sqlfilters);
             }
-            $regexstring = '\(([^:\'\(\)]+:[^:\'\(\)]+:[^:\(\)]+)\)';
-            $sql .= " AND (".preg_replace_callback('/'.$regexstring.'/', 'DolibarrApi::_forge_criteria_callback', $sqlfilters).")";
+            $regexstring='\(([^:\'\(\)]+:[^:\'\(\)]+:[^:\(\)]+)\)';
+            $sql.=" AND (".preg_replace_callback('/'.$regexstring.'/', 'DolibarrApi::_forge_criteria_callback', $sqlfilters).")";
         }
 
-        $sql .= $this->db->order($sortfield, $sortorder);
-        if ($limit) {
+        $sql.= $this->db->order($sortfield, $sortorder);
+        if ($limit)    {
             if ($page < 0)
             {
                 $page = 0;
             }
             $offset = $limit * $page;
 
-            $sql .= $this->db->plimit($limit + 1, $offset);
+            $sql.= $this->db->plimit($limit + 1, $offset);
         }
 
         dol_syslog("API Rest request");
@@ -116,7 +108,7 @@ class BankAccounts extends DolibarrApi
                 }
             }
         } else {
-            throw new RestException(503, 'Error when retrieving list of accounts: '.$this->db->lasterror());
+            throw new RestException(503, 'Error when retrieving list of accounts: ' . $this->db->lasterror());
         }
 
         return $list;
@@ -132,13 +124,13 @@ class BankAccounts extends DolibarrApi
      */
     public function get($id)
     {
-        if (!DolibarrApiAccess::$user->rights->banque->lire) {
+        if (! DolibarrApiAccess::$user->rights->banque->lire) {
             throw new RestException(401);
         }
 
         $account = new Account($this->db);
         $result = $account->fetch($id);
-        if (!$result) {
+        if (! $result) {
             throw new RestException(404, 'account not found');
         }
 
@@ -153,7 +145,7 @@ class BankAccounts extends DolibarrApi
      */
     public function post($request_data = null)
     {
-        if (!DolibarrApiAccess::$user->rights->banque->configurer) {
+        if (! DolibarrApiAccess::$user->rights->banque->configurer) {
             throw new RestException(401);
         }
         // Check mandatory fields
@@ -191,14 +183,14 @@ class BankAccounts extends DolibarrApi
      *
      * @status 201
      *
-     * @throws RestException 401 Unauthorized: User does not have permission to configure bank accounts
-	 * @throws RestException 404 Not Found: Either the source or the destination bankaccount for the provided id does not exist
-     * @throws RestException 422 Unprocessable Entity: Refer to detailed exception message for the cause
-	 * @throws RestException 500 Internal Server Error: Error(s) returned by the RDBMS
+     * @throws 401 Unauthorized: User does not have permission to configure bank accounts
+	 * @throws 404 Not Found: Either the source or the destination bankaccount for the provided id does not exist
+     * @throws 422 Unprocessable Entity: Refer to detailed exception message for the cause
+	 * @throws 500 Internal Server Error: Error(s) returned by the RDBMS
      */
     public function transfer($bankaccount_from_id = 0, $bankaccount_to_id = 0, $date = null, $description = "", $amount = 0.0, $amount_to = 0.0)
     {
-        if (!DolibarrApiAccess::$user->rights->banque->configurer) {
+        if (! DolibarrApiAccess::$user->rights->banque->configurer) {
             throw new RestException(401);
         }
 
@@ -225,7 +217,9 @@ class BankAccounts extends DolibarrApi
         if ($accountto->currency_code == $accountfrom->currency_code)
         {
             $amount_to = $amount;
-        } else {
+        }
+        else
+        {
             if (!$amount_to || empty($amount_to))
             {
                 throw new RestException(422, 'You must provide amount_to value since bankaccount_from and bankaccount_to does not share the same currency.');
@@ -241,14 +235,14 @@ class BankAccounts extends DolibarrApi
         $user = DolibarrApiAccess::$user;
 
         // By default, electronic transfert from bank to bank
-        $typefrom = 'PRE';
-        $typeto = 'VIR';
+        $typefrom='PRE';
+        $typeto='VIR';
 
         if ($accountto->courant == Account::TYPE_CASH || $accountfrom->courant == Account::TYPE_CASH)
         {
             // This is transfer of change
-            $typefrom = 'LIQ';
-            $typeto = 'LIQ';
+            $typefrom='LIQ';
+            $typeto='LIQ';
         }
 
         /**
@@ -256,7 +250,7 @@ class BankAccounts extends DolibarrApi
          */
 
         if (!$error) {
-            $bank_line_id_from = $accountfrom->addline($date, $typefrom, $description, -1 * price2num($amount), '', '', $user);
+            $bank_line_id_from = $accountfrom->addline($date, $typefrom, $description, -1*price2num($amount), '', '', $user);
         }
         if (!($bank_line_id_from > 0)) {
             $error++;
@@ -301,7 +295,9 @@ class BankAccounts extends DolibarrApi
                     'message' => 'Internal wire transfer created successfully.'
                 )
             );
-        } else {
+        }
+        else
+        {
             $this->db->rollback();
             throw new RestException(500, $accountfrom->error.' '.$accountto->error);
         }
@@ -316,13 +312,13 @@ class BankAccounts extends DolibarrApi
      */
     public function put($id, $request_data = null)
     {
-        if (!DolibarrApiAccess::$user->rights->banque->configurer) {
+        if (! DolibarrApiAccess::$user->rights->banque->configurer) {
             throw new RestException(401);
         }
 
         $account = new Account($this->db);
         $result = $account->fetch($id);
-        if (!$result) {
+        if (! $result) {
             throw new RestException(404, 'account not found');
         }
 
@@ -334,7 +330,9 @@ class BankAccounts extends DolibarrApi
         if ($account->update(DolibarrApiAccess::$user) > 0)
         {
             return $this->get($id);
-        } else {
+        }
+        else
+        {
             throw new RestException(500, $account->error);
         }
     }
@@ -347,12 +345,12 @@ class BankAccounts extends DolibarrApi
      */
     public function delete($id)
     {
-        if (!DolibarrApiAccess::$user->rights->banque->configurer) {
+        if (! DolibarrApiAccess::$user->rights->banque->configurer) {
             throw new RestException(401);
         }
         $account = new Account($this->db);
         $result = $account->fetch($id);
-        if (!$result) {
+        if (! $result) {
             throw new RestException(404, 'account not found');
         }
 
@@ -380,7 +378,7 @@ class BankAccounts extends DolibarrApi
     {
         $account = array();
         foreach (BankAccounts::$FIELDS as $field) {
-            if (!isset($data[$field]))
+            if (! isset($data[$field]))
                 throw new RestException(400, "$field field missing");
             $account[$field] = $data[$field];
         }
@@ -419,13 +417,13 @@ class BankAccounts extends DolibarrApi
     {
         $list = array();
 
-        if (!DolibarrApiAccess::$user->rights->banque->lire) {
+        if (! DolibarrApiAccess::$user->rights->banque->lire) {
             throw new RestException(401);
         }
 
         $account = new Account($this->db);
         $result = $account->fetch($id);
-        if (!$result) {
+        if (! $result) {
             throw new RestException(404, 'account not found');
         }
 
@@ -435,12 +433,12 @@ class BankAccounts extends DolibarrApi
 		// Add sql filters
 		if ($sqlfilters)
 		{
-			if (!DolibarrApi::_checkFilters($sqlfilters))
+			if (! DolibarrApi::_checkFilters($sqlfilters))
 			{
 				throw new RestException(503, 'Error when validating parameter sqlfilters '.$sqlfilters);
 			}
-			$regexstring = '\(([^:\'\(\)]+:[^:\'\(\)]+:[^:\(\)]+)\)';
-			$sql .= " AND (".preg_replace_callback('/'.$regexstring.'/', 'DolibarrApi::_forge_criteria_callback', $sqlfilters).")";
+			$regexstring='\(([^:\'\(\)]+:[^:\'\(\)]+:[^:\(\)]+)\)';
+			$sql.=" AND (".preg_replace_callback('/'.$regexstring.'/', 'DolibarrApi::_forge_criteria_callback', $sqlfilters).")";
 		}
 
         $sql .= " ORDER BY rowid";
@@ -457,7 +455,7 @@ class BankAccounts extends DolibarrApi
                 }
             }
         } else {
-            throw new RestException(503, 'Error when retrieving list of account lines: '.$accountLine->error);
+            throw new RestException(503, 'Error when retrieving list of account lines: ' . $accountLine->error);
         }
 
         return $list;
@@ -481,13 +479,13 @@ class BankAccounts extends DolibarrApi
      */
     public function addLine($id, $date, $type, $label, $amount, $category = 0, $cheque_number = '', $cheque_writer = '', $cheque_bank = '')
     {
-        if (!DolibarrApiAccess::$user->rights->banque->modifier) {
+        if (! DolibarrApiAccess::$user->rights->banque->modifier) {
             throw new RestException(401);
         }
 
         $account = new Account($this->db);
         $result = $account->fetch($id);
-        if (!$result) {
+        if (! $result) {
             throw new RestException(404, 'account not found');
         }
 
@@ -502,7 +500,7 @@ class BankAccounts extends DolibarrApi
             $cheque_writer, $cheque_bank
         );
         if ($result < 0) {
-            throw new RestException(503, 'Error when adding line to account: '.$account->error);
+            throw new RestException(503, 'Error when adding line to account: ' . $account->error);
         }
         return $result;
     }
@@ -522,25 +520,25 @@ class BankAccounts extends DolibarrApi
      */
     public function addLink($id, $line_id, $url_id, $url, $label, $type)
     {
-        if (!DolibarrApiAccess::$user->rights->banque->modifier) {
+        if (! DolibarrApiAccess::$user->rights->banque->modifier) {
             throw new RestException(401);
         }
 
         $account = new Account($this->db);
         $result = $account->fetch($id);
-        if (!$result) {
+        if (! $result) {
             throw new RestException(404, 'account not found');
         }
 
         $accountLine = new AccountLine($this->db);
         $result = $accountLine->fetch($line_id);
-        if (!$result) {
+        if (! $result) {
             throw new RestException(404, 'account line not found');
         }
 
         $result = $account->add_url_line($line_id, $url_id, $url, $label, $type);
         if ($result < 0) {
-            throw new RestException(503, 'Error when adding link to account line: '.$account->error);
+            throw new RestException(503, 'Error when adding link to account line: ' . $account->error);
         }
         return $result;
     }

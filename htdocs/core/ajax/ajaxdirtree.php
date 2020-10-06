@@ -49,7 +49,8 @@ if (!isset($mode) || $mode != 'noajax')    // For ajax call
 	$preopened = GETPOST('preopened');
 
 	if ($selecteddir != '/') $selecteddir = preg_replace('/\/$/', '', $selecteddir); // We removed last '/' except if it is '/'
-} else // For no ajax call
+}
+else    // For no ajax call
 {
 	//if (GETPOST('preopened')) { $_GET['dir'] = $_POST['dir'] = GETPOST('preopened'); }
 
@@ -72,7 +73,8 @@ if ($modulepart == 'ecm')
 {
 	$fullpathselecteddir = $conf->ecm->dir_output.'/'.($selecteddir != '/' ? $selecteddir : '');
 	$fullpathpreopened = $conf->ecm->dir_output.'/'.($preopened != '/' ? $preopened : '');
-} elseif ($modulepart == 'medias')
+}
+elseif ($modulepart == 'medias')
 {
 	$fullpathselecteddir = $dolibarr_main_data_root.'/medias/'.($selecteddir != '/' ? $selecteddir : '');
 	$fullpathpreopened = $dolibarr_main_data_root.'/medias/'.($preopened != '/' ? $preopened : '');
@@ -93,7 +95,8 @@ if (preg_match('/\.\./', $fullpathselecteddir) || preg_match('/[<>|]/', $fullpat
 if ($modulepart == 'ecm')
 {
 	if (!$user->rights->ecm->read) accessforbidden();
-} elseif ($modulepart == 'medias')
+}
+elseif ($modulepart == 'medias')
 {
 	// Always allowed
 }
@@ -425,11 +428,11 @@ function treeOutputForAbsoluteDir($sqltree, $selecteddir, $fullpathselecteddir, 
 						print (isset($val['cachenbofdoc']) && $val['cachenbofdoc'] >= 0) ? $val['cachenbofdoc'] : '&nbsp;';
 						print '</td>';
 						print '<td class="left">';
-						if ($nbofsubdir > 0 && $nboffilesinsubdir > 0) print '<font class="opacitymedium">+'.$nboffilesinsubdir.'</font> ';
+						if ($nbofsubdir > 0 && $nboffilesinsubdir > 0) print '<font color="#AAAAAA">+'.$nboffilesinsubdir.'</font> ';
 						print '</td>';
 
 						// Edit link
-						print '<td class="right" width="18"><a class="editfielda" href="';
+						print '<td class="right" width="18"><a href="';
 						print DOL_URL_ROOT.'/ecm/dir_card.php?module='.urlencode($modulepart).'&section='.$val['id'].'&relativedir='.urlencode($val['fullrelativename']);
 						print '&backtopage='.urlencode($_SERVER["PHP_SELF"].'?file_manager=1&website='.$websitekey.'&pageid='.$pageid);
 						print '">'.img_edit($langs->trans("Edit").' - '.$langs->trans("View"), 0, 'class="valignmiddle opacitymedium"').'</a></td>';
@@ -468,7 +471,8 @@ function treeOutputForAbsoluteDir($sqltree, $selecteddir, $fullpathselecteddir, 
 							if ($modulepart == 'ecm')
 							{
 								$newfullpathselecteddir = $conf->ecm->dir_output.'/'.($val['fullrelativename'] != '/' ? $val['fullrelativename'] : '');
-							} elseif ($modulepart == 'medias')
+							}
+							elseif ($modulepart == 'medias')
 							{
 								$newfullpathselecteddir = $dolibarr_main_data_root.'/medias/'.($val['fullrelativename'] != '/' ? $val['fullrelativename'] : '');
 							}
@@ -482,6 +486,7 @@ function treeOutputForAbsoluteDir($sqltree, $selecteddir, $fullpathselecteddir, 
 
 				echo "</ul>\n";
 			}
-		} else print "PermissionDenied";
+		}
+		else print "PermissionDenied";
 	}
 }

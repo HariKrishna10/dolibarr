@@ -22,4 +22,6 @@ ProductsCategoriesShort=Tags/catégories de produits
 MembersCategoriesShort=Tags/catégories de membres
 AccountsCategoriesShort=Étiquettes / catégories de comptes
 ProjectsCategoriesShort=Projets Tags / catégories
+ThisCategoryHasNoAccount=Cette catégorie ne contient aucun compte.
+ThisCategoryHasNoProject=Cette catégorie ne contient aucun projet.
 CatProJectLinks=Liens entre projets et tags / catégories

@@ -214,14 +214,9 @@ class pdf_rouget extends ModelePdfExpedition
 
 				$objphoto = new Product($this->db);
 				$objphoto->fetch($object->lines[$i]->fk_product);
-				if (!empty($conf->global->PRODUCT_USE_OLD_PATH_FOR_PHOTO))
-				{
-					$pdir = get_exdir($object->lines[$i]->fk_product, 2, 0, 0, $objphoto, 'product').$object->lines[$i]->fk_product."/photos/";
-					$dir = $conf->product->dir_output.'/'.$pdir;
-				} else {
-					$pdir = get_exdir(0, 2, 0, 0, $objphoto, 'product').dol_sanitizeFileName($objphoto->ref).'/';
-					$dir = $conf->product->dir_output.'/'.$pdir;
-				}
+
+				$pdir = get_exdir($object->lines[$i]->fk_product, 2, 0, 0, $objphoto, 'product').$object->lines[$i]->fk_product."/photos/";
+				$dir = $conf->product->dir_output.'/'.$pdir;
 
 				$realpath = '';
 
@@ -231,10 +226,14 @@ class pdf_rouget extends ModelePdfExpedition
                         if ($obj['photo_vignette'])
                         {
                             $filename = $obj['photo_vignette'];
-                        } else {
+                        }
+                        else
+                        {
                             $filename = $obj['photo'];
                         }
-                    } else {
+                    }
+                    else
+                    {
                         $filename = $obj['photo'];
                     }
 
@@ -255,7 +254,9 @@ class pdf_rouget extends ModelePdfExpedition
 			{
 				$dir = $conf->expedition->dir_output."/sending";
 				$file = $dir."/SPECIMEN.pdf";
-			} else {
+			}
+			else
+			{
 				$expref = dol_sanitizeFileName($object->ref);
 				$dir = $conf->expedition->dir_output."/sending/".$expref;
 				$file = $dir."/".$expref.".pdf";
@@ -413,7 +414,9 @@ class pdf_rouget extends ModelePdfExpedition
 
 					$tab_height = $tab_height - $height_note;
 					$tab_top = $nexY + 6;
-				} else {
+				}
+				else
+				{
 					$height_note = 0;
 				}
 
@@ -451,9 +454,10 @@ class pdf_rouget extends ModelePdfExpedition
 						$curY = $tab_top_newpage;
 
 						// Allows data in the first page if description is long enough to break in multiples pages
-						if (!empty($conf->global->MAIN_PDF_DATA_ON_FIRST_PAGE))
+						if(!empty($conf->global->MAIN_PDF_DATA_ON_FIRST_PAGE))
 							$showpricebeforepagebreak = 1;
-						else $showpricebeforepagebreak = 0;
+						else
+							$showpricebeforepagebreak = 0;
 					}
 
 					if (isset($imglinesize['width']) && isset($imglinesize['height']))
@@ -491,15 +495,19 @@ class pdf_rouget extends ModelePdfExpedition
 								if (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)) $this->_pagehead($pdf, $object, 0, $outputlangs);
 								$pdf->setPage($pageposafter + 1);
 							}
-						} else {
+						}
+						else
+						{
 							// We found a page break
 
 							// Allows data in the first page if description is long enough to break in multiples pages
-							if (!empty($conf->global->MAIN_PDF_DATA_ON_FIRST_PAGE))
+							if(!empty($conf->global->MAIN_PDF_DATA_ON_FIRST_PAGE))
 								$showpricebeforepagebreak = 1;
-							else $showpricebeforepagebreak = 0;
+							else
+								$showpricebeforepagebreak = 0;
 						}
-					} else // No pagebreak
+					}
+					else	// No pagebreak
 					{
 						$pdf->commitTransaction();
 					}
@@ -583,7 +591,9 @@ class pdf_rouget extends ModelePdfExpedition
 						if ($pagenb == 1)
 						{
 							$this->_tableau($pdf, $tab_top, $this->page_hauteur - $tab_top - $heightforfooter, 0, $outputlangs, 0, 1);
-						} else {
+						}
+						else
+						{
 							$this->_tableau($pdf, $tab_top_newpage, $this->page_hauteur - $tab_top_newpage - $heightforfooter, 0, $outputlangs, 1, 1);
 						}
 						$this->_pagefoot($pdf, $object, $outputlangs, 1);
@@ -597,7 +607,9 @@ class pdf_rouget extends ModelePdfExpedition
 						if ($pagenb == 1)
 						{
 							$this->_tableau($pdf, $tab_top, $this->page_hauteur - $tab_top - $heightforfooter, 0, $outputlangs, 0, 1);
-						} else {
+						}
+						else
+						{
 							$this->_tableau($pdf, $tab_top_newpage, $this->page_hauteur - $tab_top_newpage - $heightforfooter, 0, $outputlangs, 1, 1);
 						}
 						$this->_pagefoot($pdf, $object, $outputlangs, 1);
@@ -614,7 +626,9 @@ class pdf_rouget extends ModelePdfExpedition
 				{
 					$this->_tableau($pdf, $tab_top, $this->page_hauteur - $tab_top - $heightforinfotot - $heightforfreetext - $heightforfooter, 0, $outputlangs, 0, 0);
 					$bottomlasttab = $this->page_hauteur - $heightforinfotot - $heightforfreetext - $heightforfooter + 1;
-				} else {
+				}
+				else
+				{
 					$this->_tableau($pdf, $tab_top_newpage, $this->page_hauteur - $tab_top_newpage - $heightforinfotot - $heightforfreetext - $heightforfooter, 0, $outputlangs, 1, 0);
 					$bottomlasttab = $this->page_hauteur - $heightforinfotot - $heightforfreetext - $heightforfooter + 1;
 				}
@@ -647,11 +661,15 @@ class pdf_rouget extends ModelePdfExpedition
 				$this->result = array('fullpath'=>$file);
 
 				return 1; // No error
-			} else {
+			}
+			else
+			{
 				$this->error = $langs->transnoentities("ErrorCanNotCreateDir", $dir);
 				return 0;
 			}
-		} else {
+		}
+		else
+		{
 			$this->error = $langs->transnoentities("ErrorConstantNotDefined", "EXP_OUTPUTDIR");
 			return 0;
 		}
@@ -898,13 +916,17 @@ class pdf_rouget extends ModelePdfExpedition
 			{
 			    $height = pdf_getHeightForLogo($logo);
 			    $pdf->Image($logo, $this->marge_gauche, $posy, 0, $height); // width=0 (auto)
-			} else {
+			}
+			else
+			{
 				$pdf->SetTextColor(200, 0, 0);
 				$pdf->SetFont('', 'B', $default_font_size - 2);
 				$pdf->MultiCell($w, 3, $outputlangs->transnoentities("ErrorLogoFileNotFound", $logo), 0, 'L');
 				$pdf->MultiCell($w, 3, $outputlangs->transnoentities("ErrorGoToGlobalSetup"), 0, 'L');
 			}
-		} else {
+		}
+		else
+		{
 			$text = $this->emetteur->name;
 			$pdf->MultiCell($w, 4, $outputlangs->convToOutputCharset($text), 0, 'L');
 		}
@@ -913,7 +935,9 @@ class pdf_rouget extends ModelePdfExpedition
 		if (!empty($conf->barcode->enabled))
 		{
 			$posx = 105;
-		} else {
+		}
+		else
+		{
 			$posx = $this->marge_gauche + 3;
 		}
 		//$pdf->Rect($this->marge_gauche, $this->marge_haute, $this->page_largeur-$this->marge_gauche-$this->marge_droite, 30);

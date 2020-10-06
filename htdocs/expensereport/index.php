@@ -45,12 +45,11 @@ $socid = GETPOST('socid', 'int');
 if ($user->socid) $socid = $user->socid;
 $result = restrictedArea($user, 'expensereport', '', '');
 
-$limit = GETPOST('limit', 'int') ? GETPOST('limit', 'int') : $conf->liste_limit;
 $sortfield = GETPOST("sortfield", 'alpha');
 $sortorder = GETPOST("sortorder", 'alpha');
-$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
+$page = GETPOST("page", 'int');
 if (empty($page) || $page == -1) { $page = 0; }     // If $page is not defined, or '' or -1
-$offset = $limit * $page;
+$offset = $conf->liste_limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (!$sortorder) $sortorder = "DESC";
@@ -111,7 +110,7 @@ if ($result)
 }
 
 
-print load_fiche_titre($langs->trans("ExpensesArea"), '', 'trip');
+print load_fiche_titre($langs->trans("ExpensesArea"));
 
 
 print '<div class="fichecenter"><div class="fichethirdleft">';
@@ -137,10 +136,10 @@ if ($conf->use_javascript_ajax)
     $dolgraph->SetData($dataseries);
     $dolgraph->setHeight(350);
     $dolgraph->combine = empty($conf->global->MAIN_EXPENSEREPORT_COMBINE_GRAPH_STAT) ? 0.05 : $conf->global->MAIN_EXPENSEREPORT_COMBINE_GRAPH_STAT;
-    $dolgraph->setShowLegend(2);
+    $dolgraph->setShowLegend(1);
     $dolgraph->setShowPercent(1);
     $dolgraph->SetType(array('pie'));
-    $dolgraph->setHeight('200');
+    $dolgraph->setWidth('100%');
     $dolgraph->draw('idgraphstatus');
     print $dolgraph->show($totalnb ? 0 : 1);
 
@@ -233,11 +232,14 @@ if ($result)
 
             $i++;
         }
-    } else {
+    }
+    else
+    {
         print '<tr class="oddeven"><td colspan="6" class="opacitymedium">'.$langs->trans("None").'</td></tr>';
     }
     print '</table></div><br>';
-} else dol_print_error($db);
+}
+else dol_print_error($db);
 
 print '</div></div></div>';
 

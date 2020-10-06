@@ -68,7 +68,6 @@ $suffix = GETPOST("suffix", 'aZ09');
 
 // Detect $paymentmethod
 $paymentmethod = '';
-$reg = array();
 if (preg_match('/PM=([^\.]+)/', $FULLTAG, $reg))
 {
     $paymentmethod = $reg[1];
@@ -77,7 +76,9 @@ if (empty($paymentmethod))
 {
     dol_print_error(null, 'The back url does not contains a parameter fulltag that should help us to find the payment method used');
     exit;
-} else {
+}
+else
+{
     dol_syslog("paymentmethod=".$paymentmethod);
 }
 
@@ -127,10 +128,12 @@ if (!empty($_SESSION['ipaddress']))      // To avoid to make action twice
     $ipaddress          = $_SESSION['ipaddress'];
     $errormessage       = $_SESSION['errormessage'];
 
-    // Call trigger
-    $result = $object->call_trigger('PAYMENTONLINE_PAYMENT_KO', $user);
-    if ($result < 0) $error++;
-    // End call triggers
+    // Appel des triggers
+    include_once DOL_DOCUMENT_ROOT.'/core/class/interfaces.class.php';
+    $interface = new Interfaces($db);
+    $result = $interface->run_triggers('PAYMENTONLINE_PAYMENT_KO', $object, $user, $langs, $conf);
+    if ($result < 0) { $error++; $errors = $interface->errors; }
+    // Fin appel triggers
 
     // Send an email
     $sendemail = '';
@@ -157,8 +160,10 @@ if (!empty($_SESSION['ipaddress']))      // To avoid to make action twice
     	    if (preg_match('/\d\.\d/', $appli))
     	    {
     	        if (!preg_match('/'.preg_quote(DOL_VERSION).'/', $appli)) $appli .= " (".DOL_VERSION.")"; // If new title contains a version that is different than core
-    	    } else $appli .= " ".DOL_VERSION;
-    	} else $appli .= " ".DOL_VERSION;
+    	    }
+    	    else $appli .= " ".DOL_VERSION;
+    	}
+    	else $appli .= " ".DOL_VERSION;
 
     	$urlback = $_SERVER["REQUEST_URI"];
     	$topic = '['.$appli.'] '.$companylangs->transnoentitiesnoconv("NewOnlinePaymentFailed");
@@ -182,7 +187,9 @@ if (!empty($_SESSION['ipaddress']))      // To avoid to make action twice
     	if ($result)
     	{
     		dol_syslog("EMail sent to ".$sendto, LOG_DEBUG, 0, '_payment');
-    	} else {
+    	}
+    	else
+    	{
     		dol_syslog("Failed to send EMail to ".$sendto, LOG_ERR, 0, '_payment');
     	}
     }
@@ -196,13 +203,13 @@ if (!empty($conf->global->ONLINE_PAYMENT_CSS_URL)) $head = '<link rel="styleshee
 $conf->dol_hide_topmenu = 1;
 $conf->dol_hide_leftmenu = 1;
 
-$replacemainarea = (empty($conf->dol_hide_leftmenu) ? '<div>' : '').'<div>';
-llxHeader($head, $langs->trans("PaymentForm"), '', '', 0, 0, '', '', '', 'onlinepaymentbody', $replacemainarea);
+llxHeader($head, $langs->trans("PaymentForm"), '', '', 0, 0, '', '', '', 'onlinepaymentbody');
 
 
 // Show ko message
 print '<span id="dolpaymentspan"></span>'."\n";
 print '<div id="dolpaymentdiv" align="center">'."\n";
+
 
 // Show logo (search order: logo defined by PAYMENT_LOGO_suffix, then PAYMENT_LOGO, then small company logo, large company logo, theme logo, common logo)
 $width = 0;
@@ -215,37 +222,24 @@ elseif (!empty($conf->global->ONLINE_PAYMENT_LOGO)) $logosmall = $conf->global->
 //print '<!-- Show logo (logosmall='.$logosmall.' logo='.$logo.') -->'."\n";
 // Define urllogo
 $urllogo = '';
-$urllogofull = '';
 if (!empty($logosmall) && is_readable($conf->mycompany->dir_output.'/logos/thumbs/'.$logosmall))
 {
-	$urllogo = DOL_URL_ROOT.'/viewimage.php?modulepart=mycompany&amp;entity='.$conf->entity.'&amp;file='.urlencode('logos/thumbs/'.$logosmall);
-	$urllogofull = $dolibarr_main_url_root.'/viewimage.php?modulepart=mycompany&entity='.$conf->entity.'&file='.urlencode('logos/thumbs/'.$logosmall);
-	$width = 150;
-} elseif (!empty($logo) && is_readable($conf->mycompany->dir_output.'/logos/'.$logo))
-{
-	$urllogo = DOL_URL_ROOT.'/viewimage.php?modulepart=mycompany&amp;entity='.$conf->entity.'&amp;file='.urlencode('logos/'.$logo);
-	$urllogofull = $dolibarr_main_url_root.'/viewimage.php?modulepart=mycompany&entity='.$conf->entity.'&file='.urlencode('logos/'.$logo);
+	$urllogo = DOL_URL_ROOT.'/viewimage.php?modulepart=mycompany&amp;file='.urlencode('logos/thumbs/'.$logosmall);
 	$width = 150;
 }
-
+elseif (!empty($logo) && is_readable($conf->mycompany->dir_output.'/logos/'.$logo))
+{
+	$urllogo = DOL_URL_ROOT.'/viewimage.php?modulepart=mycompany&amp;file='.urlencode('logos/'.$logo);
+	$width = 150;
+}
 // Output html code for logo
 if ($urllogo)
 {
-	print '<div class="backgreypublicpayment">';
-	print '<div class="logopublicpayment">';
-	print '<img id="dolpaymentlogo" src="'.$urllogo.'"';
+	print '<center><img id="dolpaymentlogo" src="'.$urllogo.'"';
 	if ($width) print ' width="'.$width.'"';
-	print '>';
-	print '</div>';
-	if (empty($conf->global->MAIN_HIDE_POWERED_BY)) {
-		print '<div class="poweredbypublicpayment opacitymedium right"><a href="https://www.dolibarr.org" target="dolibarr">'.$langs->trans("PoweredBy").'<br><img src="'.DOL_URL_ROOT.'/theme/dolibarr_logo.svg" width="80px"></a></div>';
-	}
-	print '</div>';
+	print '></center>';
+	print '<br>';
 }
-
-
-print '<br><br>';
-
 
 print $langs->trans("YourPaymentHasNotBeenRecorded")."<br><br>";
 
@@ -258,7 +252,7 @@ $tag = GETPOST('tag', 'alpha');
 require_once DOL_DOCUMENT_ROOT.'/core/lib/payments.lib.php';
 if ($type || $tag)
 {
-	$urlsubscription = getOnlinePaymentUrl(0, ($type ? $type : 'free'), $ref, $FinalPaymentAmt, $tag);
+	$urlsubscription =getOnlinePaymentUrl(0, ($type?$type:'free'), $ref, $FinalPaymentAmt, $tag);
 
 	print $langs->trans("ClickHereToTryAgain", $urlsubscription);
 }

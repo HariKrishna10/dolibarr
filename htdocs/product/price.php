@@ -169,7 +169,9 @@ if (empty($reshook))
 	    if (!$error)
 	    {
 	        $db->commit();
-	    } else {
+	    }
+	    else
+	    {
 	        $db->rollback();
 	    }
 
@@ -273,7 +275,8 @@ if (empty($reshook))
 					break;
 				}
 			}
-		} elseif (!$error)
+		}
+		elseif (!$error)
 		{
 			$tva_tx_txt = GETPOST('tva_tx', 'alpha'); // tva_tx can be '8.5'  or  '8.5*'  or  '8.5 (XXX)' or '8.5* (XXX)'
 
@@ -763,7 +766,9 @@ if (!empty($conf->global->PRODUIT_MULTIPRICES) || !empty($conf->global->PRODUIT_
 			echo vatrate($positiverates.($object->default_vat_code ? ' ('.$object->default_vat_code.')' : ''), '%', $object->tva_npr);
 			//print vatrate($object->multiprices_tva_tx[$soc->price_level], true);
 			print '</td></tr>';
-		} else {
+		}
+		else
+		{
         	// TVA
         	print '<tr><td>'.$langs->trans("DefaultTaxRate").'</td><td>';
 
@@ -781,14 +786,18 @@ if (!empty($conf->global->PRODUIT_MULTIPRICES) || !empty($conf->global->PRODUIT_
         	else print vatrate($object->tva_tx . ($object->tva_npr ? '*' : ''), true);*/
         	print '</td></tr>';
 		}
-	} else {
+	}
+	else
+	{
 		if (!empty($conf->global->PRODUIT_MULTIPRICES_USE_VAT_PER_LEVEL))  // using this option is a bug. kept for backward compatibility
 		{
 			// We show only vat for level 1
 			print '<tr><td class="titlefield">'.$langs->trans("DefaultTaxRate").'</td>';
 			print '<td colspan="2">'.vatrate($object->multiprices_tva_tx[1], true).'</td>';
 			print '</tr>';
-		} else {
+		}
+		else
+		{
             // TVA
 	        print '<tr><td class="titlefield">'.$langs->trans("DefaultTaxRate").'</td><td>';
 
@@ -836,7 +845,9 @@ if (!empty($conf->global->PRODUIT_MULTIPRICES) || !empty($conf->global->PRODUIT_
 			    print '<input size="10" class="maxwidthonsmartphone" type="text" name="labelsellingprice" value="'.$conf->global->$keyforlabel.'">';
 			    print '&nbsp;<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
 			    print '</form>';
-			} else {
+			}
+			else
+			{
 			    print $langs->trans("SellingPrice").' '.$i;
 			    if (!empty($conf->global->$keyforlabel)) print ' - '.$langs->trans($conf->global->$keyforlabel);
 			}
@@ -860,7 +871,9 @@ if (!empty($conf->global->PRODUIT_MULTIPRICES) || !empty($conf->global->PRODUIT_
 			if ($object->multiprices_base_type[$i] == 'TTC')
 			{
 				print price($object->multiprices_min_ttc[$i]).' '.$langs->trans($object->multiprices_base_type[$i]);
-			} else {
+			}
+			else
+			{
 				print price($object->multiprices_min[$i]).' '.$langs->trans($object->multiprices_base_type[$i]);
 			}
 			print '</td></tr>';
@@ -940,7 +953,9 @@ if (!empty($conf->global->PRODUIT_MULTIPRICES) || !empty($conf->global->PRODUIT_
 			}
 		}
 	}
-} else {
+}
+else
+{
 	// TVA
 	print '<tr><td class="titlefield">'.$langs->trans("DefaultTaxRate").'</td><td>';
 
@@ -982,7 +997,9 @@ if (!empty($conf->global->PRODUIT_MULTIPRICES) || !empty($conf->global->PRODUIT_
 		print '<tr><td>'.$langs->trans("PriceByQuantity");
 		if ($object->prices_by_qty[0] == 0) {
 			print '&nbsp; <a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=activate_price_by_qty&level=1">('.$langs->trans("Activate").')';
-		} else {
+		}
+		else
+		{
 			print '&nbsp; <a href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&action=disable_price_by_qty&level=1">('.$langs->trans("DisablePriceByQty").')';
 		}
 		print '</td><td>';
@@ -1134,7 +1151,7 @@ if ($action == 'edit_vat' && ($user->rights->produit->creer || $user->rights->se
 	print load_fiche_titre($langs->trans("UpdateVAT"), '');
 
 	print '<form action="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'" method="POST">';
-	print '<input type="hidden" name="token" value="'.newToken().'">';
+	print '<input type="hidden" name="token" value="'.$_SESSION ['newtoken'].'">';
 	print '<input type="hidden" name="action" value="update_vat">';
 	print '<input type="hidden" name="id" value="'.$object->id.'">';
 
@@ -1168,7 +1185,7 @@ if ($action == 'edit_price' && $object->getRights()->creer)
 	{
 	    print '<!-- Edit price -->'."\n";
 		print '<form action="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'" method="POST">';
-		print '<input type="hidden" name="token" value="'.newToken().'">';
+		print '<input type="hidden" name="token" value="'.$_SESSION ['newtoken'].'">';
 		print '<input type="hidden" name="action" value="update_price">';
 		print '<input type="hidden" name="id" value="'.$object->id.'">';
 
@@ -1271,7 +1288,9 @@ if ($action == 'edit_price' && $object->getRights()->creer)
 		print '</div>';
 
 		print '<br></form>';
-	} else {
+	}
+	else
+	{
 	    print '<!-- Edit price per level -->'."\n";
 	    ?>
 		<script>
@@ -1531,7 +1550,9 @@ if ((empty($conf->global->PRODUIT_CUSTOMER_PRICES) || $action == 'showlog_defaul
     				print '<td class="right"></td>';
     				print '<td class="right"></td>';
     				print '<td class="right">'.$title."</td>";
-    			} else {
+    			}
+    			else
+    			{
     				print '<td class="right">';
     				if (empty($objp->price_by_qty)) {
     					print price($objp->price);
@@ -1576,7 +1597,8 @@ if ((empty($conf->global->PRODUIT_CUSTOMER_PRICES) || $action == 'showlog_defaul
     			    {
     			        if (empty($notfirstlineforlevel[$objp->price_level])) $notfirstlineforlevel[$objp->price_level] = 1;
     			        else $candelete = 1;
-    			    } elseif ($i > 0) $candelete = 1;
+    			    }
+    			    elseif ($i > 0) $candelete = 1;
 
     				print '<td class="right">';
     				if ($candelete)
@@ -1584,7 +1606,8 @@ if ((empty($conf->global->PRODUIT_CUSTOMER_PRICES) || $action == 'showlog_defaul
     					print '<a href="'.$_SERVER["PHP_SELF"].'?action=delete&amp;id='.$object->id.'&amp;lineid='.$objp->rowid.'">';
     					print img_delete();
     					print '</a>';
-    				} else print '&nbsp;'; // Can not delete last price (it's current price)
+    				} else
+    					print '&nbsp;'; // Can not delete last price (it's current price)
     				print '</td>';
     			}
 
@@ -1610,12 +1633,11 @@ if (!empty($conf->global->PRODUIT_CUSTOMER_PRICES))
 {
 	$prodcustprice = new Productcustomerprice($db);
 
-	$limit = GETPOST('limit', 'int') ? GETPOST('limit', 'int') : $conf->liste_limit;
 	$sortfield = GETPOST("sortfield", 'alpha');
 	$sortorder = GETPOST("sortorder", 'alpha');
 	$page = (GETPOST("page", 'int') ?GETPOST("page", 'int') : 0);
 	if (empty($page) || $page == -1) { $page = 0; }     // If $page is not defined, or '' or -1
-	$offset = $limit * $page;
+	$offset = $conf->liste_limit * $page;
 	$pageprev = $page - 1;
 	$pagenext = $page + 1;
 	if (!$sortorder)
@@ -1638,7 +1660,7 @@ if (!empty($conf->global->PRODUIT_CUSTOMER_PRICES))
 		print load_fiche_titre($langs->trans('PriceByCustomer'));
 
 		print '<form action="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'" method="POST">';
-		print '<input type="hidden" name="token" value="'.newToken().'">';
+		print '<input type="hidden" name="token" value="'.$_SESSION ['newtoken'].'">';
 		print '<input type="hidden" name="action" value="add_customer_price_confirm">';
 		print '<input type="hidden" name="id" value="'.$object->id.'">';
 
@@ -1711,7 +1733,8 @@ if (!empty($conf->global->PRODUIT_CUSTOMER_PRICES))
 		print '</div>';
 
 		print '</form>';
-	} elseif ($action == 'edit_customer_price')
+	}
+	elseif ($action == 'edit_customer_price')
 	{
 		// Edit mode
 		$maxpricesupplier = $object->min_recommended_price();
@@ -1724,7 +1747,7 @@ if (!empty($conf->global->PRODUIT_CUSTOMER_PRICES))
 		}
 
 		print '<form action="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'" method="POST">';
-		print '<input type="hidden" name="token" value="'.newToken().'">';
+		print '<input type="hidden" name="token" value="'.$_SESSION ['newtoken'].'">';
 		print '<input type="hidden" name="action" value="update_customer_price_confirm">';
 		print '<input type="hidden" name="lineid" value="'.$prodcustprice->id.'">';
 
@@ -1804,7 +1827,8 @@ if (!empty($conf->global->PRODUIT_CUSTOMER_PRICES))
 		print '</div>';
 
 		print '<br></form>';
-	} elseif ($action == 'showlog_customer_price')
+	}
+	elseif ($action == 'showlog_customer_price')
 	{
 		// List of all log of prices by customers
 		print '<!-- list of all log of prices per customer -->'."\n";
@@ -1851,7 +1875,9 @@ if (!empty($conf->global->PRODUIT_CUSTOMER_PRICES))
 			{
 				//print '<td class="right">' . $langs->trans("INCVATONLY") . '</td>';
 				print '<td class="right">'.$langs->trans("INCT").'</td>';
-			} else {
+			}
+			else
+			{
 				print '<td class="right">'.$langs->trans("TTC").'</td>';
 			}
 			print '<td class="right">'.$langs->trans("MinPrice").' '.$langs->trans("HT").'</td>';
@@ -1872,7 +1898,9 @@ if (!empty($conf->global->PRODUIT_CUSTOMER_PRICES))
 				if ($line->price_base_type == 'HT')
 				{
 				    $pu = $line->price;
-				} else {
+				}
+				else
+				{
 				    $pu = $line->price_ttc;
 				}
 
@@ -1910,7 +1938,9 @@ if (!empty($conf->global->PRODUIT_CUSTOMER_PRICES))
 				{
 					//print '<td class="right">' . price($line->price_ttc) . "</td>";
 					print '<td class="right">'.price($resultarray[2]).'</td>';
-				} else {
+				}
+				else
+				{
 					print '<td class="right">'.price($line->price_ttc)."</td>";
 				}
 
@@ -1930,7 +1960,8 @@ if (!empty($conf->global->PRODUIT_CUSTOMER_PRICES))
 		} else {
 			print $langs->trans('None');
 		}
-	} elseif ($action != 'showlog_default_price' && $action != 'edit_price')
+	}
+	elseif ($action != 'showlog_default_price' && $action != 'edit_price')
 	{
 		// List of all prices by customers
         print '<!-- list of all prices per customer -->'."\n";
@@ -1981,7 +2012,9 @@ if (!empty($conf->global->PRODUIT_CUSTOMER_PRICES))
 		{
 			//print '<td class="right">' . $langs->trans("INCVATONLY") . '</td>';
 			print '<td class="right">'.$langs->trans("INCT").'</td>';
-		} else {
+		}
+		else
+		{
 			print '<td class="right">'.$langs->trans("TTC").'</td>';
 		}
 
@@ -1995,7 +2028,9 @@ if (!empty($conf->global->PRODUIT_CUSTOMER_PRICES))
 		if ($object->price_base_type == 'HT')
 		{
 		    $pu = $object->price;
-		} else {
+		}
+		else
+		{
 		    $pu = $object->price_ttc;
 		}
 
@@ -2012,7 +2047,7 @@ if (!empty($conf->global->PRODUIT_CUSTOMER_PRICES))
 
 		print '<tr class="oddeven">';
 		print "<td>".$langs->trans("Default")."</td>";
-		print "<td></td>";
+		print "<td>"."</td>";
 
 		print '<td class="center">'.$langs->trans($object->price_base_type)."</td>";
 		print '<td class="right">';
@@ -2034,7 +2069,9 @@ if (!empty($conf->global->PRODUIT_CUSTOMER_PRICES))
 		{
 			//print '<td class="right">' . price($object->price_ttc) . "</td>";
 			print '<td class="right">'.price($resultarray[2]).'</td>';
-		} else {
+		}
+		else
+		{
 			print '<td class="right">'.price($object->price_ttc)."</td>";
 		}
 
@@ -2072,7 +2109,9 @@ if (!empty($conf->global->PRODUIT_CUSTOMER_PRICES))
 				if ($line->price_base_type == 'HT')
 				{
 				    $pu = $line->price;
-				} else {
+				}
+				else
+				{
 				    $pu = $line->price_ttc;
 				}
 
@@ -2109,7 +2148,9 @@ if (!empty($conf->global->PRODUIT_CUSTOMER_PRICES))
 				{
 					//print '<td class="right">' . price($line->price_ttc) . "</td>";
 					print '<td class="right">'.price($resultarray[2]).'</td>';
-				} else {
+				}
+				else
+				{
 					print '<td class="right">'.price($line->price_ttc)."</td>";
 				}
 

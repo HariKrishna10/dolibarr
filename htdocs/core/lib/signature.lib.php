@@ -63,7 +63,8 @@ function getOnlineSignatureUrl($mode, $type, $ref = '')
 		if ($mode == 0) $out .= urlencode($ref);
 		$out .= ($mode ? '</font>' : '');
 		if ($mode == 1) $out .= '&hashp=<font color="#666666">hash_of_file</font>';
-		else {
+		else
+		{
 			include_once DOL_DOCUMENT_ROOT.'/comm/propal/class/propal.class.php';
 			$propaltmp = new Propal($db);
 			$res = $propaltmp->fetch(0, $ref);
@@ -79,7 +80,9 @@ function getOnlineSignatureUrl($mode, $type, $ref = '')
 			{
 				$out = $langs->trans("FeatureOnlineSignDisabled");
 				return $out;
-			} else {
+			}
+			else
+			{
 				$out .= '&hashp='.$hashp;
 			}
 		}

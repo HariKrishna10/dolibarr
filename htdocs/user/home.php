@@ -61,7 +61,7 @@ $hookmanager->initHooks(array('userhome'));
 llxHeader();
 
 
-print load_fiche_titre($langs->trans("MenuUsersAndGroups"), '', 'user');
+print load_fiche_titre($langs->trans("MenuUsersAndGroups"));
 
 
 print '<div class="fichecenter"><div class="fichethirdleft">';
@@ -92,7 +92,7 @@ print '</div><div class="fichetwothirdright"><div class="ficheaddleft">';
 
 
 /*
- * Latest created users
+ * Last created users
  */
 $max = 10;
 
@@ -128,7 +128,8 @@ if ($resql)
 	print '<div class="div-table-responsive-no-min">';
 	print '<table class="noborder centpercent">';
 	print '<tr class="liste_titre"><td colspan="3">'.$langs->trans("LastUsersCreated", min($num, $max)).'</td>';
-	print '<td class="right" colspan="2"><a class="commonlink" href="'.DOL_URL_ROOT.'/user/list.php?sortfield=u.datec&sortorder=DESC">'.$langs->trans("FullList").'</td>';
+	print '<td class="right"><a class="commonlink" href="'.DOL_URL_ROOT.'/user/list.php?sortfield=u.datec&sortorder=DESC">'.$langs->trans("FullList").'</td>';
+	print '<td></td>';
 	print '</tr>';
 	$i = 0;
 
@@ -158,17 +159,20 @@ if ($resql)
 		if (!empty($conf->multicompany->enabled) && $obj->admin && !$obj->entity)
 		{
 			print img_picto($langs->trans("SuperAdministrator"), 'redstar');
-		} elseif ($obj->admin)
+		}
+		elseif ($obj->admin)
 		{
 			print img_picto($langs->trans("Administrator"), 'star');
 		}
 		print "</td>";
-		print '<td>'.$obj->login.'</td>';
+		print '<td class="left">'.$obj->login.'</td>';
 		print "<td>";
 		if ($obj->fk_soc)
 		{
             print $companystatic->getNomUrl(1);
-		} else {
+		}
+		else
+		{
 			print $langs->trans("InternalUser");
 		}
 		if ($obj->ldap_sid)
@@ -184,7 +188,9 @@ if ($resql)
 			if (empty($entity))
 			{
 				$entitystring = $langs->trans("AllEntities");
-			} else {
+			}
+			else
+			{
 				$mc->getInfo($entity);
 				$entitystring = $mc->label;
 			}
@@ -204,7 +210,9 @@ if ($resql)
 	print "</div><br>";
 
 	$db->free($resql);
-} else {
+}
+else
+{
 	dol_print_error($db);
 }
 
@@ -221,7 +229,9 @@ if ($canreadperms)
 	if (!empty($conf->multicompany->enabled) && $conf->entity == 1 && ($conf->global->MULTICOMPANY_TRANSVERSE_MODE || ($user->admin && !$user->entity)))
 	{
 		$sql .= " WHERE g.entity IS NOT NULL";
-	} else {
+	}
+	else
+	{
 		$sql .= " WHERE g.entity IN (0,".$conf->entity.")";
 	}
 	$sql .= $db->order("g.datec", "DESC");
@@ -274,7 +284,9 @@ if ($canreadperms)
 		print "</div><br>";
 
 		$db->free($resql);
-	} else {
+	}
+	else
+	{
 		dol_print_error($db);
 	}
 }

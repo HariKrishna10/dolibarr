@@ -136,7 +136,9 @@ if ($action == "setlive")
 	$res = dolibarr_set_const($db, "STRIPE_LIVE", $liveenable, 'yesno', 0, '', $conf->entity);
 	if ($res > 0) {
 		setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
-	} else {
+	}
+	else
+	{
 		setEventMessages($langs->trans("Error"), null, 'errors');
 	}
 }
@@ -163,7 +165,7 @@ print '<input type="hidden" name="action" value="setvalue">';
 
 dol_fiche_head($head, 'stripeaccount', '', -1);
 
-$stripearrayofwebhookevents = array('account.updated', 'payout.created', 'payout.paid', 'charge.pending', 'charge.refunded', 'charge.succeeded', 'charge.failed', 'payment_intent.succeeded', 'payment_intent.payment_failed', 'payment_method.attached', 'payment_method.updated', 'payment_method.card_automatically_updated', 'payment_method.detached', 'source.chargeable', 'customer.deleted');
+$stripearrayofwebhookevents=array('account.updated', 'payout.created', 'payout.paid', 'charge.pending', 'charge.refunded', 'charge.succeeded', 'charge.failed', 'payment_intent.succeeded', 'payment_intent.payment_failed', 'payment_method.attached', 'payment_method.updated', 'payment_method.card_automatically_updated', 'payment_method.detached', 'source.chargeable', 'customer.deleted');
 
 print '<span class="opacitymedium">'.$langs->trans("StripeDesc")."</span><br>\n";
 
@@ -235,12 +237,16 @@ if (empty($conf->stripeconnect->enabled))
             {
             	print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=ipn&webhook='.$endpoint->id.'&status=0">';
             	print img_picto($langs->trans("Activated"), 'switch_on');
-            } else {
+            }
+            else
+            {
             	print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=ipn&webhook='.$endpoint->id.'&status=1">';
             	print img_picto($langs->trans("Disabled"), 'switch_off');
             }
             //print $endpoint;
-        } else {
+        }
+        else
+        {
             print img_picto($langs->trans("inactive"), 'statut5');
         }
 	}
@@ -304,17 +310,23 @@ if (empty($conf->stripeconnect->enabled))
             {
                 print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=ipn&webhook='.$endpoint->id.'&status=0">';
                 print img_picto($langs->trans("Activated"), 'switch_on');
-            } else {
+            }
+            else
+            {
                 print '<a class="reposition" href="'.$_SERVER['PHP_SELF'].'?action=ipn&webhook='.$endpoint->id.'&status=1">';
                 print img_picto($langs->trans("Disabled"), 'switch_off');
             }
             //print $endpoint;
-        } else {
+        }
+        else
+        {
             print img_picto($langs->trans("inactive"), 'statut5');
         }
 	}
     print '</td></tr>';
-} else {
+}
+else
+{
 	print '<tr class="oddeven"><td>'.$langs->trans("StripeConnect").'</td>';
 	print '<td>'.$langs->trans("StripeConnect_Mode").'</td><td></td></tr>';
 }

@@ -38,21 +38,11 @@ function takepos_prepare_head()
 	$head[$h][2] = 'setup';
 	$h++;
 
-	$head[$h][0] = DOL_URL_ROOT.'/takepos/admin/appearance.php';
-	$head[$h][1] = $langs->trans("Appearance");
-	$head[$h][2] = 'appearance';
-	$h++;
-
-	$head[$h][0] = DOL_URL_ROOT.'/takepos/admin/receipt.php';
-	$head[$h][1] = $langs->trans("Receipt");
-	$head[$h][2] = 'receipt';
-	$h++;
-
-	if ($conf->global->TAKEPOS_BAR_RESTAURANT)
+	if ($conf->global->TAKEPOS_CUSTOM_RECEIPT)
 	{
-		$head[$h][0] = DOL_URL_ROOT.'/takepos/admin/bar.php';
-		$head[$h][1] = $langs->trans("BarRestaurant");
-		$head[$h][2] = 'bar';
+		$head[$h][0] = DOL_URL_ROOT.'/takepos/admin/receipt.php';
+		$head[$h][1] = $langs->trans("Receipt");
+		$head[$h][2] = 'receipt';
 		$h++;
 	}
 
@@ -60,17 +50,12 @@ function takepos_prepare_head()
 	for ($i = 1; $i <= $numterminals; $i++)
 	{
 		$head[$h][0] = DOL_URL_ROOT.'/takepos/admin/terminal.php?terminal='.$i;
-		$head[$h][1] = $langs->trans("Terminal")." ".$i;
+		$head[$h][1] = $langs->trans("Terminal"). " ".$i;
 		$head[$h][2] = 'terminal'.$i;
 		$h++;
 	}
 
-	$head[$h][0] = DOL_URL_ROOT.'/takepos/admin/other.php';
-	$head[$h][1] = $langs->trans("Other");
-	$head[$h][2] = 'other';
-	$h++;
-
-	complete_head_from_modules($conf, $langs, null, $head, $h, 'takepos');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'takepos');
 
     return $head;
 }

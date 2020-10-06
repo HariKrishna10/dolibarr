@@ -747,16 +747,15 @@ var TabstopManager = function(editor) {
 
     this.onChange = function(delta) {
         var isRemove = delta.action[0] == "r";
-        var selectedTabstop = this.selectedTabstop || {};
-        var parents = selectedTabstop.parents || {};
+        var parents = this.selectedTabstop && this.selectedTabstop.parents || {};
         var tabstops = (this.tabstops || []).slice();
         for (var i = 0; i < tabstops.length; i++) {
             var ts = tabstops[i];
-            var active = ts == selectedTabstop || parents[ts.index];
+            var active = ts == this.selectedTabstop || parents[ts.index];
             ts.rangeList.$bias = active ? 0 : 1;
             
-            if (delta.action == "remove" && ts !== selectedTabstop) {
-                var parentActive = ts.parents && ts.parents[selectedTabstop.index];
+            if (delta.action == "remove" && ts !== this.selectedTabstop) {
+                var parentActive = ts.parents && ts.parents[this.selectedTabstop.index];
                 var startIndex = ts.rangeList.pointIndex(delta.start, parentActive);
                 startIndex = startIndex < 0 ? -startIndex - 1 : startIndex + 1;
                 var endIndex = ts.rangeList.pointIndex(delta.end, parentActive);
@@ -869,6 +868,8 @@ var TabstopManager = function(editor) {
         var ranges = this.ranges;
         tabstops.forEach(function(ts, index) {
             var dest = this.$openTabstops[index] || ts;
+            ts.rangeList = new RangeList();
+            ts.rangeList.$bias = 0;
             
             for (var i = 0; i < ts.length; i++) {
                 var p = ts[i];
@@ -878,6 +879,7 @@ var TabstopManager = function(editor) {
                 range.original = p;
                 range.tabstop = dest;
                 ranges.push(range);
+                ts.rangeList.ranges.push(range);
                 if (dest != ts)
                     dest.unshift(range);
                 else
@@ -895,9 +897,6 @@ var TabstopManager = function(editor) {
                 this.$openTabstops[index] = dest;
             }
             this.addTabstopMarkers(dest);
-            dest.rangeList = dest.rangeList || new RangeList();
-            dest.rangeList.$bias = 0;
-            dest.rangeList.addList(dest);
         }, this);
         
         if (arg.length > 2) {
@@ -940,18 +939,21 @@ var TabstopManager = function(editor) {
 
     this.keyboardHandler = new HashHandler();
     this.keyboardHandler.bindKeys({
-        "Tab": function(editor) {
-            if (exports.snippetManager && exports.snippetManager.expandWithTab(editor))
+        "Tab": function(ed) {
+            if (exports.snippetManager && exports.snippetManager.expandWithTab(ed)) {
                 return;
-            editor.tabstopManager.tabNext(1);
-            editor.renderer.scrollCursorIntoView();
+            }
+
+            ed.tabstopManager.tabNext(1);
         },
-        "Shift-Tab": function(editor) {
-            editor.tabstopManager.tabNext(-1);
-            editor.renderer.scrollCursorIntoView();
+        "Shift-Tab": function(ed) {
+            ed.tabstopManager.tabNext(-1);
         },
-        "Esc": function(editor) {
-            editor.tabstopManager.detach();
+        "Esc": function(ed) {
+            ed.tabstopManager.detach();
+        },
+        "Return": function(ed) {
+            return false;
         }
     });
 }).call(TabstopManager.prototype);
@@ -1353,7 +1355,7 @@ exports.parForEach = function(array, fn, callback) {
     }
 };
 
-var ID_REGEX = /[a-zA-Z_0-9\$\-\u00A2-\u2000\u2070-\uFFFF]/;
+var ID_REGEX = /[a-zA-Z_0-9\$\-\u00A2-\uFFFF]/;
 
 exports.retrievePrecedingIdentifier = function(text, pos, regex) {
     regex = regex || ID_REGEX;

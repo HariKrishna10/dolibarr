@@ -60,7 +60,7 @@ MemberSubscriptionModifiedInDolibarr=Subscription %s for member %s modified
 MemberSubscriptionDeletedInDolibarr=Subscription %s for member %s deleted
 ShipmentValidatedInDolibarr=Saadetis %s kinnitatud
 ShipmentClassifyClosedInDolibarr=Saadetise %s arveldatud
-ShipmentUnClassifyCloseddInDolibarr=Shipment %s classified re-open
+ShipmentUnClassifyCloseddInDolibarr=Saadetis %s taasavatud
 ShipmentBackToDraftInDolibarr=Saadetis %s on muudetud mustandiks
 ShipmentDeletedInDolibarr=Saadetis %s kustutatud
 OrderCreatedInDolibarr=Tellimus %s loodud
@@ -84,14 +84,13 @@ InterventionSentByEMail=Sekkumine %s saadetud e-postiga
 ProposalDeleted=Pakkumine kustutatud
 OrderDeleted=Tellimus kustutatud
 InvoiceDeleted=Arve kustutatud
-DraftInvoiceDeleted=Draft invoice deleted
 PRODUCT_CREATEInDolibarr=Toode %s loodud
 PRODUCT_MODIFYInDolibarr=Toote %s muudetud
 PRODUCT_DELETEInDolibarr=Toode %s kustutatud
 HOLIDAY_CREATEInDolibarr=Request for leave %s created
 HOLIDAY_MODIFYInDolibarr=Request for leave %s modified
 HOLIDAY_APPROVEInDolibarr=Request for leave %s approved
-HOLIDAY_VALIDATEInDolibarr=Request for leave %s validated
+HOLIDAY_VALIDATEDInDolibarr=Request for leave %s validated
 HOLIDAY_DELETEInDolibarr=Request for leave %s deleted
 EXPENSE_REPORT_CREATEInDolibarr=Kuluaruanne %s loodud
 EXPENSE_REPORT_VALIDATEInDolibarr=Kuluaruanne %s kinnitatud
@@ -112,10 +111,8 @@ BOM_CLOSEInDolibarr=BOM disabled
 BOM_REOPENInDolibarr=BOM reopen
 BOM_DELETEInDolibarr=BOM deleted
 MRP_MO_VALIDATEInDolibarr=MO validated
-MRP_MO_UNVALIDATEInDolibarr=MO set to draft status
 MRP_MO_PRODUCEDInDolibarr=MO produced
 MRP_MO_DELETEInDolibarr=MO deleted
-MRP_MO_CANCELInDolibarr=MO canceled
 ##### End agenda events #####
 AgendaModelModule=Document templates for event
 DateActionStart=Alguskuupäev
@@ -126,7 +123,6 @@ AgendaUrlOptionsNotAdmin=<b>logina=!%s</b> to restrict output to actions not own
 AgendaUrlOptions4=<b>logint=%s</b> to restrict output to actions assigned to user <b>%s</b> (owner and others).
 AgendaUrlOptionsProject=<b>project=__PROJECT_ID__</b> to restrict output to actions linked to project <b>__PROJECT_ID__</b>.
 AgendaUrlOptionsNotAutoEvent=<b>notactiontype=systemauto</b> to exclude automatic events.
-AgendaUrlOptionsIncludeHolidays=<b>includeholidays=1</b> to include events of holidays.
 AgendaShowBirthdayEvents=Näita kontaktide sünnipäevi
 AgendaHideBirthdayEvents=Peida kontaktide sünnipäevad
 Busy=Hõivatud
@@ -154,6 +150,3 @@ EveryMonth=Igal kuul
 DayOfMonth=Kuu päeval
 DayOfWeek=Nädala päeval
 DateStartPlusOne=Kuupäeva algus + 1 tund
-SetAllEventsToTodo=Set all events to todo
-SetAllEventsToInProgress=Set all events to in progress
-SetAllEventsToFinished=Set all events to finished

@@ -102,7 +102,7 @@ class Menubase
     /**
      * @var string Key for menu translation
      * @deprecated
-     * @see $title
+     * @see title
      */
     public $titre;
 
@@ -213,7 +213,8 @@ class Menubase
                 //print $sql; exit;
                 $resqlrowidset = $this->db->query($sql);
                 if (!$resqlrowidset) dol_print_error($this->db);
-            } else dol_print_error($this->db);
+            }
+            else dol_print_error($this->db);
         }
 
         // Check that entry does not exists yet on key menu_handler-fk_menu-position-url-entity, to avoid errors with postgresql
@@ -279,16 +280,22 @@ class Menubase
 		            dol_syslog(get_class($this)."::create record added has rowid=".$this->id, LOG_DEBUG);
 
 		            return $this->id;
-		        } else {
+		        }
+		        else
+		        {
 		            $this->error = "Error ".$this->db->lasterror();
 		            return -1;
 		        }
-        	} else {
+        	}
+        	else
+        	{
         		dol_syslog(get_class($this)."::create menu entry already exists", LOG_WARNING);
         		$this->error = 'Error Menu entry already exists';
         		return 0;
         	}
-        } else {
+        }
+        else
+        {
         	return -1;
         }
     }
@@ -424,7 +431,9 @@ class Menubase
             $this->db->free($resql);
 
             return 1;
-        } else {
+        }
+        else
+        {
             $this->error = "Error ".$this->db->lasterror();
             return -1;
         }
@@ -565,7 +574,9 @@ class Menubase
         		{
         			$this->newmenu->add($val['url'], $val['titre'], 0, $val['perms'], $val['target'], $val['mainmenu'], $val['leftmenu'], $val['position']);
         			//var_dump($this->newmenu->liste);
-        		} else {
+        		}
+        		else
+        		{
         			// Search first menu with this couple (mainmenu,leftmenu)=(fk_mainmenu,fk_leftmenu)
         			$searchlastsub = 0; $lastid = 0; $nextid = 0; $found = 0;
         			foreach ($this->newmenu->liste as $keyparent => $valparent)
@@ -645,7 +656,7 @@ class Menubase
 
                 // Define $right
                 $perms = true;
-                if (isset($menu['perms']))
+                if ($menu['perms'])
                 {
                 	$tmpcond = $menu['perms'];
                 	if ($leftmenu == 'all') $tmpcond = preg_replace('/\$leftmenu\s*==\s*["\'a-zA-Z_]+/', '1==1', $tmpcond); // Force part of condition to true
@@ -655,7 +666,7 @@ class Menubase
 
                 // Define $enabled
                 $enabled = true;
-                if (isset($menu['enabled']))
+                if ($menu['enabled'])
                 {
                 	$tmpcond = $menu['enabled'];
                 	if ($leftmenu == 'all') $tmpcond = preg_replace('/\$leftmenu\s*==\s*["\'a-zA-Z_]+/', '1==1', $tmpcond); // Force part of condition to true
@@ -682,14 +693,17 @@ class Menubase
                         {
                             $tab_titre = explode("/", $menu['titre']);
                             $title = $langs->trans($tab_titre[0])."/".$langs->trans($tab_titre[1]);
-                        } elseif (preg_match('/\|\|/', $menu['titre']))
+                        }
+                        elseif (preg_match('/\|\|/', $menu['titre']))
                         {
                             // To manage different translation (Title||AltTitle@ConditionForAltTitle)
                         	$tab_title = explode("||", $menu['titre']);
                         	$alt_title = explode("@", $tab_title[1]);
                         	$title_enabled = verifCond($alt_title[1]);
                         	$title = ($title_enabled ? $langs->trans($alt_title[0]) : $langs->trans($tab_title[0]));
-                        } else {
+                        }
+                        else
+                        {
                             $title = $langs->trans($menu['titre']);
                         }
                     }
@@ -711,9 +725,9 @@ class Menubase
                     $tabMenu[$b]['mainmenu']    = $menu['mainmenu'];
                     $tabMenu[$b]['leftmenu']    = $menu['leftmenu'];
                     $tabMenu[$b]['perms']       = $perms;
-                    $tabMenu[$b]['langs']       = $menu['langs'];	// Note that this should not be used, lang file should be already loaded.
                     $tabMenu[$b]['enabled']     = $enabled;
                     $tabMenu[$b]['type']        = $menu['type'];
+                    //$tabMenu[$b]['langs']       = $menu['langs'];
                     $tabMenu[$b]['fk_mainmenu'] = $menu['fk_mainmenu'];
                     $tabMenu[$b]['fk_leftmenu'] = $menu['fk_leftmenu'];
                     $tabMenu[$b]['position']    = (int) $menu['position'];
@@ -730,7 +744,9 @@ class Menubase
             // into the leftMenuCharger later to avoid useless operations.
 
             return 1;
-        } else {
+        }
+        else
+        {
             dol_print_error($this->db);
             return -1;
         }

@@ -2,32 +2,6 @@
 if (!defined('ISLOADEDBYSTEELSHEET')) die('Must be call by steelsheet'); ?>
 /* <style type="text/css" > */
 
-:root {
-            --btncolortext:rgb(<?php print $colortextlink; ?>);
-            --btncolorbg: #fbfbfb;
-            --btncolorborderhover: none;
-            --btncolorborder: #FFF;
-            --butactionbg:rgb(218, 235, 225);
-            --butactiondeletebg: rgb(234,228,225);
-}
-
-<?php
-if (!empty($conf->global->MAIN_THEME_DARKMODEENABLED)) {
-	print "
-    @media (prefers-color-scheme: dark) {
-      :root {
-
-            --btncolortext: ;
-            --btncolorbg: rgb(26,27,27);
-            --btncolorborderhover: #ffffff;
-            --btncolorborder: #2b2c2e;
-            --butactionbg:rgb(173,140,79);
-            --butactiondeletebg: rgb(252,84,91);
-
-      }
-    }";
-}
-?>
 
 
 /* ============================================================================== */
@@ -50,7 +24,7 @@ span.butAction, span.butActionDelete {
 }
 
 .butAction {
-    background: var(--butactionbg);
+    background: rgb(225, 231, 225)
     /* background: rgb(230, 232, 239); */
 }
 .butActionRefused, .butAction, .butAction:link, .butAction:visited, .butAction:hover, .butAction:active, .butActionDelete, .butActionDelete:link, .butActionDelete:visited, .butActionDelete:hover, .butActionDelete:active {
@@ -58,7 +32,7 @@ span.butAction, span.butActionDelete {
     text-transform: uppercase;
     font-weight: bold;
 
-    margin: 0em <?php echo ($dol_optimize_smallscreen ? '0.6' : '0.9'); ?>em;
+    margin: 0em <?php echo ($dol_optimize_smallscreen ? '0.6' : '0.9'); ?>em !important;
     padding: 0.6em <?php echo ($dol_optimize_smallscreen ? '0.6' : '0.7'); ?>em;
     font-family: <?php print $fontlist ?>;
     display: inline-block;
@@ -135,7 +109,7 @@ span.butActionNewRefused>span.fa, span.butActionNewRefused>span.fa:hover
 }
 
 .butActionDelete, .butActionDelete:link, .butActionDelete:visited, .butActionDelete:hover, .butActionDelete:active, .buttonDelete {
-    background: var(--butactiondeletebg);
+    background: rgb(234, 228, 225);
     /* border: 1px solid #633; */
     color: #633;
 }
@@ -208,23 +182,18 @@ TITLE BUTTON
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    box-shadow: var(--btncolorbg);
+    box-shadow: none;
     text-decoration: none;
     position: relative;
     margin: 0 0 0 10px;
     min-width: 80px;
     text-align: center;
-    color: var(--btncolortext);
+    color: rgb(<?php print $colortextlink; ?>);
     border: none;
     font-size: 12px;
     font-weight: 300;
-    background-color: var(--btncolorbg);
-	border: 1px solid var(--btncolorborder);
-}
-
-a.btnTitle.btnTitleSelected {
-    border: 1px solid #ccc;
-    border-radius: 3px;
+    background-color: #fbfbfb;
+	border: 1px solid #fff;
 }
 
 .btnTitle > .btnTitle-icon{
@@ -256,7 +225,7 @@ a.btnTitle.btnTitleSelected {
 }
 
 .btnTitle:hover .btnTitle-label{
-     color: var(--btncolorborderhover);
+    /* color: #ffffff; */
 }
 
 .btnTitle.refused .btnTitle-label, .btnTitle.refused:hover .btnTitle-label{

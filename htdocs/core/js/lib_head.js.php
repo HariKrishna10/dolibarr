@@ -24,13 +24,13 @@
  * 				JQuery (providing object $) and JQuery-UI (providing $datepicker) libraries must be loaded before this file.
  */
 
-if (!defined('NOREQUIRESOC'))    define('NOREQUIRESOC', '1');
-if (!defined('NOCSRFCHECK'))     define('NOCSRFCHECK', 1);
-if (!defined('NOTOKENRENEWAL'))  define('NOTOKENRENEWAL', 1);
-if (!defined('NOLOGIN'))         define('NOLOGIN', 1);
-if (!defined('NOREQUIREMENU'))   define('NOREQUIREMENU', 1);
-if (!defined('NOREQUIREHTML'))   define('NOREQUIREHTML', 1);
-if (!defined('NOREQUIREAJAX'))   define('NOREQUIREAJAX', '1');
+if (! defined('NOREQUIRESOC'))    define('NOREQUIRESOC', '1');
+if (! defined('NOCSRFCHECK'))     define('NOCSRFCHECK', 1);
+if (! defined('NOTOKENRENEWAL'))  define('NOTOKENRENEWAL', 1);
+if (! defined('NOLOGIN'))         define('NOLOGIN', 1);
+if (! defined('NOREQUIREMENU'))   define('NOREQUIREMENU', 1);
+if (! defined('NOREQUIREHTML'))   define('NOREQUIREHTML', 1);
+if (! defined('NOREQUIREAJAX'))   define('NOREQUIREAJAX', '1');
 
 session_cache_limiter('public');
 
@@ -45,7 +45,7 @@ else header('Cache-Control: no-cache');
 
 
 // Define tradMonths javascript array (we define this in datepicker AND in parent page to avoid errors with IE8)
-$tradMonths = array(
+$tradMonths=array(
 dol_escape_js($langs->transnoentitiesnoconv("Month01")),
 dol_escape_js($langs->transnoentitiesnoconv("Month02")),
 dol_escape_js($langs->transnoentitiesnoconv("Month03")),
@@ -60,7 +60,7 @@ dol_escape_js($langs->transnoentitiesnoconv("Month11")),
 dol_escape_js($langs->transnoentitiesnoconv("Month12"))
 );
 
-$tradMonthsShort = array(
+$tradMonthsShort=array(
 $langs->trans("MonthShort01"),
 $langs->trans("MonthShort02"),
 $langs->trans("MonthShort03"),
@@ -75,7 +75,7 @@ $langs->trans("MonthShort11"),
 $langs->trans("MonthShort12")
 );
 
-$tradDays = array(
+$tradDays=array(
 $langs->trans("Sunday"),
 $langs->trans("Monday"),
 $langs->trans("Tuesday"),
@@ -85,7 +85,7 @@ $langs->trans("Friday"),
 $langs->trans("Saturday")
 );
 
-$tradDaysShort = array(
+$tradDaysShort=array(
 $langs->trans("ShortSunday"),
 $langs->trans("ShortMonday"),
 $langs->trans("ShortTuesday"),
@@ -95,7 +95,7 @@ $langs->trans("ShortFriday"),
 $langs->trans("ShortSaturday")
 );
 
-$tradDaysMin = array(
+$tradDaysMin=array(
 $langs->trans("SundayMin"),
 $langs->trans("MondayMin"),
 $langs->trans("TuesdayMin"),
@@ -139,8 +139,8 @@ jQuery(function($){
 		dayNamesMin: tradDaysMin,
 		weekHeader: '<?php echo $langs->trans("Week"); ?>',
 		dateFormat: '<?php echo $langs->trans("FormatDateShortJQuery"); ?>',	/* Note dd/mm/yy means year on 4 digit in jquery format */
-		firstDay: <?php echo (isset($conf->global->MAIN_START_WEEK) ? $conf->global->MAIN_START_WEEK : '1'); ?>,
-		isRTL: <?php echo ($langs->trans("DIRECTION") == 'rtl' ? 'true' : 'false'); ?>,
+		firstDay: <?php echo (isset($conf->global->MAIN_START_WEEK)?$conf->global->MAIN_START_WEEK:'1'); ?>,
+		isRTL: <?php echo ($langs->trans("DIRECTION")=='rtl'?'true':'false'); ?>,
 		showMonthAfterYear: false,  	/* TODO add specific to country	*/
  		yearSuffix: ''			/* TODO add specific to country */
 	};
@@ -523,17 +523,14 @@ function hideMessage(fieldId,message) {
  * @param	string	intput		Input
  * @param	int		entity		Entity
  * @param	int		strict		Strict
- * @param   int     forcereload Force reload
- * @param   int     userid      User id
  */
-function setConstant(url, code, input, entity, strict, forcereload, userid) {
+function setConstant(url, code, input, entity, strict) {
 	$.get( url, {
 		action: "set",
 		name: code,
 		entity: entity
 	},
 	function() {
-		console.log("url request success forcereload="+forcereload);
 		$("#set_" + code).hide();
 		$("#del_" + code).show();
 		$.each(input, function(type, data) {
@@ -579,9 +576,6 @@ function setConstant(url, code, input, entity, strict, forcereload, userid) {
 				});
 			}
 		});
-		if (forcereload) {
-			location.reload();
-		}
 	});
 }
 
@@ -593,17 +587,14 @@ function setConstant(url, code, input, entity, strict, forcereload, userid) {
  * @param	string	intput		Input
  * @param	int		entity		Entity
  * @param	int		strict		Strict
- * @param   int     forcereload Force reload
- * @param   int     userid      User id
  */
-function delConstant(url, code, input, entity, strict, forcereload, userid) {
+function delConstant(url, code, input, entity, strict) {
 	$.get( url, {
 		action: "del",
 		name: code,
 		entity: entity
 	},
 	function() {
-		console.log("url request success forcereload="+forcereload);
 		$("#del_" + code).hide();
 		$("#set_" + code).show();
 		$.each(input, function(type, data) {
@@ -645,9 +636,6 @@ function delConstant(url, code, input, entity, strict, forcereload, userid) {
 				});
 			}
 		});
-		if (forcereload) {
-			location.reload();
-		}
 	});
 }
 
@@ -663,9 +651,8 @@ function delConstant(url, code, input, entity, strict, forcereload, userid) {
  * @param	int		yesButton	yesButton
  * @param	int		noButton	noButton
  * @param	int		strict		Strict
- * @param   int     userid      User id
  */
-function confirmConstantAction(action, url, code, input, box, entity, yesButton, noButton, strict, userid) {
+function confirmConstantAction(action, url, code, input, box, entity, yesButton, noButton, strict) {
 	var boxConfirm = box;
 	$("#confirm_" + code)
 			.attr("title", boxConfirm.title)
@@ -681,9 +668,9 @@ function confirmConstantAction(action, url, code, input, box, entity, yesButton,
 						text : yesButton,
 						click : function() {
 							if (action == "set") {
-								setConstant(url, code, input, entity, strict, 0, userid);
+								setConstant(url, code, input, entity, strict);
 							} else if (action == "del") {
-								delConstant(url, code, input, entity, strict, 0, userid);
+								delConstant(url, code, input, entity, strict);
 							}
 							// Close dialog
 							$(this).dialog("close");
@@ -880,13 +867,12 @@ function newpopup(url, title) {
  */
 function document_preview(file, type, title)
 {
-	var ValidImageTypes = ["image/gif", "image/jpeg", "image/png", "image/webp"];
+	var ValidImageTypes = ["image/gif", "image/jpeg", "image/png"];
 	var showOriginalSizeButton = false;
 
 	console.log("document_preview A click was done. file="+file+", type="+type+", title="+title);
 
 	if ($.inArray(type, ValidImageTypes) < 0) {
-		/* Not an image */
 		var width='85%';
 		var object_width='100%';
 		var height = ($( window ).height() - 60) * 0.90;
@@ -895,7 +881,6 @@ function document_preview(file, type, title)
 		show_preview('notimage');
 
 	} else {
-		/* This is an image */
 		var object_width=0;
 		var object_height=0;
 
@@ -906,13 +891,11 @@ function document_preview(file, type, title)
 			object_height = this.height;
 
 			width = $( window ).width()*0.90;
-			console.log("object_width="+object_width+" window width="+width);
 			if(object_width < width){
 				console.log("Object width is small, we set width of popup according to image width.");
 				width = object_width + 30
 			}
 			height = $( window ).height()*0.85;
-			console.log("object_height="+object_height+" window height="+height);
 			if(object_height < height){
 				console.log("Object height is small, we set height of popup according to image height.");
 				height = object_height + 80
@@ -1064,8 +1047,8 @@ function price2numjs(amount) {
 	if ($langs->transnoentitiesnoconv("SeparatorThousand") != "SeparatorThousand") {
 		$thousand = $langs->transnoentitiesnoconv("SeparatorThousand");
 	}
-	if ($thousand == 'Space') $thousand = ' ';
-	print "var dec='".dol_escape_js($dec)."'; var thousand='".dol_escape_js($thousand)."';\n"; // Set var in javascript
+	if ($thousand == 'Space') $thousand=' ';
+	print "var dec='" . dol_escape_js($dec) . "'; var thousand='" . dol_escape_js($thousand) . "';\n";    // Set var in javascript
 	?>
 
 	var main_max_dec_shown = <?php echo (int) str_replace('.', '', $conf->global->MAIN_MAX_DECIMALS_SHOWN); ?>;
@@ -1097,7 +1080,7 @@ function price2numjs(amount) {
 
 
 <?php
-if (empty($conf->global->MAIN_DISABLE_JQUERY_JNOTIFY) && !defined('DISABLE_JQUERY_JNOTIFY')) {
+if (empty($conf->global->MAIN_DISABLE_JQUERY_JNOTIFY) && ! defined('DISABLE_JQUERY_JNOTIFY')) {
     ?>
 // Defined properties for JNotify
 $(document).ready(function() {

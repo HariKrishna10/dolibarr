@@ -65,7 +65,9 @@ if ($action == 'setnote' && $user->rights->facture->paiement)
     {
         $db->commit();
         $action = '';
-    } else {
+    }
+    else
+    {
 	    setEventMessages($object->error, $object->errors, 'errors');
         $db->rollback();
     }
@@ -85,11 +87,15 @@ if ($action == 'confirm_delete' && $confirm == 'yes' && $user->rights->facture->
         {
         	header("Location: ".$backtopage);
         	exit;
-        } else {
+        }
+        else
+        {
         	header("Location: list.php");
         	exit;
         }
-	} else {
+	}
+	else
+	{
 	    $langs->load("errors");
 		setEventMessages($object->error, $object->errors, 'errors');
         $db->rollback();
@@ -125,7 +131,9 @@ if ($action == 'confirm_valide' && $confirm == 'yes' && $user->rights->facture->
 
 		header('Location: '.$_SERVER['PHP_SELF'].'?id='.$object->id);
 		exit;
-	} else {
+	}
+	else
+	{
 	    $langs->load("errors");
 		setEventMessages($object->error, $object->errors, 'errors');
 		$db->rollback();
@@ -139,7 +147,9 @@ if ($action == 'setnum_paiement' && !empty($_POST['num_paiement']))
 	if ($res === 0)
 	{
 		setEventMessages($langs->trans('PaymentNumberUpdateSucceeded'), null, 'mesgs');
-	} else {
+	}
+	else
+	{
 		setEventMessages($langs->trans('PaymentNumberUpdateFailed'), null, 'errors');
 	}
 }
@@ -152,7 +162,9 @@ if ($action == 'setdatep' && !empty($_POST['datepday']))
 	if ($res === 0)
 	{
 		setEventMessages($langs->trans('PaymentDateUpdateSucceeded'), null, 'mesgs');
-	} else {
+	}
+	else
+	{
 		setEventMessages($langs->trans('PaymentDateUpdateFailed'), null, 'errors');
 	}
 }
@@ -210,7 +222,7 @@ print '</td></tr>';
 // Payment type (VIR, LIQ, ...)
 $labeltype = $langs->trans("PaymentType".$object->type_code) != ("PaymentType".$object->type_code) ? $langs->trans("PaymentType".$object->type_code) : $object->type_label;
 print '<tr><td>'.$langs->trans('PaymentMode').'</td><td>'.$labeltype;
-print $object->num_payment ? ' - '.$object->num_payment : '';
+print $object->num_payment? ' - '.$object->num_payment : '';
 print '</td></tr>';
 
 // Amount
@@ -330,7 +342,7 @@ if ($resql)
 	print '<tr class="liste_titre">';
 	print '<td>'.$langs->trans('Bill').'</td>';
 	print '<td>'.$langs->trans('Company').'</td>';
-	if (!empty($conf->multicompany->enabled) && !empty($conf->global->MULTICOMPANY_INVOICE_SHARING_ENABLED)) print '<td>'.$langs->trans('Entity').'</td>';
+	if ($conf->global->MULTICOMPANY_INVOICE_SHARING_ENABLED)print '<td>'.$langs->trans('Entity').'</td>';
 	print '<td class="right">'.$langs->trans('ExpectedToPay').'</td>';
     print '<td class="right">'.$langs->trans('PayedByThisPayment').'</td>';
     print '<td class="right">'.$langs->trans('RemainderToPay').'</td>';
@@ -367,7 +379,7 @@ if ($resql)
 			print '</td>';
 
 			// Expected to pay
-			if (!empty($conf->multicompany->enabled) && !empty($conf->global->MULTICOMPANY_INVOICE_SHARING_ENABLED)) {
+			if ($conf->global->MULTICOMPANY_INVOICE_SHARING_ENABLED) {
 				print '<td>';
 				$mc->getInfo($objp->entity);
 				print $mc->label;
@@ -401,7 +413,9 @@ if ($resql)
 	print '</div>';
 
 	$db->free($resql);
-} else {
+}
+else
+{
 	dol_print_error($db);
 }
 
@@ -431,7 +445,9 @@ if ($user->socid == 0 && $action == '')
 		if (!$disable_delete)
 		{
 			print '<a class="butActionDelete" href="'.$_SERVER['PHP_SELF'].'?id='.$id.'&amp;action=delete">'.$langs->trans('Delete').'</a>';
-		} else {
+		}
+		else
+		{
 			print '<a class="butActionRefused classfortooltip" href="#" title="'.$title_button.'">'.$langs->trans('Delete').'</a>';
 		}
 	}

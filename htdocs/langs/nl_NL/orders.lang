@@ -141,12 +141,11 @@ OrderByEMail=Email
 OrderByWWW=Online
 OrderByPhone=Telefoon
 # Documents models
-PDFEinsteinDescription=Een compleet ordermodel (oude implementatie van Eratosthene-sjabloon)
-PDFEratostheneDescription=Een compleet ordermodel
+PDFEinsteinDescription=A complete order model 
+PDFEratostheneDescription=A complete order model
 PDFEdisonDescription=Een eenvoudig opdrachtenmodel
-PDFProformaDescription=Een complete Proforma factuursjabloon
+PDFProformaDescription=A complete Proforma invoice template
 CreateInvoiceForThisCustomer=Factureer orders
-CreateInvoiceForThisSupplier=Factureer orders
 NoOrdersToInvoice=Geen te factureren orders
 CloseProcessedOrdersAutomatically=Alle geselecteerde orders zijn afgehandeld
 OrderCreation=Order aanmaak

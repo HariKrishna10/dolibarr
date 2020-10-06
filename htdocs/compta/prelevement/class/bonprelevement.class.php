@@ -83,16 +83,18 @@ class BonPrelevement extends CommonObject
 	 *	Constructor
 	 *
 	 *  @param		DoliDB		$db      	Database handler
+	 *  @param		string		$filename	Filename of withdraw receipt
 	 */
-	public function __construct($db)
+	public function __construct($db, $filename = '')
 	{
 		global $conf, $langs;
 
+		$error = 0;
 		$this->db = $db;
 
-		$this->filename = '';
+		$this->filename = $filename;
 
-		$this->date_echeance = dol_now();
+		$this->date_echeance = time();
 		$this->raison_sociale = "";
 		$this->reference_remise = "";
 
@@ -151,15 +153,21 @@ class BonPrelevement extends CommonObject
 				if ($this->db->query($sql))
 				{
 					$result = 0;
-				} else {
+				}
+				else
+				{
 					$result = -1;
 					dol_syslog(get_class($this)."::AddFacture Erreur $result");
 				}
-			} else {
+			}
+			else
+			{
 				$result = -2;
 				dol_syslog(get_class($this)."::AddFacture Erreur $result");
 			}
-		} else {
+		}
+		else
+		{
 			$result = -3;
 			dol_syslog(get_class($this)."::AddFacture Erreur $result");
 		}
@@ -202,10 +210,14 @@ class BonPrelevement extends CommonObject
 			if ($resql)
 			{
 				$num = $this->db->num_rows($resql);
-			} else {
+			}
+			else
+			{
 				$result = -1;
 			}
-		} else {
+		}
+		else
+		{
 			/*
 			 * No aggregate
 			 */
@@ -233,7 +245,9 @@ class BonPrelevement extends CommonObject
 			{
 				$line_id = $this->db->last_insert_id(MAIN_DB_PREFIX."prelevement_lignes");
 				$result = 0;
-			} else {
+			}
+			else
+			{
 				dol_syslog(get_class($this)."::addline Error -2");
 				$result = -2;
 			}
@@ -276,7 +290,7 @@ class BonPrelevement extends CommonObject
 		$sql .= ", p.method_trans, p.fk_user_trans";
 		$sql .= ", p.date_credit as date_credit";
 		$sql .= ", p.fk_user_credit";
-		$sql .= ", p.statut as status";
+		$sql .= ", p.statut";
 		$sql .= " FROM ".MAIN_DB_PREFIX."prelevement_bons as p";
 		$sql .= " WHERE p.entity IN (".getEntity('invoice').")";
 		if ($rowid > 0) $sql .= " AND p.rowid = ".$rowid;
@@ -303,17 +317,20 @@ class BonPrelevement extends CommonObject
 				$this->date_credit    = $this->db->jdate($obj->date_credit);
 				$this->user_credit    = $obj->fk_user_credit;
 
-				$this->status         = $obj->status;
-				$this->statut         = $obj->status;	// For backward compatibility
+				$this->statut         = $obj->statut;
 
 				$this->fetched = 1;
 
 				return 1;
-			} else {
+			}
+			else
+			{
 				dol_syslog(get_class($this)."::Fetch Erreur aucune ligne retournee");
 				return -1;
 			}
-		} else {
+		}
+		else
+		{
 			return -2;
 		}
 	}
@@ -381,13 +398,17 @@ class BonPrelevement extends CommonObject
 			{
 				$this->db->commit();
 				return 0;
-			} else {
+			}
+			else
+			{
 				$this->db->rollback();
 				dol_syslog(get_class($this)."::set_credite ROLLBACK ");
 
 				return -1;
 			}
-		} else {
+		}
+		else
+		{
 			dol_syslog(get_class($this)."::set_credite Ouverture transaction SQL impossible ");
 			return -2;
 		}
@@ -462,8 +483,8 @@ class BonPrelevement extends CommonObject
 							$paiement->datepaye     = $date;
 							$paiement->amounts      = $cursoramounts; // Array with detail of dispatching of payments for each invoice
 							$paiement->paiementid   = 3; //
-							$paiement->num_payment = $this->ref; // Set ref of direct debit note
-							$paiement->num_paiement = $this->ref; // For backward compatibility
+							$paiement->num_payment = $this->ref;  // Set ref of direct debit note
+							$paiement->num_paiement = $this->ref; // For bacward compatibility
 							$paiement->id_prelevement = $this->id;
 
 							$paiement_id = $paiement->create($user);
@@ -471,7 +492,9 @@ class BonPrelevement extends CommonObject
 							{
 								dol_syslog(get_class($this)."::set_infocredit AddPayment Error");
 								$error++;
-							} else {
+							}
+							else
+							{
 								$result = $paiement->addPaymentToBank($user, 'payment', '(WithdrawalPayment)', $bankaccount, '', '');
 								if ($result < 0)
 								{
@@ -495,7 +518,9 @@ class BonPrelevement extends CommonObject
 							dol_syslog(get_class($this)."::set_infocredit Update lines Error");
 							$error++;
 						}
-					} else {
+					}
+					else
+					{
 						dol_syslog(get_class($this)."::set_infocredit Update Bons Error");
 						$error++;
 					}
@@ -510,20 +535,28 @@ class BonPrelevement extends CommonObject
 
 						$this->db->commit();
 						return 0;
-					} else {
+					}
+					else
+					{
 						$this->db->rollback();
 						dol_syslog("bon-prelevment::set_infocredit ROLLBACK ");
 						return -1;
 					}
-				} else {
+				}
+				else
+				{
 					dol_syslog(get_class($this)."::set_infocredit 1025 Open SQL transaction impossible ");
 					return -1025;
 				}
-			} else {
+			}
+			else
+			{
 				dol_syslog("bon-prelevment::set_infocredit 1027 Date de credit < Date de trans ");
 				return -1027;
 			}
-		} else {
+		}
+		else
+		{
 			return -1026;
 		}
 	}
@@ -565,7 +598,9 @@ class BonPrelevement extends CommonObject
 				$message .= $langs->trans("InfoTransData", price($this->amount), $this->methodes_trans[$this->method_trans], dol_print_date($date, 'day'));
 
 				// TODO Call trigger to create a notification using notification module
-			} else {
+			}
+			else
+			{
 				$error++;
 			}
 
@@ -576,13 +611,17 @@ class BonPrelevement extends CommonObject
 				$this->db->commit();
 
 				return 0;
-			} else {
+			}
+			else
+			{
 				$this->db->rollback();
 				dol_syslog(get_class($this)."::set_infotrans ROLLBACK", LOG_ERR);
 
 				return -1;
 			}
-		} else {
+		}
+		else
+		{
 			dol_syslog(get_class($this)."::set_infotrans Ouverture transaction SQL impossible", LOG_CRIT);
 			return -2;
 		}
@@ -601,7 +640,8 @@ class BonPrelevement extends CommonObject
 		$arr = array();
 
 		/*
-		 * Returns all invoices presented within same order
+		 * Returns all invoices presented
+		 * within a withdrawal receipt
 		 */
 		$sql = "SELECT fk_facture";
 		if ($amounts) $sql .= ", SUM(pl.amount)";
@@ -626,7 +666,8 @@ class BonPrelevement extends CommonObject
 				{
 					$row = $this->db->fetch_row($resql);
 					if (!$amounts) $arr[$i] = $row[0];
-					else {
+					else
+					{
 						$arr[$i] = array(
 							$row[0],
 							$row[1]
@@ -636,7 +677,9 @@ class BonPrelevement extends CommonObject
 				}
 			}
 			$this->db->free($resql);
-		} else {
+		}
+		else
+		{
 			dol_syslog(get_class($this)."::getListInvoices Erreur");
 		}
 
@@ -647,21 +690,17 @@ class BonPrelevement extends CommonObject
 	/**
 	 *	Returns amount of withdrawal
 	 *
-	 *	@param	string	$mode		'direct-debit' or 'bank-transfer'
-	 *	@return	double	 			<O if KO, Total amount
+	 *	@return		double	 	Total amount
 	 */
-	public function SommeAPrelever($mode = 'direct-debit')
+	public function SommeAPrelever()
 	{
 		// phpcs:enable
 		global $conf;
 
 		$sql = "SELECT sum(pfd.amount) as nb";
-		if ($mode != 'bank-transfer') {
-			$sql .= " FROM ".MAIN_DB_PREFIX."facture as f,";
-		} else {
-			$sql .= " FROM ".MAIN_DB_PREFIX."facture_fourn as f,";
-		}
+		$sql .= " FROM ".MAIN_DB_PREFIX."facture as f,";
 		$sql .= " ".MAIN_DB_PREFIX."prelevement_facture_demande as pfd";
+		//$sql.= " ,".MAIN_DB_PREFIX."c_paiement as cp";
 		$sql .= " WHERE f.fk_statut = 1";
 		$sql .= " AND f.entity IN (".getEntity('invoice').")";
 		$sql .= " AND f.rowid = pfd.fk_facture";
@@ -677,55 +716,38 @@ class BonPrelevement extends CommonObject
 			$this->db->free($resql);
 
 			return $obj->nb;
-		} else {
+		}
+		else
+		{
 			$error = 1;
 			dol_syslog(get_class($this)."::SommeAPrelever Erreur -1");
 			dol_syslog($this->db->error());
-
-			return -1;
 		}
-	}
-
-	/**
-	 *	Get number of invoices waiting for payment
-	 *
-	 *	@param	string	$mode		'direct-debit' or 'bank-transfer'
-	 *	@return	int					<O if KO, number of invoices if OK
-	 */
-	public function nbOfInvoiceToPay($mode = 'direct-debit')
-	{
-		return $this->NbFactureAPrelever($mode);
 	}
 
 	// phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
 	/**
 	 *	Get number of invoices to withdrawal
+	 *	TODO delete params banque and agence when not necesary
 	 *
-	 *	@param	string	$mode		'direct-debit' or 'bank-transfer'
+	 *	@param	int		$banque		dolibarr mysoc bank
+	 *	@param	int		$agence		dolibarr mysoc agence
 	 *	@return	int					<O if KO, number of invoices if OK
 	 */
-	public function NbFactureAPrelever($mode = 'direct-debit')
+	public function NbFactureAPrelever($banque = 0, $agence = 0)
 	{
 		// phpcs:enable
 		global $conf;
 
 		$sql = "SELECT count(f.rowid) as nb";
-		if ($mode == 'bank-transfer') {
-			$sql .= " FROM ".MAIN_DB_PREFIX."facture_fourn as f";
-		} else {
-			$sql .= " FROM ".MAIN_DB_PREFIX."facture as f";
-		}
+		$sql .= " FROM ".MAIN_DB_PREFIX."facture as f";
 		$sql .= ", ".MAIN_DB_PREFIX."prelevement_facture_demande as pfd";
 		$sql .= " WHERE f.entity IN (".getEntity('invoice').")";
 		if (empty($conf->global->WITHDRAWAL_ALLOW_ANY_INVOICE_STATUS))
 		{
 			$sql .= " AND f.fk_statut = ".Facture::STATUS_VALIDATED;
 		}
-		if ($mode == 'bank-transfer') {
-			$sql .= " AND f.rowid = pfd.fk_facture_fourn";
-		} else {
-			$sql .= " AND f.rowid = pfd.fk_facture";
-		}
+		$sql .= " AND f.rowid = pfd.fk_facture";
 		$sql .= " AND pfd.traite = 0";
 		$sql .= " AND f.total_ttc > 0";
 
@@ -739,7 +761,9 @@ class BonPrelevement extends CommonObject
 			$this->db->free($resql);
 
 			return $obj->nb;
-		} else {
+		}
+		else
+		{
 			$this->error = get_class($this)."::NbFactureAPrelever Erreur -1 sql=".$this->db->error();
 			return -1;
 		}
@@ -826,7 +850,9 @@ class BonPrelevement extends CommonObject
 				}
 				$this->db->free($resql);
 				dol_syslog(__METHOD__."::Read invoices, ".$i." invoices to withdraw", LOG_DEBUG);
-			} else {
+			}
+			else
+			{
 				$error++;
 				dol_syslog(__METHOD__."::Read invoices error ".$this->db->error(), LOG_ERR);
 			}
@@ -866,23 +892,31 @@ class BonPrelevement extends CommonObject
 							if ($bac->verif() >= 1)
 							{
 								$factures_prev[$i] = $fac;
-								/* second array necessary for BonPrelevement */
+								/* second tableau necessaire pour BonPrelevement */
 								$factures_prev_id[$i] = $fac[0];
 								$i++;
 								//dol_syslog(__METHOD__."::RIB is ok", LOG_DEBUG);
-							} else {
+							}
+							else
+							{
 								dol_syslog(__METHOD__."::Check RIB Error on default bank number IBAN/BIC for thirdparty reported by verif() ".$fact->socid." ".$soc->name, LOG_WARNING);
 								$this->invoice_in_error[$fac[0]] = "Error on default bank number IBAN/BIC for invoice ".$fact->getNomUrl(0)." for thirdparty ".$soc->getNomUrl(0);
 								$this->thirdparty_in_error[$soc->id] = "Error on default bank number IBAN/BIC for invoice ".$fact->getNomUrl(0)." for thirdparty ".$soc->getNomUrl(0);
 							}
-						} else {
+						}
+						else
+						{
 							dol_syslog(__METHOD__."::Check RIB Failed to read company", LOG_WARNING);
 						}
-					} else {
+					}
+					else
+					{
 						dol_syslog(__METHOD__."::Check RIB Failed to read invoice", LOG_WARNING);
 					}
 				}
-			} else {
+			}
+			else
+			{
 				dol_syslog(__METHOD__."::Check RIB No invoice to process", LOG_WARNING);
 			}
 		}
@@ -908,7 +942,9 @@ class BonPrelevement extends CommonObject
 			if ($mode == 'real')
 			{
 				$ok = 1;
-			} else {
+			}
+			else
+			{
 				print $langs->trans("ModeWarning"); //"Option for real mode was not set, we stop after this simulation\n";
 			}
 		}
@@ -965,11 +1001,15 @@ class BonPrelevement extends CommonObject
 						$prev_id = $this->db->last_insert_id(MAIN_DB_PREFIX."prelevement_bons");
 						$this->id = $prev_id;
 						$this->ref = $ref;
-					} else {
+					}
+					else
+					{
 						$error++;
 						dol_syslog(__METHOD__."::Create withdraw receipt ".$this->db->lasterror(), LOG_ERR);
 					}
-				} else {
+				}
+				else
+				{
 					$error++;
 					dol_syslog(__METHOD__."::Get last withdraw receipt ".$this->db->lasterror(), LOG_ERR);
 				}
@@ -1090,12 +1130,16 @@ class BonPrelevement extends CommonObject
 			if (!$error)
 			{
 				$this->db->commit();
-			} else {
+			}
+			else
+			{
 				$this->db->rollback();
 			}
 
 			return count($factures_prev);
-		} else {
+		}
+		else
+		{
 			return 0;
 		}
 	}
@@ -1117,12 +1161,8 @@ class BonPrelevement extends CommonObject
 
 		if (!$notrigger)
 		{
-			$triggername = 'DIRECT_DEBIT_ORDER_DELETE';
-			if ($this->type == 'bank-transfer') {
-				$triggername = 'PAYMENTBYBANKTRANFER_DELETE';
-			}
 			// Call trigger
-			$result = $this->call_trigger($triggername, $user);
+			$result = $this->call_trigger('DIRECT_DEBIT_ORDER_DELETE', $user);
 			if ($result < 0) $error++;
 			// End call triggers
 		}
@@ -1159,7 +1199,9 @@ class BonPrelevement extends CommonObject
 		{
 			$this->db->commit();
 			return 1;
-		} else {
+		}
+		else
+		{
 			$this->db->rollback();
 			return -1;
 		}
@@ -1184,22 +1226,11 @@ class BonPrelevement extends CommonObject
 
 		$result = '';
 
-		$labeltoshow = 'Withdraw';
-		if ($this->type == 'bank-transfer') {
-			$labeltoshow = 'PaymentByBankTransfer';
-		}
-
-		$label = '<u>'.$langs->trans($labeltoshow).'</u>';
+		$label = '<u>'.$langs->trans("ShowWithdraw").'</u>';
 		$label .= '<br>';
 		$label .= '<b>'.$langs->trans('Ref').':</b> '.$this->ref;
-		if (isset($this->statut)) {
-			$label .= '<br><b>'.$langs->trans("Status").":</b> ".$this->getLibStatut(5);
-		}
 
 		$url = DOL_URL_ROOT.'/compta/prelevement/card.php?id='.$this->id;
-		if ($this->type == 'bank-transfer') {
-			$url = DOL_URL_ROOT.'/compta/paymentbybanktransfer/card.php?id='.$this->id;
-		}
 
 		if ($option != 'nolink')
 		{
@@ -1226,7 +1257,8 @@ class BonPrelevement extends CommonObject
 			 $reshook=$hookmanager->executeHooks('getnomurltooltip',$parameters,$this,$action);    // Note that $action and $object may have been modified by some hooks
 			 if ($reshook > 0) $linkclose = $hookmanager->resPrint;
 			 */
-		} else $linkclose = ($morecss ? ' class="'.$morecss.'"' : '');
+		}
+		else $linkclose = ($morecss ? ' class="'.$morecss.'"' : '');
 
 		$linkstart = '<a href="'.$url.'"';
 		$linkstart .= $linkclose.'>';
@@ -1239,7 +1271,7 @@ class BonPrelevement extends CommonObject
 		//if ($withpicto != 2) $result.=(($addlabel && $this->label) ? $sep . dol_trunc($this->label, ($addlabel > 1 ? $addlabel : 0)) : '');
 
 		global $action, $hookmanager;
-		$hookmanager->initHooks(array('banktransferdao'));
+		$hookmanager->initHooks(array('myobjectdao'));
 		$parameters = array('id'=>$this->id, 'getnomurl'=>$result);
 		$reshook = $hookmanager->executeHooks('getNomUrl', $parameters, $this, $action); // Note that $action and $object may have been modified by some hooks
 		if ($reshook > 0) $result = $hookmanager->resPrint;
@@ -1267,7 +1299,9 @@ class BonPrelevement extends CommonObject
 		if ($this->db->query($sql))
 		{
 			return 0;
-		} else {
+		}
+		else
+		{
 			return -1;
 		}
 	}
@@ -1291,7 +1325,9 @@ class BonPrelevement extends CommonObject
 		if ($this->db->query($sql))
 		{
 			return 0;
-		} else {
+		}
+		else
+		{
 			return -1;
 		}
 	}
@@ -1321,7 +1357,9 @@ class BonPrelevement extends CommonObject
 			if ($this->db->query($sql))
 			{
 				$result = 0;
-			} else {
+			}
+			else
+			{
 				$result = -1;
 				dol_syslog(get_class($this)."::AddNotification Error $result");
 			}
@@ -1424,7 +1462,9 @@ class BonPrelevement extends CommonObject
 					$i++;
 				}
 				$nbtotalDrctDbtTxInf = $i;
-			} else {
+			}
+			else
+			{
 				fputs($this->file, 'ERROR DEBITOR '.$sql.$CrLf); // DEBITOR = Customers
 				$result = -2;
 			}
@@ -1433,7 +1473,9 @@ class BonPrelevement extends CommonObject
 			if ($result != -2)
 			{
 				$fileEmetteurSection .= $this->EnregEmetteurSEPA($conf, $date_actu, $nbtotalDrctDbtTxInf, $this->total, $CrLf, $format);
-			} else {
+			}
+			else
+			{
 				fputs($this->file, 'ERROR CREDITOR'.$CrLf); // CREDITOR = My company
 			}
 
@@ -1499,7 +1541,9 @@ class BonPrelevement extends CommonObject
 					$this->total = $this->total + $obj->amount;
 					$i++;
 				}
-			} else {
+			}
+			else
+			{
 				$result = -2;
 			}
 
@@ -1869,7 +1913,9 @@ class BonPrelevement extends CommonObject
 			$XML_SEPA_INFO .= '					</PrvtId>'.$CrLf;
 			$XML_SEPA_INFO .= '				</Id>'.$CrLf;
 			$XML_SEPA_INFO .= '			</CdtrSchmeId>'.$CrLf;
-		} else {
+		}
+		else
+		{
 			fputs($this->file, 'INCORRECT EMETTEUR '.$XML_SEPA_INFO.$CrLf);
 			$result = -2;
 		}

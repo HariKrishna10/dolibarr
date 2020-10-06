@@ -111,7 +111,9 @@ function show_skin($fuser, $edit = 0)
     					if ($subdir == $selected_theme)
     					{
     						print '<input '.($edit ? '' : 'disabled').' type="radio" '.$bc[$var].' style="border: 0px;" checked name="fckeditor_skin" value="'.$subdir.'"> <b>'.$subdir.'</b>';
-    					} else {
+    					}
+    					else
+    					{
     						print '<input '.($edit ? '' : 'disabled').' type="radio" '.$bc[$var].' style="border: 0px;" name="fckeditor_skin" value="'.$subdir.'"> '.$subdir;
     					}
 						print '</div>';

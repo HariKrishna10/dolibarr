@@ -6,7 +6,6 @@
  * Copyright (C) 2018       Francis Appels          <francis.appels@z-application.com>
  * Copyright (C) 2019       Markus Welters          <markus@welters.de>
  * Copyright (C) 2019       Rafael Ingenleuf        <ingenleuf@welters.de>
- * Copyright (C) 2020       Marc Guenneugues        <marc.guenneugues@simicar.fr>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -226,7 +225,9 @@ class pdf_standard extends ModeleExpenseReport
 			if ($object->specimen) {
 				$dir = $conf->expensereport->dir_output;
 				$file = $dir."/SPECIMEN.pdf";
-			} else {
+			}
+			else
+			{
 				$objectref = dol_sanitizeFileName($object->ref);
 				$dir = $conf->expensereport->dir_output."/".$objectref;
 				$file = $dir."/".$objectref.".pdf";
@@ -337,7 +338,9 @@ class pdf_standard extends ModeleExpenseReport
 
 					$tab_height = $tab_height - $height_note;
 					$tab_top = $nexY + 6;
-				} else {
+				}
+				else
+				{
 					$height_note = 0;
 				}
 
@@ -345,21 +348,13 @@ class pdf_standard extends ModeleExpenseReport
 				$initialY = $tab_top + 7;
 				$nexY = $tab_top + 7;
 
-				$showpricebeforepagebreak = 1;
-				$pdf->setTopMargin($tab_top_newpage);
 				// Loop on each lines
-				$i = 0;
-                while ($i < $nblines) {
+				for ($i = 0; $i < $nblines; $i++) {
 					$pdf->SetFont('', '', $default_font_size - 2); // Into loop to work with multipage
 					$pdf->SetTextColor(0, 0, 0);
 
 					$pdf->setTopMargin($tab_top_newpage);
-                    if (empty($showpricebeforepagebreak)) {
-                        $pdf->setPageOrientation('', 1, $heightforfooter); // The only function to edit the bottom margin of current page to set it.
-                    } else {
-                        $pdf->setPageOrientation('', 1, $heightforfooter + $heightforfreetext + $heightforinfotot); // The only function to edit the bottom margin of current page to set it.
-                    }
-
+					$pdf->setPageOrientation('', 1, $heightforfooter + $heightforfreetext + $heightforinfotot); // The only function to edit the bottom margin of current page to set it.
 					$pageposbefore = $pdf->getPage();
                     $curY = $nexY;
                     $pdf->startTransaction();
@@ -370,28 +365,7 @@ class pdf_standard extends ModeleExpenseReport
 						$pdf->rollbackTransaction(true);
 						$pageposafter = $pageposbefore;
 						//print $pageposafter.'-'.$pageposbefore;exit;
-						if (empty($showpricebeforepagebreak)) {
-                            $pdf->AddPage('', '', true);
-                            if (!empty($tplidx)) {
-                                $pdf->useTemplate($tplidx);
-                            }
-                            if (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)) {
-                                 $this->_pagehead($pdf, $object, 0, $outputlangs);
-                            }
-                            $pdf->setPage($pageposafter + 1);
-                            $showpricebeforepagebreak = 1;
-                            $nexY = $tab_top_newpage;
-                            $nexY += ($pdf->getFontSize() * 1.3); // Passe espace entre les lignes
-                            $pdf->SetFont('', '', $default_font_size - 2); // Into loop to work with multipage
-                            $pdf->SetTextColor(0, 0, 0);
-
-                            $pdf->setTopMargin($tab_top_newpage);
-                            continue;
-                        } else {
-                            $pdf->setPageOrientation('', 1, $heightforfooter);
-                            $showpricebeforepagebreak = 0;
-                        }
-
+						$pdf->setPageOrientation('', 1, $heightforfooter); // The only function to edit the bottom margin of current page to set it.
 						$this->printLine($pdf, $object, $i, $curY, $default_font_size, $outputlangs, $hidedetails);
 						$pageposafter = $pdf->getPage();
 						$posyafter = $pdf->GetY();
@@ -405,18 +379,21 @@ class pdf_standard extends ModeleExpenseReport
 								if (empty($conf->global->MAIN_PDF_DONOTREPEAT_HEAD)) $this->_pagehead($pdf, $object, 0, $outputlangs);
 								$pdf->setPage($pageposafter + 1);
 							}
-						} else {
+						}
+						else
+						{
 							// We found a page break
 							// Allows data in the first page if description is long enough to break in multiples pages
-							if (!empty($conf->global->MAIN_PDF_DATA_ON_FIRST_PAGE))
+							if(!empty($conf->global->MAIN_PDF_DATA_ON_FIRST_PAGE))
 								$showpricebeforepagebreak = 1;
-							else $showpricebeforepagebreak = 0;
+							else
+								$showpricebeforepagebreak = 0;
 						}
-					} else // No pagebreak
+					}
+					else	// No pagebreak
 					{
 						$pdf->commitTransaction();
 					}
-					$i++;
                     //nexY
                     $nexY = $pdf->GetY();
                     $pageposafter = $pdf->getPage();
@@ -446,11 +423,12 @@ class pdf_standard extends ModeleExpenseReport
 					while ($pagenb < $pageposafter)
 					{
 						$pdf->setPage($pagenb);
-						$pdf->setPageOrientation('', 1, 0); // The only function to edit the bottom margin of current page to set it.
 						if ($pagenb == 1)
 						{
 							$this->_tableau($pdf, $tab_top, $this->page_hauteur - $tab_top - $heightforfooter, 0, $outputlangs, 0, 1);
-						} else {
+						}
+						else
+						{
 							$this->_tableau($pdf, $tab_top_newpage, $this->page_hauteur - $tab_top_newpage - $heightforfooter, 0, $outputlangs, 1, 1);
 						}
 						$this->_pagefoot($pdf, $object, $outputlangs, 1);
@@ -464,7 +442,9 @@ class pdf_standard extends ModeleExpenseReport
 						if ($pagenb == 1)
 						{
 							$this->_tableau($pdf, $tab_top, $this->page_hauteur - $tab_top - $heightforfooter, 0, $outputlangs, 0, 1);
-						} else {
+						}
+						else
+						{
 							$this->_tableau($pdf, $tab_top_newpage, $this->page_hauteur - $tab_top_newpage - $heightforfooter, 0, $outputlangs, 1, 1);
 						}
 						$this->_pagefoot($pdf, $object, $outputlangs, 1);
@@ -480,7 +460,9 @@ class pdf_standard extends ModeleExpenseReport
 				if ($pagenb == 1) {
 					$this->_tableau($pdf, $tab_top, $this->page_hauteur - $tab_top - $heightforinfotot - $heightforfreetext - $heightforfooter, 0, $outputlangs, 0, 0);
 					$bottomlasttab = $this->page_hauteur - $heightforinfotot - $heightforfreetext - $heightforfooter + 1;
-				} else {
+				}
+				else
+				{
 					$this->_tableau($pdf, $tab_top_newpage, $this->page_hauteur - $tab_top_newpage - $heightforinfotot - $heightforfreetext - $heightforfooter, 0, $outputlangs, 1, 0);
 					$bottomlasttab = $this->page_hauteur - $heightforinfotot - $heightforfreetext - $heightforfooter + 1;
 				}
@@ -546,11 +528,15 @@ class pdf_standard extends ModeleExpenseReport
 				$this->result = array('fullpath'=>$file);
 
 				return 1; // No error
-			} else {
+			}
+			else
+			{
 				$this->error = $langs->trans("ErrorCanNotCreateDir", $dir);
 				return 0;
 			}
-		} else {
+		}
+		else
+		{
 			$this->error = $langs->trans("ErrorConstantNotDefined", "EXPENSEREPORT_OUTPUTDIR");
 			return 0;
 		}
@@ -590,10 +576,8 @@ class pdf_standard extends ModeleExpenseReport
         }
 
         $expensereporttypecode = $object->lines[$linenumber]->type_fees_code;
-		$expensereporttypecodetoshow = ($outputlangs->trans(($expensereporttypecode)) == $expensereporttypecode ? $object->lines[$linenumber]->type_fees_libelle : $outputlangs->trans($expensereporttypecode));
-
-
-		if ($expensereporttypecodetoshow == $expensereporttypecode) {
+        $expensereporttypecodetoshow = $outputlangs->trans($expensereporttypecode);
+        if ($expensereporttypecodetoshow == $expensereporttypecode) {
             $expensereporttypecodetoshow = preg_replace('/^(EX_|TF_)/', '', $expensereporttypecodetoshow);
         }
         //$expensereporttypecodetoshow = dol_trunc($expensereporttypecodetoshow, 9);
@@ -691,7 +675,9 @@ class pdf_standard extends ModeleExpenseReport
 				$pdf->MultiCell(100, 3, $outputlangs->transnoentities("ErrorLogoFileNotFound", $logo), 0, 'L');
 				$pdf->MultiCell(100, 3, $outputlangs->transnoentities("ErrorGoToGlobalSetup"), 0, 'L');
 			}
-		} else {
+		}
+		else
+		{
 			$text = $this->emetteur->name;
 			$pdf->MultiCell(100, 4, $outputlangs->convToOutputCharset($text), 0, 'L');
 		}
@@ -726,7 +712,7 @@ class pdf_standard extends ModeleExpenseReport
    		$pdf->SetXY($posx, $posy);
    		$pdf->SetFont('', 'B', $default_font_size + 2);
    		$pdf->SetTextColor(111, 81, 124);
-   		$pdf->MultiCell($this->page_largeur - $this->marge_droite - $posx, 3, $outputlangs->transnoentities($object->statuts_short[$object->status]), '', 'R');
+		$pdf->MultiCell($this->page_largeur - $this->marge_droite - $posx, 3, $object->getLibStatut(0), '', 'R');
 
 		if ($showaddress) {
 			// Sender properties
@@ -822,7 +808,8 @@ class pdf_standard extends ModeleExpenseReport
 					$pdf->SetXY($posx + 2, $posy);
 					$pdf->MultiCell(96, 4, $outputlangs->transnoentities("DATE_REFUS")." : ".dol_print_date($object->date_refuse, "day", false, $outputlangs), 0, 'L');
 				}
-			} elseif ($object->fk_statut == 4)
+			}
+			elseif ($object->fk_statut == 4)
 			{
 				if ($object->fk_user_cancel > 0) {
 					$userfee = new User($this->db);
@@ -836,7 +823,9 @@ class pdf_standard extends ModeleExpenseReport
 					$pdf->SetXY($posx + 2, $posy);
 					$pdf->MultiCell(96, 4, $outputlangs->transnoentities("DATE_CANCEL")." : ".dol_print_date($object->date_cancel, "day", false, $outputlangs), 0, 'L');
 				}
-			} else {
+			}
+			else
+			{
 				if ($object->fk_user_approve > 0) {
 					$userfee = new User($this->db);
 					$userfee->fetch($object->fk_user_approve); $posy += 6;
@@ -1082,7 +1071,9 @@ class pdf_standard extends ModeleExpenseReport
 				$pdf->SetXY($tab3_posx + 35, $tab3_top + $y);
 				$pdf->MultiCell(30, 4, $outputlangs->transnoentitiesnoconv("RemainderToPay"), 0, 'L', 0);
 			}
-		} else {
+		}
+		else
+		{
 			$this->error = $this->db->lasterror();
 			return -1;
 		}

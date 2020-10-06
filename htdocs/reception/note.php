@@ -98,7 +98,7 @@ $form = new Form($db);
 if ($id > 0 || !empty($ref))
 {
 	$head = reception_prepare_head($object);
-	dol_fiche_head($head, 'note', $langs->trans("Reception"), -1, 'dollyrevert');
+	dol_fiche_head($head, 'note', $langs->trans("Reception"), -1, 'sending');
 
 
 	// Reception card

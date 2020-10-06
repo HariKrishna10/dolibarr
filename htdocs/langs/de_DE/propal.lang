@@ -63,7 +63,7 @@ ProposalLine=Angebotsposition
 AvailabilityPeriod=Gültig bis
 SetAvailability=Gültigkeitszeitraum definieren
 AfterOrder=nach Bestellung
-OtherProposals=zeige weitere Angebote für diesen Partner
+OtherProposals=zeige weitere Angebote für diesen Partners
 ##### Availability #####
 AvailabilityTypeAV_NOW=Sofort
 AvailabilityTypeAV_1W=7 Tage
@@ -76,11 +76,11 @@ TypeContact_propal_external_BILLING=Kontakt für Kundenrechnungen
 TypeContact_propal_external_CUSTOMER=Kundenkontakt für Angebot
 TypeContact_propal_external_SHIPPING=Kundenkontakt für Lieferung
 # Document models
-DocModelAzurDescription=Ein vollständiges Angebotsmodell (alte Implementierung der Cyan-Vorlage)
-DocModelCyanDescription=Ein vollständiges Angebotsmodell
+DocModelAzurDescription=A complete proposal model 
+DocModelCyanDescription=A complete proposal model
 DefaultModelPropalCreate=Erstellung Standardvorlage
 DefaultModelPropalToBill=Standard-Template, wenn Sie ein Angebot schließen wollen (zur Verrechung)
 DefaultModelPropalClosed=Standard Schablone wenn sie ein Geschäftsangebot schließen wollen. (ohne Rechnung)
 ProposalCustomerSignature=Bei Beauftragung: Name in Klarschrift, Ort, Datum, Unterschrift
 ProposalsStatisticsSuppliers=Statistik Lieferantenanfragen
-CaseFollowedBy=Fall gefolgt von
+CaseFollowedBy=Case followed by

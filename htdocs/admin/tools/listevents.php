@@ -48,7 +48,7 @@ $langs->loadLangs(array("companies", "admin", "users", "other"));
 $limit = GETPOST('limit', 'int') ?GETPOST('limit', 'int') : $conf->liste_limit;
 $sortfield = GETPOST('sortfield', 'alpha');
 $sortorder = GETPOST('sortorder', 'alpha');
-$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
+$page = GETPOST('page', 'int');
 if (empty($page) || $page == -1) { $page = 0; }     // If $page is not defined, or '' or -1
 $offset = $limit * $page;
 $pageprev = $page - 1;
@@ -146,7 +146,9 @@ if ($action == 'confirm_purge' && $confirm == 'yes' && $user->admin)
 	{
 	    $db->commit();
 		dol_syslog($text, LOG_WARNING);
-	} else {
+	}
+	else
+	{
 		$error++;
 		dol_syslog($securityevent->error, LOG_ERR);
 		$db->rollback();
@@ -323,7 +325,8 @@ if ($result)
 			$userstatic->id = $obj->fk_user;
 			$userstatic->login = $obj->login;
 			print $userstatic->getLoginUrl(1);
-		} else print '&nbsp;';
+		}
+		else print '&nbsp;';
 		print '</td>';
 
 		// Description
@@ -376,7 +379,9 @@ if ($result)
 
 	print "</form>";
 	$db->free($result);
-} else {
+}
+else
+{
 	dol_print_error($db);
 }
 

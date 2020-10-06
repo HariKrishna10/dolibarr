@@ -5,13 +5,12 @@ Establishments=Laitokset
 Establishment=Laitos
 NewEstablishment=Uusi laitos
 DeleteEstablishment=Poista laitos
-ConfirmDeleteEstablishment=Are you sure you wish to delete this establishment?
+ConfirmDeleteEstablishment=Haluatko varmasti poistaa tämän laitoksen
 OpenEtablishment=Avaa laitos
 CloseEtablishment=Sulje laitos
 # Dictionary
-DictionaryPublicHolidays=HRM - Public holidays
 DictionaryDepartment=HRM - Osastolista
-DictionaryFunction=HRM - Job positions
+DictionaryFunction=HRM - Toimintolista
 # Module
 Employees=Työntekijät
 Employee=Työntekijä

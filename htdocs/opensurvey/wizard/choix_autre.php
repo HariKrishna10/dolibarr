@@ -110,7 +110,7 @@ llxHeader('', $langs->trans("OpenSurvey"), "", '', 0, 0, $arrayofjs, $arrayofcss
 if (empty($_SESSION['titre']))
 {
 	dol_print_error('', $langs->trans('ErrorOpenSurveyFillFirstSection'));
-	llxFooter();
+	llxFooterSurvey();
 	exit;
 }
 

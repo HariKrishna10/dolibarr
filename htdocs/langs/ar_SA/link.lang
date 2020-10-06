@@ -7,5 +7,4 @@ ErrorFileNotLinked=لا يمكن ربط الملف
 LinkRemoved= الرابط%sتم إزالتة 
 ErrorFailedToDeleteLink= فشل في إزالة الرابط '<b> %s </b>'
 ErrorFailedToUpdateLink= فشل تحديث الرابط '<b> %s </b>'
-URLToLink=عنوان URL للربط
-OverwriteIfExists=Overwrite file if exists
+URLToLink=الرابط لربطه

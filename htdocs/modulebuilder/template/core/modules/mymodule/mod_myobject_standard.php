@@ -31,9 +31,9 @@ dol_include_once('/mymodule/core/modules/mymodule/modules_myobject.php');
 class mod_myobject_standard extends ModeleNumRefMyObject
 {
 	/**
-	 * Dolibarr version of the loaded document
-	 * @var string
-	 */
+     * Dolibarr version of the loaded document
+     * @var string
+     */
 	public $version = 'dolibarr'; // 'development', 'experimental', 'dolibarr'
 
 	public $prefix = 'MYOBJECT';
@@ -49,16 +49,16 @@ class mod_myobject_standard extends ModeleNumRefMyObject
 	public $name = 'standard';
 
 
-	/**
-	 *  Return description of numbering module
-	 *
-	 *  @return     string      Text with description
-	 */
-	public function info()
-	{
-		global $langs;
-		return $langs->trans("SimpleNumRefModelDesc", $this->prefix);
-	}
+    /**
+     *  Return description of numbering module
+     *
+     *  @return     string      Text with description
+     */
+    public function info()
+    {
+    	global $langs;
+      	return $langs->trans("SimpleNumRefModelDesc", $this->prefix);
+    }
 
 
 	/**
@@ -73,27 +73,22 @@ class mod_myobject_standard extends ModeleNumRefMyObject
 
 
 	/**
-	 *  Checks if the numbers already in the database do not
-	 *  cause conflicts that would prevent this numbering working.
+     *  Checks if the numbers already in force in the data base do not
+     *  cause conflicts that would prevent this numbering from working.
 	 *
-	 *  @param  Object		$object		Object we need next value for
-	 *  @return boolean     			false if conflict, true if ok
+	 *  @return     boolean     false if conflict, true if ok
 	 */
-	public function canBeActivated($object)
+	public function canBeActivated()
 	{
 		global $conf, $langs, $db;
 
 		$coyymm = ''; $max = '';
 
-		$posindice = strlen($this->prefix) + 6;
+		$posindice = 8;
 		$sql = "SELECT MAX(CAST(SUBSTRING(ref FROM ".$posindice.") AS SIGNED)) as max";
 		$sql .= " FROM ".MAIN_DB_PREFIX."mymodule_myobject";
 		$sql .= " WHERE ref LIKE '".$db->escape($this->prefix)."____-%'";
-		if ($object->ismultientitymanaged == 1) {
-			$sql .= " AND entity = ".$conf->entity;
-		} elseif ($object->ismultientitymanaged == 2) {
-			// TODO
-		}
+		$sql .= " AND entity = ".$conf->entity;
 
 		$resql = $db->query($sql);
 		if ($resql)
@@ -121,16 +116,12 @@ class mod_myobject_standard extends ModeleNumRefMyObject
 	{
 		global $db, $conf;
 
-		// first we get the max value
-		$posindice = strlen($this->prefix) + 6;
+		// D'abord on recupere la valeur max
+		$posindice = 9;
 		$sql = "SELECT MAX(CAST(SUBSTRING(ref FROM ".$posindice.") AS SIGNED)) as max";
 		$sql .= " FROM ".MAIN_DB_PREFIX."mymodule_myobject";
 		$sql .= " WHERE ref LIKE '".$db->escape($this->prefix)."____-%'";
-		if ($object->ismultientitymanaged == 1) {
-			$sql .= " AND entity = ".$conf->entity;
-		} elseif ($object->ismultientitymanaged == 2) {
-			// TODO
-		}
+		$sql .= " AND entity = ".$conf->entity;
 
 		$resql = $db->query($sql);
 		if ($resql)
@@ -138,7 +129,9 @@ class mod_myobject_standard extends ModeleNumRefMyObject
 			$obj = $db->fetch_object($resql);
 			if ($obj) $max = intval($obj->max);
 			else $max = 0;
-		} else {
+		}
+		else
+		{
 			dol_syslog("mod_myobject_standard::getNextValue", LOG_DEBUG);
 			return -1;
 		}
@@ -147,8 +140,8 @@ class mod_myobject_standard extends ModeleNumRefMyObject
 		$date = $object->date_creation;
 		$yymm = strftime("%y%m", $date);
 
-		if ($max >= (pow(10, 4) - 1)) $num = $max + 1; // If counter > 9999, we do not format on 4 chars, we take number as it is
-		else $num = sprintf("%04s", $max + 1);
+    	if ($max >= (pow(10, 4) - 1)) $num = $max + 1; // If counter > 9999, we do not format on 4 chars, we take number as it is
+    	else $num = sprintf("%04s", $max + 1);
 
 		dol_syslog("mod_myobject_standard::getNextValue return ".$this->prefix.$yymm."-".$num);
 		return $this->prefix.$yymm."-".$num;

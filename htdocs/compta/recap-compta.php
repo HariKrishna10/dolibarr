@@ -48,7 +48,7 @@ $hookmanager->initHooks(array('recapcomptacard', 'globalcard'));
 $limit = GETPOST('limit', 'int') ?GETPOST('limit', 'int') : $conf->liste_limit;
 $sortfield = GETPOST('sortfield', 'alpha');
 $sortorder = GETPOST('sortorder', 'alpha');
-$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
+$page = GETPOST('page', 'int');
 if (empty($page) || $page == -1) { $page = 0; }     // If $page is not defined, or '' or -1
 $offset = $limit * $page;
 $pageprev = $page - 1;
@@ -83,7 +83,7 @@ $form = new Form($db);
 $userstatic = new User($db);
 
 $title = $langs->trans("ThirdParty").' - '.$langs->trans("Summary");
-if (!empty($conf->global->MAIN_HTML_TITLE) && preg_match('/thirdpartynameonly/', $conf->global->MAIN_HTML_TITLE) && $object->name) $title = $object->name.' - '.$langs->trans("Summary");
+if (!empty($conf->global->MAIN_HTML_TITLE) && preg_match('/thirdpartynameonly/', $conf->global->MAIN_HTML_TITLE) && $object->name) $title = $object->name.' - '.$langs->trans("Symmary");
 $help_url = 'EN:Module_Third_Parties|FR:Module_Tiers|ES:Empresas';
 
 llxHeader('', $title, $help_url);
@@ -211,11 +211,15 @@ if ($id > 0)
 					}
 
 					$db->free($resqlp);
-				} else {
+				}
+				else
+				{
 					dol_print_error($db);
 				}
 			}
-		} else {
+		}
+		else
+		{
 			dol_print_error($db);
 		}
 
@@ -284,7 +288,9 @@ if ($id > 0)
 
 		print "</table>";
 	}
-} else {
+}
+else
+{
 	dol_print_error($db);
 }
 

@@ -5,97 +5,14 @@
 /* Default styles                                                                 */
 /* ============================================================================== */
 
-:root {
-	--colorbackhmenu1: rgb(<?php print $colorbackhmenu1; ?>);
-	--colorbackvmenu1: rgb(<?php print $colorbackvmenu1; ?>);
-	--colorbacktitle1: rgb(<?php print $colorbacktitle1; ?>);
-	--colorbacktabcard1: rgb(<?php print $colorbacktabcard1; ?>);
-	--colorbacktabactive: rgb(<?php print $colorbacktabactive; ?>);
-	--colorbacklineimpair1: rgb(<?php print $colorbacklineimpair1; ?>);
-	--colorbacklineimpair2: rgb(<?php print $colorbacklineimpair2; ?>);
-	--colorbacklinepair1: rgb(<?php print $colorbacklinepair1; ?>);
-	--colorbacklinepair2: rgb(<?php print $colorbacklinepair2; ?>);
-	--colorbacklinepairhover: rgb(<?php print $colorbacklinepairhover; ?>);
-	--colorbacklinepairchecked: rgb(<?php print $colorbacklinepairchecked; ?>);
-	--colorbacklinebreak: rgb(<?php print $colorbacklinebreak; ?>);
-	--colorbackbody: rgb(<?php print $colorbackbody; ?>);
-	--colortexttitlenotab: rgb(<?php print $colortexttitlenotab; ?>);
-	--colortexttitlenotab2: rgb(<?php print $colortexttitlenotab2; ?>);
-	--colortexttitle: rgb(<?php print $colortexttitle; ?>);
-	--colortext: rgb(<?php print $colortext; ?>);
-	--colortextlink: rgb(<?php print $colortextlink; ?>);
-	--colortextbackhmenu: #<?php echo $colortextbackhmenu; ?>;
-	--colortextbackvmenu: #<?php print $colortextbackvmenu; ?>;
-	--listetotal: #888888;
-	--inputbackgroundcolor: #FFF;
-	--inputbordercolor: rgba(0,0,0,.2);
-	--tooltipbgcolor: <?php print $toolTipBgColor; ?>;
-	--tooltipfontcolor : <?php print $toolTipFontColor; ?>;
-	--oddevencolor: #202020;
-	--colorboxstatsborder: #e0e0e0;
-	--dolgraphbg: rgba(255,255,255,0);
-	--fieldrequiredcolor: #000055;
-	--colortextbacktab: #<?php print $colortextbacktab; ?>;
-	--colorboxiconbg: #eee;
-	--refidnocolor:#444;
-	--tableforfieldcolor:#666;
-	--amountremaintopaycolor:#880000;
-	--amountpaymentcomplete:#008800;
-	--amountremaintopaybackcolor:none;
-}
-
-<?php
-if (!empty($conf->global->MAIN_THEME_DARKMODEENABLED)) {
-	print "@media (prefers-color-scheme: dark) {
-	      :root {
-
-	            --colorbackhmenu1: #1d1e20;
-	            --colorbackvmenu1: #2b2c2e;
-	            --colorbacktitle1: #2b2d2f;
-	            --colorbacktabcard1: #38393d;
-	            --colorbacktabactive: rgb(220,220,220);
-	            --colorbacklineimpair1: #38393d;
-	            --colorbacklineimpair2: #2b2d2f;
-	            --colorbacklinepair1: #38393d;
-	            --colorbacklinepair2: #2b2d2f;
-	            --colorbacklinepairhover: #2b2d2f;
-	            --colorbacklinepairchecked: #0e5ccd;
-	            --colorbackbody: #1d1e20;
-	            --tooltipbgcolor: #2b2d2f;
-	            --colortexttitlenotab: rgb(220,220,220);
-	            --colortexttitlenotab2: rgb(220,220,220);
-	            --colortexttitle: rgb(220,220,220);
-	            --colortext: rgb(220,220,220);
-	            --colortextlink: #4390dc;
-	            --colortextbackhmenu: rgb(220,220,220);
-	            --colortextbackvmenu: rgb(220,220,220);
-				--tooltipfontcolor : rgb(220,220,220);
-	            --listetotal: rgb(245, 83, 158);
-	            --inputbackgroundcolor: #2b2d2f;
-	            --inputbordercolor: rgb(220,220,220);
-	            --oddevencolor: rgb(220,220,220);
-	            --colorboxstatsborder: rgb(65,100,138);
-	            --dolgraphbg: #1d1e20;
-	            --fieldrequiredcolor: rgb(250,183,59);
-	            --colortextbacktab: rgb(220,220,220);
-	            --colorboxiconbg: rgb(36,38,39);
-	            --refidnocolor: rgb(220,220,220);
-	            --tableforfieldcolor:rgb(220,220,220);
-	            --amountremaintopaycolor:rgb(252,84,91);
-	            --amountpaymentcomplete:rgb(101,184,77);
-	            --amountremaintopaybackcolor:rbg(245,130,46);
-	      }
-	    }";
-}
-?>
 
 body {
 <?php if (GETPOST('optioncss', 'aZ09') == 'print') {  ?>
 	background-color: #FFFFFF;
 <?php } else { ?>
-	background: var(--colorbackbody);
+	background: rgb(<?php print $colorbackbody; ?>);
 <?php } ?>
-	color: var(--colortext);
+	color: rgb(<?php echo $colortext; ?>);
 	font-size: <?php print is_numeric($fontsize) ? $fontsize.'px' : $fontsize; ?>;
 	line-height: 1.4;
 	font-family: <?php print $fontlist ?>;
@@ -106,35 +23,21 @@ body {
     <?php print 'direction: '.$langs->trans("DIRECTION").";\n"; ?>
 }
 
-.sensiblehtmlcontent * {
-	position: static !important;
-}
-
 .thumbstat { font-weight: bold !important; }
 th a { font-weight: <?php echo ($useboldtitle ? 'bold' : 'normal'); ?> !important; }
 a.tab { font-weight: 500 !important; }
 
-a:link, a:visited, a:hover, a:active { font-family: <?php print $fontlist ?>; color: var(--colortextlink); text-decoration: none;  }
-a:hover { text-decoration: underline; color: var(--colortextlink); }
-a.commonlink { color: var(--colortextlink) !important; text-decoration: none; }
+a:link, a:visited, a:hover, a:active { font-family: <?php print $fontlist ?>; font-weight: normal; color: rgb(<?php print $colortextlink; ?>); text-decoration: none;  }
+a:hover { text-decoration: underline; color: rgb(<?php print $colortextlink; ?>); }
+a.commonlink { color: rgb(<?php print $colortextlink; ?>) !important; text-decoration: none; }
 th.liste_titre a div div:hover, th.liste_titre_sel a div div:hover { text-decoration: underline; }
-tr.liste_titre th.liste_titre_sel:not(.maxwidthsearch), tr.liste_titre td.liste_titre_sel:not(.maxwidthsearch),
-tr.liste_titre th.liste_titre:not(.maxwidthsearch), tr.liste_titre td.liste_titre:not(.maxwidthsearch) { opacity: 0.8; }
-/* th.liste_titre_sel a, th.liste_titre a, td.liste_titre_sel a, td.liste_titre a { color: #766; } */
 input, input.flat, textarea, textarea.flat, form.flat select, select, select.flat, .dataTables_length label select {
-	background-color: var(--inputbackgroundcolor);
-	color: var(--colortext);
+	background-color: #FFF;
 }
 select.vmenusearchselectcombo {
 	background-color: unset;
 }
 
-table.liste th.wrapcolumntitle.liste_titre:not(.maxwidthsearch), table.liste td.wrapcolumntitle.liste_titre:not(.maxwidthsearch) {
-    overflow: hidden;
-    white-space: nowrap;
-    max-width: 120px;
-    text-overflow: ellipsis;
-}
 .liste_titre input[name=month_date_when], .liste_titre input[name=monthvalid], .liste_titre input[name=search_ordermonth], .liste_titre input[name=search_deliverymonth],
 .liste_titre input[name=search_smonth], .liste_titre input[name=search_month], .liste_titre input[name=search_emonth], .liste_titre input[name=smonth], .liste_titre input[name=month], .liste_titre select[name=month],
 .liste_titre input[name=month_lim], .liste_titre input[name=month_start], .liste_titre input[name=month_end], .liste_titre input[name=month_create],
@@ -148,15 +51,12 @@ table.liste th.wrapcolumntitle.liste_titre:not(.maxwidthsearch), table.liste td.
 .liste_titre input[name=search_day_date_when], .liste_titre input[name=search_month_date_when], .liste_titre input[name=search_year_date_when],
 .liste_titre input[name=search_dtstartday], .liste_titre input[name=search_dtendday], .liste_titre input[name=search_dtstartmonth], .liste_titre input[name=search_dtendmonth],
 select#date_startday, select#date_startmonth, select#date_endday, select#date_endmonth, select#reday, select#remonth,
-input[name=duration_value], input[name=durationhour]
+input[name=duration_value]
 {
-	margin-right: 4px !important;
+	margin-right: 4px;
 }
-input[type=submit], input[type=submit]:hover {
+input[type=submit] {
 	margin-left: 5px;
-}
-input[type=checkbox], input[type=radio] {
-    margin: 0 3px 0 3px;
 }
 input, input.flat, form.flat select, select, select.flat, .dataTables_length label select {
 	border: none;
@@ -165,7 +65,7 @@ input, input.flat, textarea, textarea.flat, form.flat select, select, select.fla
     font-family: <?php print $fontlist ?>;
     outline: none;
     margin: 0px 0px 0px 0px;
-    border<?php echo empty($conf->global->THEME_HIDE_BORDER_ON_INPUT) ? '-bottom' : ''; ?>: solid 1px var(--inputbordercolor);
+    border<?php echo empty($conf->global->THEME_HIDE_BORDER_ON_INPUT) ? '-bottom' : ''; ?>: solid 1px rgba(0,0,0,.2);
 }
 
 input {
@@ -174,29 +74,16 @@ input {
 	padding-left: 5px;
 }
 select {
-	padding-top: 5px;
+	padding-top: 4px;
 	padding-right: 4px;
-	padding-bottom: 5px;
+	padding-bottom: 3px;
 	padding-left: 2px;
 }
 input, select {
-	margin-left: 0px;
-	margin-bottom: 1px;
-	margin-top: 1px;
+	margin-left:0px;
+	margin-bottom:1px;
+	margin-top:1px;
 }
-#mainbody input.button:not(.buttongen):not(.bordertransp) {
-	background: var(--butactionbg);
-    border-collapse: collapse;
-    border: none;
-}
-#mainbody input.buttongen, #mainbody button.buttongen {
-	padding: 3px 4px;
-}
-
-input.button:focus {
-	border-bottom: 0;
-}
-
 input.button.massactionconfirmed {
     margin: 4px;
 }
@@ -217,9 +104,7 @@ textarea.cke_source:focus
 {
 	box-shadow: none;
 }
-div#cke_dp_desc {
-    margin-top: 5px;
-}
+
 textarea {
 	border-radius: 0;
 	border-top:solid 1px rgba(0,0,0,.2);
@@ -247,8 +132,6 @@ input.buttongen {
 input.buttonpayment, button.buttonpayment, div.buttonpayment {
 	min-width: 290px;
 	margin-bottom: 15px;
-	margin-top: 15px;
-	height: 60px;
 	background-image: none;
 	line-height: 24px;
 	padding: 8px;
@@ -260,8 +143,6 @@ input.buttonpayment, button.buttonpayment, div.buttonpayment {
 	box-shadow: 1px 1px 4px #bbb;
 	color: #fff;
 	border-radius: 4px;
-	cursor: pointer;
-	max-width: 350px;
 }
 div.buttonpayment input:focus {
     color: #008;
@@ -309,12 +190,6 @@ input.buttonpaymentstripe {
 a.buttonticket {
 	padding-left: 5px;
 	padding-right: 5px;
-    /* height: 40px; */
-}
-
-/* Used by categories */
-span.categorysquarre {
-    padding: 0 4px 0 4px;
 }
 
 /* Used by timesheets */
@@ -332,14 +207,12 @@ td.onholidaymorning, td.onholidayafternoon {
 td.onholidayallday {
 	background-color: #f4eede;
 }
-/*
 td.leftborder, td.hide0 {
 	border-left: 1px solid #ccc;
 }
 td.leftborder, td.hide6 {
 	border-right: 1px solid #ccc;
 }
-*/
 td.rightborder {
 	border-right: 1px solid #ccc;
 }
@@ -347,17 +220,12 @@ td.rightborder {
 td.actionbuttons a {
     padding-left: 6px;
 }
-select.flat, form.flat select, .pageplusone {
+select.flat, form.flat select {
 	font-weight: normal;
 	font-size: unset;
 }
-input.pageplusone {
-    padding-bottom: 4px;
-    padding-top: 4px;
-}
-
 .optionblue {
-	color: var(--colortextlink);
+	color: rgb(<?php echo $colortextlink; ?>);
 }
 .optiongrey, .opacitymedium {
 	opacity: 0.4;
@@ -374,13 +242,6 @@ input.pageplusone {
 .opacitytransp {
 	opacity: 0;
 }
-.colorwhite {
-	color: #fff;
-}
-.colorblack {
-	color: #000;
-}
-
 select:invalid {
 	color: gray;
 }
@@ -415,11 +276,6 @@ input#onlinepaymenturl, input#directdownloadlink {
 	opacity: 0.7;
 }
 
-.formconsumeproduce {
-	background: #f3f3f3;
-    padding: 20px 0px 0px 0px;
-}
-
 div#moretabsList, div#moretabsListaction {
     z-index: 5;
 }
@@ -427,15 +283,14 @@ div#moretabsList, div#moretabsListaction {
 hr { border: 0; border-top: 1px solid #ccc; }
 .tabBar hr { margin-top: 20px; margin-bottom: 17px; }
 
-.button:not(.bordertransp):not(.buttonpayment), .buttonDelete:not(.bordertransp):not(.buttonpayment) {
-	margin-bottom: 3px;
-	margin-top: 3px;
+.button, .buttonDelete, input[name="sbmtConnexion"] {
+	margin-bottom: 0;
+	margin-top: 0;
 	margin-left: 5px;
 	margin-right: 5px;
 	font-family: <?php print $fontlist ?>;
 	display: inline-block;
-	padding: 8px 15px;
-	min-width: 90px;
+	padding: 4px 14px;
 	text-align: center;
 	cursor: pointer;
 	text-decoration: none !important;
@@ -554,15 +409,9 @@ textarea.centpercent {
     color: #777;
 }
 
-.flip {
-	transform: scaleX(-1);
-}
 .center {
     text-align: center;
     margin: 0px auto;
-}
-.alignstart {
-    text-align: start;
 }
 .left {
 	text-align: <?php print $left; ?>;
@@ -622,10 +471,10 @@ textarea.centpercent {
 	padding-<?php print $right; ?>: 2px;
 }
 .paddingtop {
-	padding-top: 4px;
+	padding-bottom: 4px;
 }
 .paddingtop2 {
-	padding-top: 2px;
+	padding-bottom: 2px;
 }
 .paddingbottom {
 	padding-bottom: 4px;
@@ -679,17 +528,13 @@ body[class*="colorblind-"] .text-success{
     color : <?php print $textDanger; ?>
 }
 
-.editfielda span.fa-pencil-alt, .editfielda span.fa-pencil-ruler, .editfielda span.fa-trash, .editfielda span.fa-crop,
-.editfieldlang {
+.editfielda span.fa-pencil-alt, .editfielda span.fa-trash {
     color: #ccc !important;
 }
-.editfielda span.fa-pencil-alt:hover, .editfielda span.fa-pencil-ruler:hover, .editfielda span.fa-trash:hover, .editfielda span.fa-crop:hover,
-.editfieldlang:hover {
-    color: var(--colortexttitle) !important;
+.editfielda span.fa-pencil-alt:hover, .editfielda span.fa-trash:hover {
+    color: rgb(<?php echo $colortexttitle; ?>) !important;
 }
-.fawidth30 {
-	width: 20px;
-}
+
 .floatnone {
 	float: none !important;
 }
@@ -754,24 +599,14 @@ div.divsearchfield {
     -webkit-flex-flow: row wrap;
     flex-flow: row wrap;
     background: #fff;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    padding-left: 10px;
-    padding-right: 10px;
-    border-bottom: solid 1px rgba(0,0,0,.2);
-    height: 24px;
+    padding: 3px;
 }
-.search_component_searchtext {
-    padding-top: 2px;
-}
-.search_component_params_text, .search_component_params_text:focus {
+.search_component_params_input, .search_component_params_input:focus {
 	border-bottom: none;
 	width: auto;
 	margin: 0 !important;
 	padding: 3px;
 }
-
-
 <?php
 // Add a nowrap on smartphone, so long list of field used for filter are overflowed with clip
 if ($conf->browser->layout == 'phone') {
@@ -826,14 +661,8 @@ select.flat.selectlimit {
 .margintoponly {
 	margin-top: 10px !important;
 }
-.margintoponlyshort {
-	margin-top: 3px !important;
-}
 .marginbottomonly {
 	margin-bottom: 10px !important;
-}
-.marginbottomonlyshort {
-	margin-bottom: 3px !important;
 }
 .nomargintop {
     margin-top: 0 !important;
@@ -854,9 +683,6 @@ select.flat.selectlimit {
 	width: 130px;
 }
 /* using a tdoverflowxxx make the min-width not working */
-.tdnooverflowimp {
-   text-overflow: none;
-}
 .tdoverflow {
     max-width: 0;
     overflow: hidden;
@@ -897,7 +723,7 @@ select.flat.selectlimit {
     max-width: 0;
     overflow: auto;
 }
-.divintowithtwolinesmax {
+.divintdwithtwolinesmax {
     width: 75px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -917,17 +743,16 @@ select.flat.selectlimit {
 .amountalreadypaid {
 }
 .amountpaymentcomplete {
-	color: var(--amountpaymentcomplete);
+	color: #008800;
 	font-weight: bold;
 	font-size: 1.2em;
 }
 .amountremaintopay {
-	color: var(--amountremaintopaycolor);
+	color: #880000;
 	font-weight: bold;
 	font-size: 1.2em;
 }
 .amountremaintopayback {
-	color: var(--amountremaintopaybackcolor);
 	font-weight: bold;
 	font-size: 1.2em;
 }
@@ -1041,14 +866,11 @@ table[summary="list_of_modules"] .fa-cog {
 /* ============================================================================== */
 
 .clearboth  { clear:both; }
-
 .hideobject { display: none; }
 .minwidth50  { min-width: 50px; }
-.minwidth75  { min-width: 75px; }
 /* rule for not too small screen only */
 @media only screen and (min-width: <?php echo empty($conf->global->THEME_ELDY_WITDHOFFSET_FOR_REDUC3) ? round($nbtopmenuentries * 47, 0) + 130 : $conf->global->THEME_ELDY_WITDHOFFSET_FOR_REDUC3; ?>px)
 {
-	.width20  { width: 20px; }
 	.width25  { width: 25px; }
     .width50  { width: 50px; }
     .width75  { width: 75px; }
@@ -1070,7 +892,6 @@ table[summary="list_of_modules"] .fa-cog {
     .minwidth500imp { min-width: 500px !important; }
 }
 .widthauto { width: auto; }
-.width20  { width: 20px; }
 .width25  { width: 25px; }
 .width50  { width: 50px; }
 .width75  { width: 75px; }
@@ -1080,7 +901,6 @@ table[summary="list_of_modules"] .fa-cog {
 .maxwidth25  { max-width: 25px; }
 .maxwidth50  { max-width: 50px; }
 .maxwidth75  { max-width: 75px; }
-.maxwidthdate  { max-width: 80px; }
 .maxwidth100 { max-width: 100px; }
 .maxwidth125 { max-width: 125px; }
 .maxwidth150 { max-width: 150px; }
@@ -1156,27 +976,6 @@ table[summary="list_of_modules"] .fa-cog {
     	padding-left: 5px;
     	padding-right: 5px;
     }
-
-    .hideonsmartphone { display: none; }
-    .hideonsmartphoneimp { display: none !important; }
-
-	span.pictotitle {
-		margin-<?php echo $left; ?>: 0 !important;
-	}
-	div.fiche>table.table-fiche-title {
-		margin-top: 7px !important;
-		margin-bottom: 15px !important;
-	}
-
-	select.minwidth100imp, select.minwidth100, select.minwidth200, .widthcentpercentminusx {
-		width: calc(100% - 50px) !important;
-		display: inline-block;
-	}
-
-	.clearbothonsmartphone { clear: both; display: block; }
-	/*img.photoref, div.photoref {
-		box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
-	}*/
 }
 
 /* Force values for small screen 570 */
@@ -1184,10 +983,6 @@ table[summary="list_of_modules"] .fa-cog {
 {
 	body {
 		font-size: <?php print is_numeric($fontsize) ? ($fontsize + 3).'px' : $fontsize; ?>;
-	}
-
-	.box-flex-item {
-		margin: 3px 2px 3px 2px !important;
 	}
 	div.refidno {
 		font-size: <?php print is_numeric($fontsize) ? ($fontsize + 3).'px' : $fontsize; ?> !important;
@@ -1212,18 +1007,6 @@ table[summary="list_of_modules"] .fa-cog {
         text-overflow: ellipsis;
         white-space: nowrap;
     }
-    .tdoverflowmax100onsmartphone {			/* For tdoverflow, the max-midth become a minimum ! */
-	    max-width: 100px;
-	    overflow: hidden;
-	    text-overflow: ellipsis;
-	    white-space: nowrap;
-	}
-    .tdoverflowmax150onsmartphone {			/* For tdoverflow, the max-midth become a minimum ! */
-	    max-width: 100px;
-	    overflow: hidden;
-	    text-overflow: ellipsis;
-	    white-space: nowrap;
-	}
     .border tbody tr, .border tbody tr td, div.tabBar table.border tr, div.tabBar table.border tr td, div.tabBar div.border .table-border-row, div.tabBar div.border .table-key-border-col, div.tabBar div.border .table-val-border-col {
     	height: 40px !important;
     }
@@ -1250,6 +1033,8 @@ table[summary="list_of_modules"] .fa-cog {
 		max-width: 138px;	/* length of input text in the quick search box when using a smartphone and without dolidroid */
 	}
 
+    .hideonsmartphone { display: none; }
+    .hideonsmartphoneimp { display: none !important; }
     .noenlargeonsmartphone { width : 50px !important; display: inline !important; }
     .maxwidthonsmartphone, #search_newcompany.ui-autocomplete-input { max-width: 100px; }
     .maxwidth50onsmartphone { max-width: 40px; }
@@ -1258,7 +1043,6 @@ table[summary="list_of_modules"] .fa-cog {
     .maxwidth150onsmartphone { max-width: 120px; }
     .maxwidth150onsmartphoneimp { max-width: 120px !important; }
     .maxwidth200onsmartphone { max-width: 200px; }
-    .maxwidth250onsmartphone { max-width: 250px; }
     .maxwidth300onsmartphone { max-width: 300px; }
     .maxwidth400onsmartphone { max-width: 400px; }
 	.minwidth50imp  { min-width: 50px !important; }
@@ -1289,9 +1073,9 @@ table[summary="list_of_modules"] .fa-cog {
 	    padding-bottom: 5px;
 	}
     img.photoref, div.photoref {
-    	border: 1px solid rgba(0, 0, 0, 0.2);
-    	box-shadow: none;
+    	border: none;
         -webkit-box-shadow: none;
+        box-shadow: none;
         padding: 4px;
     	height: 20px;
     	width: 20px;
@@ -1322,7 +1106,7 @@ table[summary="list_of_modules"] .fa-cog {
 .linkobject { cursor: pointer; }
 
 table.tableforfield tr>td:first-of-type, div.tableforfield div.tagtr>div.tagtd:first-of-type {
-	color: var(--tableforfieldcolor);
+	color: #666;
 }
 
 <?php if (GETPOST('optioncss', 'aZ09') == 'print') { ?>
@@ -1362,14 +1146,14 @@ td.showDragHandle {
 #id-left {
 	padding-top: 20px;
 	padding-bottom: 5px;
-	<?php if (!empty($conf->global->MAIN_USE_TOP_MENU_SEARCH_DROPDOWN) && ! empty($conf->global->MAIN_USE_TOP_MENU_QUICKADD_DROPDOWN)) { ?>
+	<?php if (!empty($conf->global->MAIN_USE_TOP_MENU_SEARCH_DROPDOWN) && !empty($conf->global->MAIN_USE_TOP_MENU_BOOKMARK_DROPDOWN)) { ?>
 	padding-top: 8px;
 	<?php } ?>
 }
 #id-right {	/* This must stay id-right and not be replaced with echo $right */
 	padding-top: 10px;
 	width: 100%;
-	background: var(--colorbackbody);
+	background: rgb(<?php print $colorbackbody; ?>);
 	padding-bottom: 20px;
 }
 #id-left {
@@ -1382,15 +1166,15 @@ td.showDragHandle {
 .side-nav-vert {
 	position: sticky;
 	top: 0px;
-	z-index: 1001;
+	z-index: 210;
 }
 <?php } ?>
 
 .side-nav {
 	display: table-cell;
-	border-<?php echo $right; ?>: 1px solid #E0E0E0;
+	border-<?php echo $right; ?>: 1px solid #d0d0d0;
 	box-shadow: 3px 0 6px -2px #eee;
-	background: var(--colorbackvmenu1);
+	background: rgb(<?php echo $colorbackvmenu1; ?>);
 	transition: left 0.5s ease;
 }
 
@@ -1483,7 +1267,7 @@ body.sidebar-collapse .login_block {
 
 .menuhider { display: block !important; }
 .dropdown-user-image { display: none; }
-.user-header { height: auto !important; color: var(--colorbackbody); }
+.user-header { height: auto !important; color: rgb(<?php echo $colorbackbody; ?>); }
 
 #id-container {
 	width: 100%;
@@ -1500,6 +1284,10 @@ div.blockvmenulogo
 {
 	border-bottom: 0 !important;
 }
+/*div.blockvmenusearch {
+	padding-bottom: 12px !important;
+	border-bottom: 1px solid #e0e0e0;
+}*/
 div.blockvmenupair, div.blockvmenuimpair, div.blockvmenubookmarks, div.blockvmenuend {
 	border-top: none !important;
 	border-left: none !important;
@@ -1528,10 +1316,7 @@ body.onlinepaymentbody div.fiche {	/* For online payment page */
 	margin: 20px !important;
 }
 div.fiche>table:first-child {
-	margin-bottom: 15px;
-}
-div.fiche>table.table-fiche-title {
-	margin-bottom: 7px;
+	margin-bottom: 15px !important;
 }
 div.fichecenter {
 	width: 100%;
@@ -1551,7 +1336,7 @@ div.fichetwothirdright {
 	<?php if ($conf->browser->layout == 'phone') { print "padding-bottom: 6px\n"; } ?>
 }
 div.fichetwothirdright div.ficheaddleft {
-     padding-<?php echo $left; ?>: 20px;
+    padding-left: 20px;
 }
 div.fichehalfleft {
 	<?php if ($conf->browser->layout != 'phone') { print "float: ".$left.";\n"; } ?>
@@ -1646,33 +1431,19 @@ div.nopadding {
 	margin : 0px auto;
 }
 
-td.nobordernopadding.widthpictotitle.col-picto {
-    color: #bbb;
-    opacity: 0.85;
-}
-.table-list-of-attached-files .col-picto, .table-list-of-links .col-picto {
-    opacity: 0.7 !important;
-    font-size: 0.7em;
-    width: 20px;
-}
-.table-list-of-attached-files .col-picto .widthpictotitle, .table-list-of-links .col-picto .widthpictotitle {
-	width: unset;
-    color: #999;
-}
-
-span.widthpictotitle.pictotitle {
-	/* background: rgba(70, 3, 62, 0.5); */
-    background: var(--colortexttitlenotab);
-    opacity: 0.8;
-    color: #fff !important;
-    padding: 7px;
-    border-radius: 2px;
-    min-width: 30px;
-    text-align: center;
+td.nobordernopadding.widthpictotitle.opacityhigh.valignmiddle.col-picto {
+    color: rgb(<?php print $colortexttitlenotab; ?>);
+    opacity: 0.5;
 }
 .pictotitle {
 	margin-<?php echo $right; ?>: 8px;
-	/* margin-bottom: 4px; */
+	margin-bottom: 4px;
+}
+@media only screen and (max-width: 767px)
+{
+	span.pictotitle {
+		margin-<?php echo $left; ?>: 0 !important;
+	}
 }
 .pictoobjectwidth {
 	width: 14px;
@@ -1737,7 +1508,7 @@ div.heightref {
 	min-height: 80px;
 }
 div.divphotoref {
-	padding-<?php echo $right; ?>: 30px;
+	padding-<?php echo $right; ?>: 20px;
 }
 div.paginationref {
 	padding-bottom: 10px;
@@ -1754,7 +1525,6 @@ div.statusref {
 	margin-top: 8px;
 	margin-bottom: 10px;
 	clear: both;
-    text-align: right;
 }
 div.statusref img {
     padding-left: 8px;
@@ -1768,9 +1538,9 @@ div.statusrefbis {
    	vertical-align: text-bottom;
 }
 img.photoref, div.photoref {
-	/* border: 1px solid #DDD; */
-    -webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
-    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+	border: 1px solid #DDD;
+    -webkit-box-shadow: 0px 0px 6px #DDD;
+    box-shadow: 0px 0px 6px #DDD;
     padding: 4px;
 	height: 80px;
 	width: 80px;
@@ -1796,10 +1566,10 @@ img.photorefnoborder {
 }
 .underbanner {
 	border-bottom: <?php echo $borderwidth ?>px solid rgb(<?php echo $colortopbordertitle1 ?>);
-	/* border-bottom: 2px solid var(--colorbackhmenu1); */
+	/* border-bottom: 2px solid rgb(<?php echo $colorbackhmenu1 ?>); */
 }
-.trextrafieldseparator td, .trextrafields_collapse_last td {
-    /* border-bottom: 2px solid var(--colorbackhmenu1) !important; */
+.trextrafieldseparator td {
+    /* border-bottom: 2px solid rgb(<?php echo $colorbackhmenu1 ?>) !important; */
     border-bottom: 2px solid rgb(<?php echo $colortopbordertitle1 ?>) !important;
 }
 
@@ -1816,9 +1586,8 @@ div#id-top {
 <?php if (GETPOST('optioncss', 'aZ09') == 'print') {  ?>
 	display:none;
 <?php } else { ?>
-	background: var(--colorbackhmenu1);
-	/* background-image: linear-gradient(-45deg, <?php echo colorAdjustBrightness(colorArrayToHex(colorStringToArray($colorbackhmenu1)), '5'); ?>, var(--colorbackhmenu1)); */
-	/* box-shadow: 0px 0px 5px #eee; */
+	background: rgb(<?php echo $colorbackhmenu1 ?>);
+	background-image: linear-gradient(-45deg, <?php echo colorAdjustBrightness(colorArrayToHex(colorStringToArray($colorbackhmenu1)), '5'); ?>, rgb(<?php echo $colorbackhmenu1 ?>));
 <?php } ?>
 }
 
@@ -1868,12 +1637,12 @@ div.tmenudisabled, a.tmenudisabled {
 	opacity: 0.6;
 }
 a.tmenu, a.tmenusel, a.tmenudisabled {
-    /* font-weight: 300; */
+    font-weight: 300;
 }
 a.tmenudisabled:link, a.tmenudisabled:visited, a.tmenudisabled:hover, a.tmenudisabled:active {
 	padding: 0px 5px 0px 5px;
 	white-space: nowrap;
-	color: var(--colortextbackhmenu);
+	color: #<?php echo $colortextbackhmenu; ?>;
 	text-decoration: none;
 	cursor: not-allowed;
 }
@@ -1881,14 +1650,14 @@ a.tmenudisabled:link, a.tmenudisabled:visited, a.tmenudisabled:hover, a.tmenudis
 a.tmenu:link, a.tmenu:visited, a.tmenu:hover, a.tmenu:active {
 	padding: 0px 4px 0px 4px;
 	white-space: nowrap;
-	color: var(--colortextbackhmenu);
+	color: #<?php echo $colortextbackhmenu; ?>;
     text-decoration: none;
 }
 a.tmenusel:link, a.tmenusel:visited, a.tmenusel:hover, a.tmenusel:active {
 	padding: 0px 4px 0px 4px;
 	margin: 0px 0px 0px 0px;
 	white-space: nowrap;
-	color: var(--colortextbackhmenu);
+	color: #<?php echo $colortextbackhmenu; ?>;
 	text-decoration: none !important;
 }
 
@@ -1948,8 +1717,8 @@ div.tmenuleft
 }
 div.tmenucenter
 {
-	padding-left: 2px;
-	padding-right: 2px;
+	padding-left: 0px;
+	padding-right: 3px;
 	<?php if ($disableimages) { ?>
 	padding-top: 8px;
 	height: 26px;
@@ -1983,13 +1752,6 @@ div.mainmenu {
 	height: <?php echo ($heightmenu - 22); ?>px;
 	margin-left: 0px;
 	min-width: 40px;
-}
-
-a.tmenuimage:focus, .mainmenu.topmenuimage:focus {
-    outline: none;
-}
-button.ui-button.ui-corner-all.ui-widget:focus {
-    outline: none;
 }
 
 /* For mainmenu, we always load the img */
@@ -2133,7 +1895,13 @@ a.tmenuimage:hover{
         $found = 0; $url = '';
         foreach ($conf->file->dol_document_root as $dirroot)
         {
-    		if (file_exists($dirroot."/".$val."/img/".$val.".png"))
+            if (file_exists($dirroot."/".$val."/img/".$val."_over.png"))
+            {
+                $url = dol_buildpath('/'.$val.'/img/'.$val.'_over.png', 1);
+                $found = 1;
+                break;
+            }
+    		elseif (file_exists($dirroot."/".$val."/img/".$val.".png"))    // Retro compatibilité
     		{
     			$url = dol_buildpath('/'.$val.'/img/'.$val.'.png', 1);
     			$found = 1;
@@ -2144,12 +1912,13 @@ a.tmenuimage:hover{
         if (!$found)
         {
             if (!defined('DISABLE_FONT_AWSOME')) {
-                print "/* A mainmenu entry was found but img file ".$val.".png not found (check /".$val."/img/".$val.".png), so we use a generic one. */\n";
- 				print "/* Overwrite this definition in your own css with a different content to use your own font awesome icon. */\n";
+                print "/* A mainmenu entry was found but img file ".$val.".png not found (check /".$val."/img/".$val.".png), so we use a generic one */\n";
                 print 'div.mainmenu.'.$val.'::before {
                     content: "\f249";
-                }'."\n";
-            } else {
+                }';
+            }
+            else
+            {
                 print "/* A mainmenu entry was found but img file ".$val.".png not found (check /".$val."/img/".$val.".png), so we use a generic one */\n";
                 $url = dol_buildpath($path.'/theme/'.$theme.'/img/menus/generic'.(min($generic, 4))."_over.png", 1);
                 print "div.mainmenu.".$val." {\n";
@@ -2157,7 +1926,9 @@ a.tmenuimage:hover{
                 print "}\n";
             }
             $generic++;
-        } else {
+        }
+        else
+        {
             print "div.mainmenu.".$val." {\n";
             print "	background-image: url(".$url.");\n";
             print "}\n";
@@ -2327,11 +2098,8 @@ div.login_block {
 	<?php } ?>
 }
 div.login_block a {
-	color: var(--colortextbackhmenu);
+	color: #<?php echo $colortextbackhmenu; ?>;
 	display: inline-block;
-}
-div.login_block span.aversion {
-	color: <?php echo colorAgressiveness($colortextbackhmenu, -40); ?>;
 }
 div.login_block table {
 	display: inline;
@@ -2342,10 +2110,10 @@ div.login {
 	float: right;
 }
 div.login a {
-	color: var(--colortextbackvmenu);
+	color: #<?php echo $colortextbackvmenu; ?>;
 }
 div.login a:hover {
-	color: var(--colortextbackvmenu);
+	color: #<?php echo $colortextbackvmenu; ?>;
 	text-decoration:underline;
 }
 .login_block_elem a span.atoplogin, .login_block_elem span.atoplogin {
@@ -2353,28 +2121,19 @@ div.login a:hover {
 }
 div.login_block_user {
 	display: inline-block;
-    vertical-align: middle;
-	line-height: <?php echo $disableimages ? '25' : '50'; ?>px;
-	height: <?php echo $disableimages ? '25' : '50'; ?>px;
 }
 div.login_block_other {
 	display: inline-block;
-    vertical-align: middle;
 	clear: <?php echo $disableimages ? 'none' : 'both'; ?>;
-	padding-top: 0;
-	text-align: right;
-	margin-right: 8px;
-	max-width: 200px;
 }
+div.login_block_other { padding-top: 0; text-align: right; margin-right: 8px; }
 
 .login_block_elem {
 	float: right;
 	vertical-align: top;
 	padding: 0px 3px 0px 4px !important;
-}
-.login_block_other .login_block_elem {
-	line-height: 25px;
-	height: 25px;
+	line-height: <?php echo $disableimages ? '25' : '48'; ?>px;
+	height: <?php echo $disableimages ? '25' : '50'; ?>px;
 }
 .atoplogin, .atoplogin:hover {
 	color: #<?php echo $colortextbackhmenu; ?> !important;
@@ -2484,27 +2243,17 @@ input.vmenusearchselectcombo[type=text] {
 .searchform input { font-size: 16px; }
 
 
-a.vmenu:link, a.vmenu:visited, a.vmenu:hover, a.vmenu:active, span.vmenu, span.vsmenu { white-space: nowrap; font-family: <?php print $fontlist ?>; text-align: <?php print $left; ?>; }
-a.vmenu:link, a.vmenu:visited, a.vmenu:hover, a.vmenu:active,
-span.vmenu, span.vmenu:link, span.vmenu:visited, span.vmenu:hover, span.vmenu:active { font-weight: bold;  }	/* bold = 600, 500 is ko with Edge on 1200x960 */
+a.vmenu:link, a.vmenu:visited, a.vmenu:hover, a.vmenu:active, span.vmenu, span.vsmenu { white-space: nowrap; font-family: <?php print $fontlist ?>; text-align: <?php print $left; ?>; font-weight: bold; }	/* bold = 600, 500 is ko with Edge on 1200x960 */
 font.vmenudisabled  { font-family: <?php print $fontlist ?>; text-align: <?php print $left; ?>; font-weight: bold; color: #aaa; margin-left: 4px; }												/* bold = 600, 500 is ko with Edge on 1200x960 */
-a.vmenu:link, a.vmenu:visited { color: var(--colortextbackvmenu); }
+a.vmenu:link, a.vmenu:visited { color: #<?php echo $colortextbackvmenu; ?>; }
 
-a.vsmenu:link, a.vsmenu:visited, a.vsmenu:hover, a.vsmenu:active, span.vsmenu {
-	font-family: <?php print $fontlist ?>;
-	text-align: <?php print $left; ?>;
-	color: #202020;
-	margin: 1px 1px 1px 6px;
-}
-font.vsmenudisabled { font-family: <?php print $fontlist ?>; text-align: <?php print $left; ?>; color: #aaa; }
-a.vsmenu:link, a.vsmenu:visited {
-	color: var(--colortextbackvmenu);
-	white-space: nowrap;
-}
+a.vsmenu:link, a.vsmenu:visited, a.vsmenu:hover, a.vsmenu:active, span.vsmenu { font-family: <?php print $fontlist ?>; text-align: <?php print $left; ?>; font-weight: normal; color: #202020; margin: 1px 1px 1px 6px; }
+font.vsmenudisabled { font-family: <?php print $fontlist ?>; text-align: <?php print $left; ?>; font-weight: normal; color: #aaa; }
+a.vsmenu:link, a.vsmenu:visited { color: #<?php echo $colortextbackvmenu; ?>; white-space: nowrap; }
 font.vsmenudisabledmargin { margin: 1px 1px 1px 6px; }
 li a.vsmenudisabled, li.vsmenudisabled { color: #aaa !important; }
 
-a.help:link, a.help:visited, a.help:hover, a.help:active, span.help { text-align: <?php print $left; ?>; color: #aaa; text-decoration: none; }
+a.help:link, a.help:visited, a.help:hover, a.help:active, span.help { font-size:<?php print is_numeric($fontsizesmaller) ? ($fontsizesmaller.'px') : $fontsizesmaller; ?>; font-family: <?php print $fontlist ?>; text-align: <?php print $left; ?>; font-weight: normal; color: #aaa; text-decoration: none; }
 
 .vmenu div.blockvmenufirst, .vmenu div.blockvmenulogo, .vmenu div.blockvmenusearchphone, .vmenu div.blockvmenubookmarks
 {
@@ -2523,7 +2272,8 @@ div.blockvmenusearchphone
 }
 .vmenu div.blockvmenusearch
 {
-	padding-bottom: 13px;
+	padding-bottom: 4px;
+/*	border-bottom: 1px solid #e0e0e0;  */
 }
 .vmenu div.blockvmenuend
 {
@@ -2551,7 +2301,7 @@ div.blockvmenupair, div.blockvmenuimpair, div.blockvmenubookmarks, div.blockvmen
     padding-bottom: 7px;
     margin: 0 0 0 2px;
 
-	background: var(--colorbackvmenu1);
+	background: rgb(<?php echo $colorbackvmenu1; ?>);
 
     border-left: 1px solid #AAA;
     border-right: 1px solid #BBB;
@@ -2564,7 +2314,7 @@ div.blockvmenusearch
 	text-align: <?php print $left; ?>;
 	text-decoration: none;
     margin: 1px 0px 0px 2px;
-	background: var(--colorbackvmenu1);
+	background: rgb(<?php echo $colorbackvmenu1; ?>);
 }
 
 div.blockvmenusearch > form > div {
@@ -2672,8 +2422,8 @@ li.expanded > a.fmdirlia.jqft.ecmjqft {
 div.tabs {
     text-align: <?php print $left; ?>;
     padding-top: 10px;
-    padding-left: 6px;
-    padding-right: 6px;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
 	clear:both;
 	height:100%;
 }
@@ -2689,7 +2439,7 @@ div.tabsElem a.tabactive::before, div.tabsElem a.tabunactive::before {
 }
 */
 div.tabBar {
-    color: var(--colortextbacktab);
+    color: #<?php echo $colortextbacktab; ?>;
     padding-top: 16px;
     padding-left: 0px; padding-right: 0px;
     padding-bottom: 2px;
@@ -2697,12 +2447,12 @@ div.tabBar {
     border-top: 1px solid #BBB;
     /* border-bottom: 1px solid #AAA; */
 	width: auto;
-	background: var(--colorbacktabcard1);
+	background: rgb(<?php echo $colorbacktabcard1; ?>);
 }
 div.tabBar tr.titre td {
 	padding-top: 20px;
 }
-div.fiche table:not(.table-fiche-title) tr.titre td {
+div.fiche tr.titre td {
 	padding-top: 10px;
 }
 
@@ -2714,7 +2464,7 @@ div.tabBar.tabBarNoTop {
 /* tabBar used for creation/update/send forms */
 div.tabBarWithBottom {
 	padding-bottom: 18px;
-	border-bottom: 1px solid #bbb;
+	border-bottom: 1px solid #aaa;
 }
 div.tabBarWithBottom tr {
 	background: unset !important;
@@ -2773,18 +2523,12 @@ a.tabTitle {
     text-decoration: none;
     white-space: nowrap;
 }
-.tabTitleText {
-	display: none;
-}
 .imgTabTitle {
 	max-height: 14px;
 }
-div.tabs div.tabsElem:first-of-type a.tab {
-    margin-left: 0px !important;
-}
 
 a.tabunactive {
-    color: var(--colortextlink) !important;
+    color: rgb(<?php print $colortextlink; ?>) !important;
 }
 a.tab:link, a.tab:visited, a.tab:hover, a.tab#active {
 	font-family: <?php print $fontlist ?>;
@@ -2793,9 +2537,6 @@ a.tab:link, a.tab:visited, a.tab:hover, a.tab#active {
     text-decoration: none;
     white-space: nowrap;
 
-	/*border-right: 1px solid #ddd;
-	border-left: 1px solid #ddd;
-	border-top: 1px solid #ddd; */
 	border-right: 1px solid transparent;
 	border-left: 1px solid transparent;
 	border-top: 1px solid transparent;
@@ -2804,20 +2545,20 @@ a.tab:link, a.tab:visited, a.tab:hover, a.tab#active {
 	background-image: none !important;
 }
 .tabactive, a.tab#active {
-	color: var(--colortextbacktab); !important;
-	background: var(--colorbacktabcard1) !important;
+	color: #<?php echo $colortextbacktab; ?> !important;
+	background: rgb(<?php echo $colorbacktabcard1; ?>) !important;
 	margin: 0 0.2em 0 0.2em !important;
 
 	border-right: 1px solid #CCC !important;
 	border-left: 1px solid #CCC !important;
 	/* border-top: <?php echo 2; ?>px solid rgb(<?php echo $colortopbordertitle1; ?>) !important; */
-	border-top: <?php echo 2; ?>px solid var(--colorbackhmenu1) !important;
+	border-top: <?php echo 2; ?>px solid rgb(<?php echo $colorbackhmenu1 ?>) !important;
 }
 a.tab:hover
 {
 	/*
-	background: var(--colorbacktabcard1), 0.5)  url(<?php echo dol_buildpath($path.'/theme/'.$theme.'/img/nav-overlay3.png', 1); ?>) 50% 0 repeat-x;
-	color: var(--colortextbacktab);
+	background: rgba(<?php echo $colorbacktabcard1; ?>, 0.5)  url(<?php echo dol_buildpath($path.'/theme/'.$theme.'/img/nav-overlay3.png', 1); ?>) 50% 0 repeat-x;
+	color: #<?php echo $colortextbacktab; ?>;
 	*/
 	text-decoration: underline;
 }
@@ -2894,9 +2635,6 @@ tr.nocellnopadd td.nobordernopadding, tr.nocellnopadd td.nocellnopadd
 .nopaddingleft {
 	padding-<?php print $left; ?>: 0px;
 }
-div.tabs.nopaddingleft {
-	padding-<?php print $left; ?>: 0px;
-}
 .nopaddingright {
 	padding-<?php print $right; ?>: 0px;
 }
@@ -2943,7 +2681,7 @@ div.tabBar div.border .table-border-row, div.tabBar div.border .table-key-border
 }
 div .tdtop {
     vertical-align: top !important;
-	padding-top: 10px !important;
+	/* padding-top: 8px !important; */
 	padding-bottom: 2px !important;
 	padding-bottom: 0px;
 }
@@ -2993,22 +2731,22 @@ td.border, div.tagtable div div.border {
 }
 table.liste, table.noborder, table.formdoc, div.noborder {
 	width: 100%;
+
 	border-collapse: separate !important;
 	border-spacing: 0px;
+
 	border-top-width: <?php echo $borderwidth ?>px;
 	border-top-color: rgb(<?php echo $colortopbordertitle1 ?>);
 	border-top-style: solid;
-	margin: 0px 0px 5px 0px;
+	/* border-top-width: 2px;
+	border-top-color: rgb(<?php echo $colorbackhmenu1 ?>);
+	border-top-style: solid; */
 
-	/*width: calc(100% - 7px);
-    border-collapse: separate !important;
-    border-spacing: 0px;
-    border-top-width: 0px;
-    border-top-color: rgb(215,215,215);
-    border-top-style: solid;
-    margin: 0px 0px 5px 2px;
-    box-shadow: 1px 1px 5px #ddd;
-    */
+	/*border-bottom-width: 1px;
+	border-bottom-color: rgb(<?php echo $colortopbordertitle1 ?>);
+	border-bottom-style: solid;*/
+
+	margin: 0px 0px 5px 0px;
 }
 #tablelines {
 	border-bottom-width: 1px;
@@ -3037,7 +2775,7 @@ table.paddingtopbottomonly tr td {
 	padding-bottom: 2px;
 }
 .liste_titre_filter {
-	background: var(--colorbacktitle1) !important;
+	background: rgb(<?php echo $colorbacktitle1; ?>) !important;
 }
 table:not(.listwithfilterbefore) tr.liste_titre_filter:first-of-type td.liste_titre {
     padding-top: 5px;
@@ -3124,17 +2862,17 @@ table.listwithfilterbefore {
 
 /* Pagination */
 div.refidpadding  {
-	/* padding-top: 3px; */
+	padding-top: 3px;
 }
 div.refid  {
 	font-weight: bold;
-  	color: var(--colortexttitlenotab);
+  	color: rgb(<?php print $colortexttitlenotab; ?>);
   	font-size: 1.2em;
 }
 div.refidno  {
 	padding-top: 3px;
 	font-weight: normal;
-  	color: var(--refidnocolor);
+  	color: #444;
   	font-size: <?php print is_numeric($fontsize) ? $fontsize.'px' : $fontsize ?>;
   	line-height: 21px;
 }
@@ -3166,7 +2904,7 @@ div.pagination li {
   display: inline-block;
   padding-left: 0px;
   padding-right: 0px;
-  /* padding-top: 10px; */
+  padding-top: 10px;
   padding-bottom: 5px;
   font-size: 1.1em;
 }
@@ -3246,7 +2984,7 @@ div.pagination li .active span:focus {
   z-index: 2;
   color: #fff;
   cursor: default;
-  background-color: var(--colorbackhmenu1);
+  background-color: rgb(<?php echo $colorbackhmenu1 ?>);
   border-color: #337ab7;
 }
 div.pagination .disabled span,
@@ -3276,36 +3014,31 @@ div.pagination li.paginationafterarrows {
 .paginationatbottom {
 	margin-top: 9px;
 }
-table.hidepaginationprevious .paginationprevious {
-	display: none;
-}
-table.hidepaginationnext .paginationnext {
-	display: none;
-}
+
 
 
 
 /* Set the color for hover lines */
 .oddeven:hover, .evenodd:hover, .impair:hover, .pair:hover
 {
-	background: var(--colorbacklinepairhover) !important;		/* Must be background to be stronger than background of odd or even */
+	background: rgb(<?php echo $colorbacklinepairhover; ?>) !important;		/* Must be background to be stronger than background of odd or even */
 }
 .tredited, .tredited td {
-	background: var(--colorbacklinepairchecked) !important;   /* Must be background to be stronger than background of odd or even */
+	background: rgb(<?php echo $colorbacklinepairchecked; ?>) !important;   /* Must be background to be stronger than background of odd or even */
 	border-bottom: 0 !important;
 }
 .treditedlinefordate {
-	background: var(--colorbacklinepairchecked) !important;   /* Must be background to be stronger than background of odd or even */
+	background: rgb(<?php echo $colorbacklinepairchecked; ?>) !important;   /* Must be background to be stronger than background of odd or even */
     border-bottom: 0px;
 }
 <?php if ($colorbacklinepairchecked) { ?>
 .highlight {
-	background: var(--colorbacklinepairchecked) !important;   /* Must be background to be stronger than background of odd or even */
+	background: rgb(<?php echo $colorbacklinepairchecked; ?>) !important;   /* Must be background to be stronger than background of odd or even */
 }
 <?php } ?>
 
 .nohover:hover {
-	background: unset !important;
+	background: unset;
 }
 .nohoverborder:hover {
 	border: unset;
@@ -3316,45 +3049,42 @@ table.hidepaginationnext .paginationnext {
 {
 	font-family: <?php print $fontlist ?>;
 	margin-bottom: 1px;
-	color: var(--oddevencolor);
+	color: #202020;
 }
 .impair, .nohover .impair:hover, tr.impair td.nohover
 {
-	background: var(--colorbacklineimpair1);
+	background: #<?php echo colorArrayToHex(colorStringToArray($colorbacklineimpair1)); ?>;
 }
 #GanttChartDIV {
-	background-color: var(--colorbacklineimpair1);
+	background-color: #<?php echo colorArrayToHex(colorStringToArray($colorbacklineimpair1)); ?>;
 }
 
 .oddeven, .evenodd, .pair, .nohover .pair:hover, tr.pair td.nohover, .tagtr.oddeven {
 	font-family: <?php print $fontlist ?>;
 	margin-bottom: 1px;
-	color: var(--oddevencolor);
+	color: #202020;
 }
 .pair, .nohover .pair:hover, tr.pair td.nohover {
-	background-color: var(--colorbacklinepair1);
+	background-color: #<?php echo colorArrayToHex(colorStringToArray($colorbacklinepair1)); ?>;
 }
 
 table.dataTable tr.oddeven {
-	background-color: var(--colorbacklinepair1) !important;
+	background-color: #<?php echo colorArrayToHex(colorStringToArray($colorbacklinepair1)); ?> !important;
 }
 
 /* For no hover style */
 td.oddeven, table.nohover tr.impair, table.nohover tr.pair, table.nohover tr.impair td, table.nohover tr.pair td, tr.nohover td, form.nohover, form.nohover:hover {
-	background-color: var(--colorbacklineimpair1) !important;
-	background: var(--colorbacklineimpair1) !important;
+	background-color: #<?php echo colorArrayToHex(colorStringToArray($colorbacklineimpair1)); ?> !important;
+	background: #<?php echo colorArrayToHex(colorStringToArray($colorbacklineimpair1)); ?> !important;
 }
 td.evenodd, tr.nohoverpair td, #trlinefordates td {
-	background-color: var(--colorbacklinepair1) !important;
-	background: var(--colorbacklinepair1) !important;
+	background-color: #<?php echo colorArrayToHex(colorStringToArray($colorbacklinepair1)); ?> !important;
+	background: #<?php echo colorArrayToHex(colorStringToArray($colorbacklinepair1)); ?> !important;
 }
 .trforbreak td {
-	font-weight: 500;
+	font-weight: bold;
     border-bottom: 1pt solid black !important;
-	background-color: var(--colorbacklinebreak) !important;
-}
-.trforbreak.nobold td a, .trforbreak.nobold span.secondary {
-    font-weight: normal !important;
+	/* background-color: #<?php echo colorArrayToHex(colorStringToArray($colorbacklinebreak)); ?> !important; */
 }
 
 table.dataTable td {
@@ -3420,10 +3150,10 @@ div.colorback	/* for the form "assign user" on time spent view */
 }
 div.liste_titre_bydiv, .liste_titre div.tagtr, tr.liste_titre, tr.liste_titre_sel, .tagtr.liste_titre, .tagtr.liste_titre_sel, form.liste_titre, form.liste_titre_sel, table.dataTable thead tr
 {
-	background: var(--colorbacktitle1);
+	background: rgb(<?php echo $colorbacktitle1; ?>);
 	font-weight: <?php echo $useboldtitle ? 'bold' : 'normal'; ?>;
 
-    color: var(--colortexttitle);
+    color: rgb(<?php echo $colortexttitle; ?>);
     font-family: <?php print $fontlist ?>;
     text-align: <?php echo $left; ?>;
 }
@@ -3444,7 +3174,6 @@ tr.liste_titre th, th.liste_titre, tr.liste_titre td, td.liste_titre, form.liste
 }
 tr.liste_titre th a, th.liste_titre a, tr.liste_titre td a, td.liste_titre a, form.liste_titre div a, div.liste_titre a {
 	text-shadow: none !important;
-	color: rgb(<?php echo $colortexttitlelink ?>);
 }
 tr.liste_titre_topborder td {
 	border-top-width: <?php echo $borderwidth; ?>px;
@@ -3453,10 +3182,10 @@ tr.liste_titre_topborder td {
 }
 .liste_titre td a {
 	text-shadow: none !important;
-	color: var(--colortexttitle);
+	color: rgb(<?php echo $colortexttitle; ?>);
 }
 .liste_titre td a.notasortlink {
-	color: var(--colortextlink);
+	color: rgb(<?php echo $colortextlink; ?>);
 }
 .liste_titre td a.notasortlink:hover {
 	background: transparent;
@@ -3484,7 +3213,7 @@ input.liste_titre {
 	line-height: 24px;
 }
 .noborder tr.liste_total td, tr.liste_total td, form.liste_total div, .noborder tr.liste_total_wrap td, tr.liste_total_wrap td, form.liste_total_wrap div {
-    color: var(--listetotal);
+    color: #551188;
     font-weight: normal;
 }
 .noborder tr.liste_total td, tr.liste_total td, form.liste_total div {
@@ -3555,15 +3284,15 @@ div.tabBar .noborder {
 
 /* Prepare to remove class pair - impair */
 
-.noborder:not(.editmode) > tbody > tr:nth-child(even):not(.liste_titre), .liste > tbody > tr:nth-child(even):not(.liste_titre),
+.noborder > tbody > tr:nth-child(even):not(.liste_titre), .liste > tbody > tr:nth-child(even):not(.liste_titre),
 div:not(.fichecenter):not(.fichehalfleft):not(.fichehalfright):not(.ficheaddleft) > .border > tbody > tr:nth-of-type(even):not(.liste_titre), .liste > tbody > tr:nth-of-type(even):not(.liste_titre),
 div:not(.fichecenter):not(.fichehalfleft):not(.fichehalfright):not(.ficheaddleft) .oddeven.tagtr:nth-of-type(even):not(.liste_titre)
 {
-	background: linear-gradient(bottom, var(--colorbacklineimpair1) 85%, var(--colorbacklineimpair2) 100%);
-	background: -o-linear-gradient(bottom, var(--colorbacklineimpair1) 85%, var(--colorbacklineimpair2) 100%);
-	background: -moz-linear-gradient(bottom, var(--colorbacklineimpair1) 85%, var(--colorbacklineimpair2) 100%);
-	background: -webkit-linear-gradient(bottom, var(--colorbacklineimpair1) 85%, var(--colorbacklineimpair2) 100%);
-	/* background: -ms-linear-gradient(bottom, var(--colorbacklineimpair1) 85%, var(--colorbacklineimpair2) 100%); */
+	background: linear-gradient(bottom, rgb(<?php echo $colorbacklineimpair1; ?>) 85%, rgb(<?php echo $colorbacklineimpair2; ?>) 100%);
+	background: -o-linear-gradient(bottom, rgb(<?php echo $colorbacklineimpair1; ?>) 85%, rgb(<?php echo $colorbacklineimpair2; ?>) 100%);
+	background: -moz-linear-gradient(bottom, rgb(<?php echo $colorbacklineimpair1; ?>) 85%, rgb(<?php echo $colorbacklineimpair2; ?>) 100%);
+	background: -webkit-linear-gradient(bottom, rgb(<?php echo $colorbacklineimpair1; ?>) 85%, rgb(<?php echo $colorbacklineimpair2; ?>) 100%);
+	background: -ms-linear-gradient(bottom, rgb(<?php echo $colorbacklineimpair1; ?>) 85%, rgb(<?php echo $colorbacklineimpair2; ?>) 100%);
 }
 .noborder > tbody > tr:nth-child(even):not(:last-child) td:not(.liste_titre), .liste > tbody > tr:nth-child(even):not(:last-child) td:not(.liste_titre),
 .noborder .oddeven.tagtr:nth-child(even):not(:last-child) .tagtd:not(.liste_titre)
@@ -3571,15 +3300,15 @@ div:not(.fichecenter):not(.fichehalfleft):not(.fichehalfright):not(.ficheaddleft
 	border-bottom: 1px solid #e0e0e0;
 }
 
-.noborder:not(.editmode) > tbody > tr:nth-child(odd):not(.liste_titre), .liste > tbody > tr:nth-child(odd):not(.liste_titre),
+.noborder > tbody > tr:nth-child(odd):not(.liste_titre), .liste > tbody > tr:nth-child(odd):not(.liste_titre),
 div:not(.fichecenter):not(.fichehalfleft):not(.fichehalfright):not(.ficheaddleft) > .border > tbody > tr:nth-of-type(odd):not(.liste_titre), .liste > tbody > tr:nth-of-type(odd):not(.liste_titre),
 div:not(.fichecenter):not(.fichehalfleft):not(.fichehalfright):not(.ficheaddleft) .oddeven.tagtr:nth-of-type(odd):not(.liste_titre)
 {
-	background: linear-gradient(bottom, var(--colorbacklinepair1) 85%, var(--colorbacklinepair2) 100%);
-	background: -o-linear-gradient(bottom, var(--colorbacklinepair1) 85%, var(--colorbacklinepair2) 100%);
-	background: -moz-linear-gradient(bottom, var(--colorbacklinepair1) 85%, var(--colorbacklinepair2) 100%);
-	background: -webkit-linear-gradient(bottom, var(--colorbacklinepair1) 85%, var(--colorbacklinepair2) 100%);
-	/* background: -ms-linear-gradient(bottom, var(--colorbacklinepair1) 85%, var(--colorbacklinepair2) 100%); */
+	background: linear-gradient(bottom, rgb(<?php echo $colorbacklinepair1; ?>) 85%, rgb(<?php echo $colorbacklinepair2; ?>) 100%);
+	background: -o-linear-gradient(bottom, rgb(<?php echo $colorbacklinepair1; ?>) 85%, rgb(<?php echo $colorbacklinepair2; ?>) 100%);
+	background: -moz-linear-gradient(bottom, rgb(<?php echo $colorbacklinepair1; ?>) 85%, rgb(<?php echo $colorbacklinepair2; ?>) 100%);
+	background: -webkit-linear-gradient(bottom, rgb(<?php echo $colorbacklinepair1; ?>) 85%, rgb(<?php echo $colorbacklinepair2; ?>) 100%);
+	background: -ms-linear-gradient(bottom, rgb(<?php echo $colorbacklinepair1; ?>) 85%, rgb(<?php echo $colorbacklinepair2; ?>) 100%);
 }
 .noborder > tbody > tr:nth-child(odd):not(:last-child) td:not(.liste_titre), .liste > tbody > tr:nth-child(odd):not(:last-child) td:not(.liste_titre),
 .noborder .oddeven.tagtr:nth-child(odd):not(:last-child) .tagtd:not(.liste_titre)
@@ -3588,7 +3317,7 @@ div:not(.fichecenter):not(.fichehalfleft):not(.fichehalfright):not(.ficheaddleft
 }
 
 ul.noborder li:nth-child(even):not(.liste_titre) {
-	background-color: var(--colorbacklinepair2) !important;
+	background-color: rgb(<?php echo $colorbacklinepair2; ?>) !important;
 }
 
 
@@ -3617,10 +3346,10 @@ ul.noborder li:nth-child(even):not(.liste_titre) {
     margin-bottom: 5px;
     text-align: center;
 
-    background: var(--colorbackbody);
-    border: 1px solid var(--colorboxstatsborder);
-    border-left: 6px solid var(--colorboxstatsborder);
-    /* box-shadow: 1px 1px 8px var(--colorboxstatsborder); */
+    background: #fcfcfc;
+    border: 1px solid #eee;
+    border-left: 6px solid #ddd;
+    box-shadow: 1px 1px 8px #ddd;
     border-radius: 0px;
 }
 .boxstats, .boxstats130, .boxstatscontent {
@@ -3640,11 +3369,6 @@ ul.noborder li:nth-child(even):not(.liste_titre) {
     padding-bottom: 2px;
     width: 118px;
 }
-
-.boxtable:not(.widgetstats) td.tdboxstats .boxstats {
-	box-shadow: 1px 1px 8px var(--colorboxstatsborder);
-}
-
 .tabBar .fichehalfright .boxstats {
     padding-top: 8px;
     padding-bottom: 4px;
@@ -3667,25 +3391,8 @@ ul.noborder li:nth-child(even):not(.liste_titre) {
     margin-right: 8px;
 }
 
-
 @media only screen and (max-width: 767px)
 {
-	div.tabs {
-		padding-left: 0 !important;
-		padding-right: 0!important;
-		margin-left: 0 !important;
-		margin-right: 0 !important;
-	}
-
-	a.tab:link, a.tab:visited, a.tab:hover, a.tab#active {
-		padding: 12px 12px 13px;
-	}
-	a.tmenu:link, a.tmenu:visited, a.tmenu:hover, a.tmenu:active {
-		padding: 0px 0px 0px 0px;
-	}
-	a.tmenusel:link, a.tmenusel:visited, a.tmenusel:hover, a.tmenusel:active {
-		padding: 0px 0px 0px 0px;
-	}
 	.boxstats, .boxstats130 {
 		margin: 3px;
     }
@@ -3721,9 +3428,9 @@ ul.noborder li:nth-child(even):not(.liste_titre) {
 	box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.20);
 }
 span.boxstatstext {
-	opacity: 0.5;
+	opacity: 0.7;
     line-height: 18px;
-    color: var(--colortext);
+    color: #000;
 }
 span.boxstatstext img, a.dashboardlineindicatorlate img {
 	border: 0;
@@ -3782,9 +3489,9 @@ span.dashboardlineko {
 .boxtable {
     margin-bottom: 25px !important;
     border-bottom-width: 1px;
-	background: var(--colorbackbody);
+
     border-top: <?php echo $borderwidth ?>px solid rgb(<?php echo $colortopbordertitle1 ?>);
-	/* border-top: 2px solid var(--colorbackhmenu1) !important; */
+	/* border-top: 2px solid rgb(<?php echo $colorbackhmenu1 ?>) !important; */
 }
 table.noborder.boxtable tr td {
     height: unset;
@@ -3817,8 +3524,8 @@ tr.box_titre {
 	color: #000 !important;*/
 
 	/* TO MATCH ELDY */
-	background: var(--colorbacktitle1);
-	color: var(--colortexttitle);
+	background: rgb(<?php echo $colorbacktitle1; ?>)
+	color: rgb(<?php echo $colortexttitle; ?>);
     font-family: <?php print $fontlist ?>, sans-serif;
     font-weight: <?php echo $useboldtitle ? 'bold' : 'normal'; ?>;
     border-bottom: 1px solid #FDFFFF;
@@ -3878,7 +3585,7 @@ div.info {
     padding-bottom: 8px;
     margin: 1em 0em 1em 0em;
     background: #eff8fc;
-    color: #558;
+    color: #666;
 }
 
 /* Warning message */
@@ -3892,7 +3599,7 @@ div.warning {
     background: #fcf8e3;
 }
 div.warning a, div.info a, div.error a {
-	color: var(--colortextlink);
+	color: rgb(<?php echo $colortextlink; ?>);
 }
 
 /* Error message */
@@ -3952,16 +3659,15 @@ div.boximport {
 .product_line_stock_ok { color: #002200; }
 .product_line_stock_too_low { color: #884400; }
 
-.fieldrequired { font-weight: bold; color: var(--fieldrequiredcolor); }
+.fieldrequired { font-weight: bold; color: #000055; }
 
-td.widthpictotitle { width: 26px; text-align: <?php echo $left; ?>; }
-span.widthpictotitle { font-size: 1.7em; };
+.widthpictotitle { width: 32px; text-align: <?php echo $left; ?>; }
+span.widthpictotitle { font-size: 2.1em; };
 
 .dolgraphtitle { margin-top: 6px; margin-bottom: 4px; }
 .dolgraphtitlecssboxes { /* margin: 0px; */ }
-.dolgraphchart canvas { width: calc(100% - 20px) !important; }
 .legendColorBox, .legendLabel { border: none !important; }
-div.dolgraph div.legend, div.dolgraph div.legend div { background-color: var(--dolgraphbg) !important; }
+div.dolgraph div.legend, div.dolgraph div.legend div { background-color: rgba(255,255,255,0) !important; }
 div.dolgraph div.legend table tbody tr { height: auto; }
 td.legendColorBox { padding: 2px 2px 2px 0 !important; }
 td.legendLabel { padding: 2px 2px 2px 0 !important; }
@@ -4018,19 +3724,9 @@ div.titre {
 	padding-top: 5px;
     padding-bottom: 5px;
 }
-div.fiche > table.table-fiche-title:first-of-type div {
-    color: var(--colortexttitlenotab);
-    /* font-weight: 600; */
-}
-div.titre {
-    color: var(--colortexttitlenotab);
-}
-
-.secondary {
-    color: var(--colortexttitlenotab);
-}
-.tertiary {
-	color: var(--colortexttitlenotab2);
+div.titre, .secondary {
+	font-family: <?php print $fontlist ?>;
+	color: rgb(<?php print $colortexttitlenotab; ?>);
 }
 
 table.table-fiche-title .col-title div.titre{
@@ -4179,8 +3875,8 @@ div.ui-tooltip.mytooltip {
 	-o-box-shadow:     0.5px 0.5px 4px 0px rgba(0, 0, 0, 0.5);
 	box-shadow:        0.5px 0.5px 4px 0px rgba(0, 0, 0, 0.5);
 	filter:progid:DXImageTransform.Microsoft.Shadow(color=#656565, Direction=134, Strength=5);
-	background: var(--tooltipbgcolor) !important;
-	color : var(--tooltipfontcolor);
+	background: <?php print $toolTipBgColor; ?> !important;
+	color : <?php print $toolTipFontColor; ?>;
 }
 
 
@@ -4215,7 +3911,7 @@ img.datecallink { padding-left: 2px !important; padding-right: 2px !important; }
 }
 table.dp {
     width: 180px;
-    background-color: var(--inputbackgroundcolor);
+    background-color: #FFFFFF;
     border-top: solid 2px #DDDDDD;
     border-<?php print $left; ?>: solid 2px #DDDDDD;
     border-<?php print $right; ?>: solid 1px #222222;
@@ -4277,7 +3973,7 @@ table.dp {
 }
 .datenowlink
 {
-	color: var(--colortextlink);
+	color: rgb(<?php print $colortextlink; ?>);
 }
 
 
@@ -4302,14 +3998,7 @@ tr.visible {
 /*  Module website                                                                */
 /* ============================================================================== */
 
-.exampleapachesetup {
-    overflow-y: auto;
-    height: 100px;
-    font-size: 0.8em;
-    border: 1px solid #aaa;
-}
-
-span[phptag] {
+.phptag {
 	background: #ddd; border: 1px solid #ccc; border-radius: 4px;
 }
 
@@ -4329,18 +4018,15 @@ span[phptag] {
 	background: #e6e6e6;
 	display: inline-block;
 	padding: 4px 0 4px 0;
-	z-index: 1000;
 }
 .websitebar .buttonDelete, .websitebar .button {
 	text-shadow: none;
 }
 .websitebar .button, .websitebar .buttonDelete
 {
-	padding: 4px 5px 4px 5px !important;
+	padding: 2px 5px 3px 5px !important;
 	margin: 2px 4px 2px 4px  !important;
     line-height: normal;
-    background: #f5f5f5 !important;
-    border: 1px solid #ccc !important;
 }
 .websiteselection {
 	/* display: inline-block; */
@@ -4455,7 +4141,7 @@ td.cal_other_month {
 	       position:absolute;
 	       width:auto;
 	       font-size: 1.0em;
-	       background-color: var(--inputbackgroundcolor);
+	       background-color:white;
 	       border:1px solid #888;
 	       margin:0px;
 /*	       padding:0px; This make combo crazy */
@@ -4465,7 +4151,7 @@ td.cal_other_month {
 	       margin:0px;
 	       padding:0px;
 	     }
-.ui-autocomplete ul li.selected { background-color: var(--inputbackgroundcolor);}
+.ui-autocomplete ul li.selected { background-color: #D3E5EC;}
 .ui-autocomplete ul li {
 	       list-style-type:none;
 	       display:block;
@@ -4515,10 +4201,10 @@ td.cal_other_month {
 /* ============================================================================== */
 
 /* CSS for treeview */
-.treeview ul { background-color: transparent !important; margin-bottom: 4px !important; margin-top: 0 !important; padding-top: 4px !important; }
+.treeview ul { background-color: transparent !important; margin-top: 4px; padding-top: 4px !important; }
 .treeview li { background-color: transparent !important; padding: 0 0 0 16px !important; min-height: 26px; }
-.treeview .hover { color: var(--colortextlink) !important; text-decoration: underline !important; }
-.treeview .hitarea { margin-top: 3px; }
+.treeview .hover { color: rgb(<?php print $colortextlink; ?>) !important; text-decoration: underline !important; }
+
 
 
 /* ============================================================================== */
@@ -4650,7 +4336,7 @@ A.none, A.none:active, A.none:visited, A.none:hover {
 /* Style to overwrites JQuery styles */
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
     border: 1px solid #888;
-    background: var(--colorbacktitle1);
+    background: rgb(<?php echo $colorbacktitle1; ?>);
     color: unset;
 }
 
@@ -4978,7 +4664,7 @@ ul.ecmjqft li {
 ul.ecmjqft a {
 	line-height: 24px;
 	vertical-align: middle;
-	color: unset;
+	color: #333;
 	padding: 0px 0px;
 	font-weight:normal;
 	display: inline-block !important;
@@ -5110,14 +4796,14 @@ table.dataTable tr.odd td.sorting_1, table.dataTable tr.even td.sorting_1 {
 	height: inherit !important;
 }
 .paging_full_numbers a.paginate_active:hover, .paging_full_numbers a.paginate_button:hover {
-	background-color: var(--colorbackbody) !important;
+	background-color: #DDD !important;
 }
 .paging_full_numbers, .paging_full_numbers a.paginate_active, .paging_full_numbers a.paginate_button {
-	background-color: var(--colorbackbody) !important;
+	background-color: #FFF !important;
 	border-radius: inherit !important;
 }
 .paging_full_numbers a.paginate_button_disabled:hover, .paging_full_numbers a.disabled:hover {
-    background-color: var(--colorbackbody) !important;
+    background-color: #FFF !important;
 }
 .paginate_button, .paginate_active {
   border: 1px solid #ddd !important;
@@ -5151,18 +4837,6 @@ div.dataTables_length select {
 /*  Select2                                                                       */
 /* ============================================================================== */
 
-span#select2-taskid-container[title^='--'] {
-    opacity: 0.3;
-}
-
-.select2-container--default .select2-results__option--highlighted[aria-selected] {
-    background-color: rgb(<?php echo $colorbackhmenu1 ?>);
-    color: #<?php echo $colortextbackhmenu; ?>;
-}
-.select2-container--default .select2-results__option--highlighted[aria-selected] span {
-    color: #fff !important;
-}
-
 span.select2.select2-container.select2-container--default {
     border-left: none;
     border-top: none;
@@ -5192,11 +4866,10 @@ input.select2-input {
 .blockvmenusearch .select2-container--default .select2-selection--single,
 .blockvmenubookmarks .select2-container--default .select2-selection--single
 {
-    background-color: var(--colorbackvmenu1);
+    background-color: unset;
 }
 .select2-container--default .select2-selection--single .select2-selection__rendered {
-    color: var(--colortext);
-    /* background-color: var(--colorbackvmenu1); */
+    color: unset;
 }
 .select2-default {
     color: #999 !important;
@@ -5215,7 +4888,7 @@ input.select2-input {
 	background-image: none;
 }
 .select2-container .select2-choice {
-	color: var(--colortext);
+	color: #000;
 	border-radius: 0;
 }
 .selectoptiondisabledwhite {
@@ -5264,12 +4937,7 @@ input.select2-input {
 	border-left: none;
 	border-right: none;
 	border-radius: 0 !important;
-	background: var(--inputbackgroundcolor);
 }
-.select2-container--default .select2-selection--multiple .select2-selection__choice{
-	background-color: #ddd;
-}
-
 .select2-search__field
 {
 	outline: none;
@@ -5280,7 +4948,6 @@ input.select2-input {
 	-webkit-box-shadow: none !important;
 	box-shadow: none !important;
 	border-radius: 0 !important;
-	color: black;
 }
 .select2-container-active .select2-choice, .select2-container-active .select2-choices
 {
@@ -5292,12 +4959,11 @@ input.select2-input {
 	box-shadow: none !important;
 }
 .select2-dropdown {
-	/*background-color: var(--colorbackvmenu1);
-	border: 1px solid var(--colorbackvmenu1); */
-	box-shadow: 1px 2px 10px var(--colorbackvmenu1);
+	border: 1px solid #ccc;
+	box-shadow: 1px 2px 10px #ddd;
 }
 .select2-dropdown-open {
-	background-color: var(--colorbackvmenu1);
+	background-color: #fff;
 }
 .select2-dropdown-open .select2-choice, .select2-dropdown-open .select2-choices
 {
@@ -5307,7 +4973,7 @@ input.select2-input {
 	border-bottom: none;
 	-webkit-box-shadow: none !important;
 	box-shadow: none !important;
-	background-color: var(--colorbackvmenu1);
+	background-color: #fff;
 }
 .select2-disabled
 {
@@ -5325,7 +4991,7 @@ input.select2-input {
 }
 div.select2-drop-above
 {
-	background: var(--colorbackvmenu1);e
+	background: #fff;
 	-webkit-box-shadow: none !important;
 	box-shadow: none !important;
 }
@@ -5347,13 +5013,13 @@ a span.select2-chosen
 }
 .select2-results .select2-no-results, .select2-results .select2-searching, .select2-results .select2-ajax-error, .select2-results .select2-selection-limit
 {
-	background: var(--colorbackvmenu1);
+	background: #FFFFFF;
 }
 .select2-results {
 	max-height:	400px;
 }
 .select2-container.select2-container-disabled .select2-choice, .select2-container-multi.select2-container-disabled .select2-choices {
-	background-color: var(--colorbackvmenu1);
+	background-color: #FFFFFF;
 	background-image: none;
 	border: none;
 	cursor: default;
@@ -5383,7 +5049,7 @@ a span.select2-chosen
     opacity: 0.4;
 }
 .select2-container--default .select2-selection--single .select2-selection__placeholder {
-	color: var(--colortext);
+	color: unset;
 	opacity: 0.4;
 }
 span#select2-boxbookmark-container, span#select2-boxcombo-container {
@@ -5406,7 +5072,7 @@ span#select2-boxbookmark-container, span#select2-boxcombo-container {
 
 /* To emulate select 2 style */
 .select2-container-multi-dolibarr .select2-choices-dolibarr .select2-search-choice-dolibarr {
-  padding: 3px 5px 2px 5px;
+  padding: 2px 5px 1px 5px;
   margin: 0 0 2px 3px;
   position: relative;
   line-height: 13px;
@@ -5414,15 +5080,15 @@ span#select2-boxbookmark-container, span#select2-boxcombo-container {
   cursor: default;
   border: 1px solid #aaaaaa;
   border-radius: 3px;
-  -webkit-box-shadow: 0 0 2px var(--inputbackgroundcolor) inset, 0 1px 0 rgba(0, 0, 0, 0.05);
-  box-shadow: 0 0 2px var(--inputbackgroundcolor) inset, 0 1px 0 rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: 0 0 2px #fff inset, 0 1px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 2px #fff inset, 0 1px 0 rgba(0, 0, 0, 0.05);
   background-clip: padding-box;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  background-color: var(--inputbackgroundcolor);
+  background-color: #e4e4e4;
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(20%, #f4f4f4), color-stop(50%, #f0f0f0), color-stop(52%, #e8e8e8), color-stop(100%, #eee));
   background-image: -webkit-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eee 100%);
   background-image: -moz-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eee 100%);
@@ -5462,8 +5128,7 @@ span.noborderoncategories a, li.noborderoncategories a {
 	vertical-align: top;
 }
 span.noborderoncategories {
-	padding: 4px 5px 0px 5px;
-	display: inline-block;
+	padding: 3px 5px 0px 5px;
 }
 .categtextwhite, .treeview .categtextwhite.hover {
 	color: #fff !important;
@@ -5488,7 +5153,7 @@ span.noborderoncategories {
   top: 0.8em;
   float: left;
   min-width: 100%;
-  background: var(--inputbackgroundcolor);
+  background: #fff;
   margin: 1em 0;
   padding: 0.4em 0;
   border: 1px solid #aaa;
@@ -5508,7 +5173,7 @@ span.noborderoncategories {
   overflow: hidden;
   text-overflow: ellipsis;
   vertical-align: middle;
-  background-color: var(--inputbackgroundcolor);
+  background-color: #fff;
   cursor: default;
 
   border: none;
@@ -5587,7 +5252,7 @@ dl.dropdown {
     display:none;
 }
 .dropdown dd ul {
-    background-color: var(--inputbackgroundcolor);
+    background-color: #FFF;
     box-shadow: 1px 1px 10px #aaa;
     display:none;
     <?php echo $right; ?>:0px;						/* pop is align on right */
@@ -5603,8 +5268,8 @@ dl.dropdown {
 	white-space: nowrap;
 	font-weight: normal;
 	padding: 7px 8px 7px 8px;
-	/* color: var(--colortext); */
-	color: var(--colortext);
+	/* color: rgb(<?php print $colortext; ?>); */
+	color: #000;
 }
 .dropdown dd ul li:hover {
 	background: #eee;
@@ -5619,9 +5284,9 @@ dl.dropdown {
 .dropdown dd ul li span {
 	color: #888;
 }
-/*.dropdown dd ul li a:hover {
-    background-color: var(--inputbackgroundcolor);
-}*/
+.dropdown dd ul li a:hover {
+    background-color:#eee;
+}
 dd.dropdowndd ul li {
     text-overflow: ellipsis;
     overflow: hidden;
@@ -5723,10 +5388,10 @@ a.tab span.ui-btn-inner
 }
 
 .ui-link {
-	color: var(--colortext);
+	color: rgb(<?php print $colortext; ?>);
 }
 .liste_titre .ui-link {
-	color: var(--colortexttitle) !important;
+	color: rgb(<?php print $colortexttitle; ?>) !important;
 }
 
 a.ui-link {
@@ -5794,14 +5459,14 @@ ul.ulmenu {
     border: none;
     background: none;
     text-shadow: none;
-    color: var(--colortexttitlenotab) !important;
+    color: rgb(<?php print $colortexttitlenotab; ?>) !important;
 }
 .ui-bar-b, .lilevel0 {
     background-repeat: repeat-x;
     border: none;
     background: none;
     text-shadow: none;
-    color: var(--colortexttitlenotab) !important;
+    color: rgb(<?php print $colortexttitlenotab; ?>) !important;
 }
 .alilevel0 {
 	font-weight: normal !important;
@@ -5811,7 +5476,7 @@ ul.ulmenu {
     border-bottom-width: 0px !important;
 }
 .alilevel0 {
-    color: var(--colortexttitle) !important;
+    color: rgb(<?php echo $colortexttitle; ?>) !important;
     background: #f8f8f8
 }
 .ulmenu {
@@ -5830,7 +5495,7 @@ ul.ulmenu {
 	text-shadow: none;
 }
 .ui-body-c .ui-link, .ui-body-c .ui-link:visited, .ui-body-c .ui-link:hover {
-	color: var(--colortextlink);
+	color: rgb(<?php print $colortextlink; ?>);
 }
 .ui-btn-up-c .vsmenudisabled {
 	color: #<?php echo $colorshadowtitle; ?> !important;
@@ -5840,7 +5505,7 @@ div.tabsElem a.tab {
 	background: transparent;
 }
 .alilevel1 {
-    color: var(--colortexttitlenotab) !important;
+    color: rgb(<?php print $colortexttitlenotab; ?>) !important;
 }
 .lilevel1 {
     border-top: 2px solid #444;
@@ -5944,14 +5609,8 @@ div.tabsElem a.tab {
 /* ============================================================================== */
 /* Ticket module                                                                  */
 /* ============================================================================== */
-
-.ticketpublictable td {
-	height: 28px;
-}
-
 .ticketpublicarea {
-	margin-left: 15%;
-    margin-right: 15%;
+	width: 70%;
 }
 .publicnewticketform {
 	/* margin-top: 25px !important; */
@@ -5967,8 +5626,7 @@ div.tabsElem a.tab {
 		padding-left: 5px; padding-right: 5px;
 	}
 	.ticketpublicarea {
-		margin-left: 10px;
-		margin-right: 10px;
+		width: 100% !important;
 	}
 }
 
@@ -6237,18 +5895,6 @@ div.tabsElem a.tab {
 }
 
 
-/* ============================================================================== */
-/* CSS style used for jFlot                                                       */
-/* ============================================================================== */
-
-.dol-xaxis-vertical .flot-x-axis .flot-tick-label.tickLabel {
-    text-orientation: sideways;
-    font-weight: 400;
-    writing-mode: vertical-rl;
-    white-space: nowrap;
-}
-
-
 
 /* ============================================================================== */
 /* CSS style used for small screen                                                */
@@ -6301,7 +5947,7 @@ div.tabsElem a.tab {
     	white-space: nowrap;
   		overflow: hidden;
   		text-overflow: ellipsis;
-  		color: var(--colortextbackhmenu);
+  		color: #<?php echo $colortextbackhmenu; ?>;
 	}
 	.mainmenuaspan {
   		font-size: 0.9em;
@@ -6362,12 +6008,12 @@ div.tabsElem a.tab {
 {
 	.side-nav {
 		z-index: 200;
-		background: var(--colorbackvmenu1);
+		background: rgb(<?php echo $colorbackvmenu1; ?>);
 		padding-top: 70px;
     }
 	#id-left {
     	z-index: 201;
-		background: var(--colorbackvmenu1);
+		background: rgb(<?php echo $colorbackvmenu1; ?>);
 	}
 
     .login_vertical_align {
@@ -6406,7 +6052,7 @@ div.tabsElem a.tab {
 		text-align: center;
         vertical-align: middle;
 
-		background: var(--colorbackvmenu1);
+		background: rgb(<?php echo $colorbackvmenu1; ?>);
 
         height: 50px;
 
@@ -6424,9 +6070,7 @@ div.tabsElem a.tab {
 	div.login_block_user, div.login_block_other { clear: both; }
 	.atoplogin, .atoplogin:hover
 	{
-		color:unset !important;
-		padding-left: 4px;
-		padding-right: 4px;
+		color: #000 !important;
 	}
 	.login_block_elem {
 		padding: 0 !important;
@@ -6460,6 +6104,7 @@ div.tabsElem a.tab {
 	    word-break: break-word;
 	}
 	.badge {
+		line-height: 1.2em;
 		min-width: auto;
 		font-size: 12px;
 	}
@@ -6473,8 +6118,6 @@ div.tabsElem a.tab {
 	}
 }
 
-
-
 <?php
 include dol_buildpath($path.'/theme/'.$theme.'/dropdown.inc.php', 0);
 include dol_buildpath($path.'/theme/'.$theme.'/info-box.inc.php', 0);
@@ -6482,10 +6125,3 @@ include dol_buildpath($path.'/theme/'.$theme.'/progress.inc.php', 0);
 include dol_buildpath($path.'/theme/'.$theme.'/timeline.inc.php', 0);
 
 if (!empty($conf->global->THEME_CUSTOM_CSS)) print $conf->global->THEME_CUSTOM_CSS;
-
-?>
-
-/* Must be at end */
-div.flot-text .flot-tick-label .tickLabel {
-	color: unset;
-}

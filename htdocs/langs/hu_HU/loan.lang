@@ -1,6 +1,6 @@
 # Dolibarr language file - Source file is en_US - loan
 Loan=Loan
-Loans=Kölcsönök
+Loans=Loans
 NewLoan=New Loan
 ShowLoan=Show Loan
 PaymentLoan=Loan payment

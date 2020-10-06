@@ -46,12 +46,11 @@ $ref = GETPOST('ref', 'alpha');
 //$result = restrictedArea($user, 'mymodule', $id);
 
 // Get parameters
-$limit = GETPOST('limit', 'int') ? GETPOST('limit', 'int') : $conf->liste_limit;
 $sortfield = GETPOST("sortfield", 'alpha');
 $sortorder = GETPOST("sortorder", 'alpha');
-$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
+$page = GETPOST("page", 'int');
 if (empty($page) || $page == -1) { $page = 0; }     // If $page is not defined, or '' or -1
-$offset = $limit * $page;
+$offset = $conf->liste_limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
 if (!$sortorder) $sortorder = "ASC";
@@ -92,7 +91,8 @@ $help_url = '';
 //$help_url='EN:Module_Third_Parties|FR:Module_Tiers|ES:Empresas';
 llxHeader('', $title, $help_url);
 
-if ($object->id) {
+if ($object->id)
+{
 	/*
 	 * Show tabs
 	 */
@@ -104,7 +104,8 @@ if ($object->id) {
 	// Build file list
 	$filearray = dol_dir_list($upload_dir, "files", 0, '', '(\.meta|_preview.*\.png)$', $sortfield, (strtolower($sortorder) == 'desc' ?SORT_DESC:SORT_ASC), 1);
 	$totalsize = 0;
-	foreach ($filearray as $key => $file) {
+	foreach ($filearray as $key => $file)
+	{
 		$totalsize += $file['size'];
 	}
 
@@ -130,7 +131,9 @@ if ($object->id) {
 	print '</div>';
 
 	dol_fiche_end();
-} else {
+}
+else
+{
 	accessforbidden('', 0, 0);
 }
 

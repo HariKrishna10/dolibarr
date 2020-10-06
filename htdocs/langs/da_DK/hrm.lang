@@ -1,18 +1,17 @@
 # Dolibarr language file - en_US - hrm
 # Admin
-HRM_EMAIL_EXTERNAL_SERVICE=Email for at forhindre HRM ekstern service
-Establishments=Virksomheder
-Establishment=Etablering
-NewEstablishment=Ny virksomhed
-DeleteEstablishment=Slet virksomhed
-ConfirmDeleteEstablishment=Er du sikker på, at du ønsker at slette denne virksomhed?
-OpenEtablishment=Åbent oprettelse
-CloseEtablishment=Luk etablissement
+HRM_EMAIL_EXTERNAL_SERVICE=Email to prevent HRM external service
+Establishments=Establishments
+Establishment=Establishment
+NewEstablishment=New establishment
+DeleteEstablishment=Delete establishment
+ConfirmDeleteEstablishment=Are-you sure to delete this establishment?
+OpenEtablishment=Open establishment
+CloseEtablishment=Close establishment
 # Dictionary
-DictionaryPublicHolidays=HRM - helligdage
-DictionaryDepartment=HRM - Afdelingsliste
-DictionaryFunction=HRM - Job stillinger
+DictionaryDepartment=HRM - Department list
+DictionaryFunction=HRM - Function list
 # Module
-Employees=Medarbejdere
+Employees=Employees
 Employee=Employee
-NewEmployee=Ny medarbejder
+NewEmployee=New employee

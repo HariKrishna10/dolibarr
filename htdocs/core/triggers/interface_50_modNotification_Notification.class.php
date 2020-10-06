@@ -140,7 +140,8 @@ class InterfaceNotification extends DolibarrTriggers
 
 				$i++;
 			}
-		} else dol_print_error($this->db);
+		}
+		else dol_print_error($this->db);
 
 		return $ret;
 	}

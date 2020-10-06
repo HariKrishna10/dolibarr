@@ -44,26 +44,25 @@ function report_header($reportname, $notused, $period, $periodlink, $description
 
 	print "\n\n<!-- start banner of report -->\n";
 
-	if (!empty($varlink)) $varlink = '?'.$varlink;
+	if(! empty($varlink)) $varlink = '?'.$varlink;
 
 	$head = array();
 
-	$h = 0;
+	$h=0;
 	$head[$h][0] = $_SERVER["PHP_SELF"].$varlink;
 	$head[$h][1] = $langs->trans("Report");
 	$head[$h][2] = 'report';
 
-	print '<form method="POST" action="'.$_SERVER["PHP_SELF"].$varlink.'">'."\n";
-	print '<input type="hidden" name="token" value="'.newToken().'">'."\n";
+	print '<form method="POST" action="'.$_SERVER["PHP_SELF"].$varlink.'">';
 
 	dol_fiche_head($head, 'report');
 
-	foreach ($moreparam as $key => $value)
+	foreach($moreparam as $key => $value)
 	{
-		 print '<input type="hidden" name="'.$key.'" value="'.$value.'">'."\n";
+		 print '<input type="hidden" name="'.$key.'" value="'.$value.'">';
 	}
 
-	print '<table class="border tableforfield centpercent">'."\n";
+	print '<table class="border tableforfield centpercent">';
 
 	$variante = ($periodlink || $exportlink);
 
@@ -74,7 +73,7 @@ function report_header($reportname, $notused, $period, $periodlink, $description
 	print $reportname;
 	print '</td>';
 	if ($variante) print '<td></td>';
-	print '</tr>'."\n";
+	print '</tr>';
 
 	// Calculation mode
 	if ($calcmode)
@@ -85,7 +84,7 @@ function report_header($reportname, $notused, $period, $periodlink, $description
 		print $calcmode;
 		if ($variante) print '<td></td>';
 		print '</td>';
-		print '</tr>'."\n";
+		print '</tr>';
 	}
 
 	// Ligne de la periode d'analyse du rapport
@@ -95,14 +94,14 @@ function report_header($reportname, $notused, $period, $periodlink, $description
 	if ($period) print $period;
 	if ($variante) print '<td class="nowraponall">'.$periodlink.'</td>';
 	print '</td>';
-	print '</tr>'."\n";
+	print '</tr>';
 
 	// Ligne de description
 	print '<tr>';
 	print '<td>'.$langs->trans("ReportDescription").'</td>';
 	print '<td>'.$description.'</td>';
 	if ($variante) print '<td></td>';
-	print '</tr>'."\n";
+	print '</tr>';
 
 	// Ligne d'export
 	print '<tr>';
@@ -111,9 +110,9 @@ function report_header($reportname, $notused, $period, $periodlink, $description
 	print dol_print_date($builddate, 'dayhour');
 	print '</td>';
 	if ($variante) print '<td>'.($exportlink ? $langs->trans("Export").': '.$exportlink : '').'</td>';
-	print '</tr>'."\n";
+	print '</tr>';
 
-	print '</table>'."\n";
+	print '</table>';
 
 	dol_fiche_end();
 

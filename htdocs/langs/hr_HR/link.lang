@@ -8,4 +8,3 @@ LinkRemoved=Veza %s je obrisana
 ErrorFailedToDeleteLink= Neuspješno brisanje veze '<b>%s</b>'
 ErrorFailedToUpdateLink= Neuspješna promjena veze '<b>%s</b>'
 URLToLink=URL prema vezi
-OverwriteIfExists=Overwrite file if exists

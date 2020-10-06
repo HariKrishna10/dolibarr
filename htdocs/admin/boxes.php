@@ -83,7 +83,9 @@ if ($action == 'add') {
                             $distinctfkuser[$obj->fk_user] = $obj->fk_user;
                             $i++;
                         }
-                    } else {
+                    }
+                    else
+                    {
                         setEventMessages($db->lasterror(), null, 'errors');
                         $error++;
                     }
@@ -107,7 +109,8 @@ if ($action == 'add') {
                                 if (preg_match('/A/', $boxorder)) $nbboxonleft++;
                                 if (preg_match('/B/', $boxorder)) $nbboxonright++;
                             }
-                        } else dol_print_error($db);
+                        }
+                        else dol_print_error($db);
 
                         $sql = "INSERT INTO ".MAIN_DB_PREFIX."boxes (";
                         $sql .= "box_id, position, box_order, fk_user, entity";
@@ -131,7 +134,9 @@ if ($action == 'add') {
     {
         $db->commit();
         $action = '';
-    } else {
+    }
+    else
+    {
         $db->rollback();
     }
 }
@@ -199,7 +204,9 @@ if ($action == 'switch')
 	if ($resultupdatefrom && $resultupdateto)
 	{
 		$db->commit();
-	} else {
+	}
+	else
+	{
 		$db->rollback();
 	}
 }
@@ -281,20 +288,23 @@ if ($resql)
 						$box_order = "A0".$record['box_order'];
 						$sql = "UPDATE ".MAIN_DB_PREFIX."boxes SET box_order = '".$box_order."' WHERE entity = ".$conf->entity." AND box_order = '".$record['box_order']."'";
 						$resql = $db->query($sql);
-					} elseif (preg_match("/[02468]{1}/", substr($record['box_order'], -1)))
+					}
+					elseif (preg_match("/[02468]{1}/", substr($record['box_order'], -1)))
 					{
 						$box_order = "B0".$record['box_order'];
 						$sql = "UPDATE ".MAIN_DB_PREFIX."boxes SET box_order = '".$box_order."' WHERE entity = ".$conf->entity." AND box_order = '".$record['box_order']."'";
 						$resql = $db->query($sql);
 					}
-				} elseif (dol_strlen($record['box_order']) == 2)
+				}
+				elseif (dol_strlen($record['box_order']) == 2)
 				{
 					if (preg_match("/[13579]{1}/", substr($record['box_order'], -1)))
 					{
 						$box_order = "A".$record['box_order'];
 						$sql = "UPDATE ".MAIN_DB_PREFIX."boxes SET box_order = '".$box_order."' WHERE entity = ".$conf->entity." AND box_order = '".$record['box_order']."'";
 						$resql = $db->query($sql);
-					} elseif (preg_match("/[02468]{1}/", substr($record['box_order'], -1)))
+					}
+					elseif (preg_match("/[02468]{1}/", substr($record['box_order'], -1)))
 					{
 						$box_order = "B".$record['box_order'];
 						$sql = "UPDATE ".MAIN_DB_PREFIX."boxes SET box_order = '".$box_order."' WHERE entity = ".$conf->entity." AND box_order = '".$record['box_order']."'";
@@ -335,7 +345,9 @@ foreach ($boxtoadd as $box)
     if (preg_match('/^([^@]+)@([^@]+)$/i', $box->boximg))
     {
         $logo = $box->boximg;
-    } else {
+    }
+    else
+    {
         $logo = preg_replace("/^object_/i", "", $box->boximg);
     }
 
@@ -349,7 +361,8 @@ foreach ($boxtoadd as $box)
     {
     	$langs->load("errors");
     	print $langs->trans("WarningUsingThisBoxSlowDown");
-    } else print ($box->note ? $box->note : '&nbsp;');
+    }
+	else print ($box->note ? $box->note : '&nbsp;');
     print '</td>'."\n";
     print '<td>'.$box->sourcefile.'</td>'."\n";
 
@@ -397,7 +410,9 @@ foreach ($boxactivated as $key => $box)
 	if (preg_match('/^([^@]+)@([^@]+)$/i', $box->boximg))
 	{
 		$logo = $box->boximg;
-	} else {
+	}
+	else
+	{
 		$logo = preg_replace("/^object_/i", "", $box->boximg);
 	}
 
@@ -411,7 +426,8 @@ foreach ($boxactivated as $key => $box)
 	{
 		$langs->load("errors");
 		print img_warning('', 0).' '.$langs->trans("WarningUsingThisBoxSlowDown");
-	} else print ($box->note ? $box->note : '&nbsp;');
+	}
+	else print ($box->note ? $box->note : '&nbsp;');
 	print '</td>';
 	print '<td class="center">'.(empty($pos_name[$box->position]) ? '' : $langs->trans($pos_name[$box->position])).'</td>';
 	$hasnext = ($key < (count($boxactivated) - 1));
@@ -457,7 +473,7 @@ print '</td>';
 print '</tr>';
 
 // Activate FileCache - Developement
-if ($conf->global->MAIN_FEATURES_LEVEL == 2 || !empty($conf->global->MAIN_ACTIVATE_FILECACHE)) {
+if ($conf->global->MAIN_FEATURES_LEVEL == 2 || ! empty($conf->global->MAIN_ACTIVATE_FILECACHE)) {
     print '<tr class="oddeven"><td width="35%">'.$langs->trans("EnableFileCache").'</td><td>';
     print $form->selectyesno('MAIN_ACTIVATE_FILECACHE', $conf->global->MAIN_ACTIVATE_FILECACHE, 1);
     print '</td>';

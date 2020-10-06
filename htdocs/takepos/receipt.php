@@ -25,18 +25,14 @@
  *	\brief      Page to show a receipt.
  */
 
-if (!isset($action)) require '../main.inc.php'; // If this file is called from send.php avoid load again
+require '../main.inc.php'; // Load $user and permissions
 include_once DOL_DOCUMENT_ROOT.'/compta/facture/class/facture.class.php';
 
 $langs->loadLangs(array("main", "cashdesk", "companies"));
 
-$place = (GETPOST('place', 'aZ09') ? GETPOST('place', 'aZ09') : 0); // $place is id of table for Ba or Restaurant
+$place = (GETPOST('place', 'int') > 0 ? GETPOST('place', 'int') : 0); // $place is id of table for Ba or Restaurant
 
 $facid = GETPOST('facid', 'int');
-
-if (empty($user->rights->takepos->run)) {
-	accessforbidden();
-}
 
 
 /*
@@ -89,29 +85,31 @@ if (!empty($hookmanager->resPrint)) {
 <br>
 <p class="left">
 <?php
-$constFreeText = 'TAKEPOS_HEADER' . $_SESSION['takeposterminal'];
-if (!empty($conf->global->TAKEPOS_HEADER) || !empty($conf->global->{$constFreeText}))
+if ($conf->global->TAKEPOS_CUSTOM_RECEIPT)
 {
-	$newfreetext = '';
 	$substitutionarray = getCommonSubstitutionArray($langs);
-	if (!empty($conf->global->TAKEPOS_HEADER))      $newfreetext .= make_substitutions($conf->global->TAKEPOS_HEADER, $substitutionarray);
-	if (!empty($conf->global->{$constFreeText}))    $newfreetext .= make_substitutions($conf->global->{$constFreeText}, $substitutionarray);
-	print $newfreetext;
+	if (!empty($conf->global->TAKEPOS_HEADER))
+	{
+		$newfreetext = make_substitutions($conf->global->TAKEPOS_HEADER, $substitutionarray);
+		echo $newfreetext;
+	}
 }
 ?>
 </p>
 <p class="right">
 <?php
 print $langs->trans('Date')." ".dol_print_date($object->date, 'day').'<br>';
-if (!empty($conf->global->TAKEPOS_RECEIPT_NAME)) print $conf->global->TAKEPOS_RECEIPT_NAME." ";
+if ($conf->global->TAKEPOS_CUSTOM_RECEIPT) print $conf->global->TAKEPOS_RECEIPT_NAME." ";
 if ($object->statut == Facture::STATUS_DRAFT) print str_replace(")", "", str_replace("-", " ".$langs->trans('Place')." ", str_replace("(PROV-POS", $langs->trans("Terminal")." ", $object->ref)));
 else print $object->ref;
-if ($conf->global->TAKEPOS_SHOW_CUSTOMER)
+if ($conf->global->TAKEPOS_CUSTOM_RECEIPT && $conf->global->TAKEPOS_SHOW_CUSTOMER)
 {
-	if ($object->socid != $conf->global->{'CASHDESK_ID_THIRDPARTY'.$_SESSION["takeposterminal"]})
+	$soc = new Societe($db);
+	$soc->fetch($invoice->socid);
+	if ($invoice->socid != $conf->global->{'CASHDESK_ID_THIRDPARTY'.$_SESSION["takeposterminal"]})
 	{
 		$soc = new Societe($db);
-		if ($object->socid > 0) $soc->fetch($object->socid);
+		if ($invoice->socid > 0) $soc->fetch($invoice->socid);
 		else $soc->fetch($conf->global->{'CASHDESK_ID_THIRDPARTY'.$_SESSION["takeposterminal"]});
 		print "<br>".$langs->trans("Customer").': '.$soc->name;
 	}
@@ -185,14 +183,13 @@ if ($conf->global->TAKEPOS_SHOW_CUSTOMER)
 <br>
 <br>
 <?php
-$constFreeText = 'TAKEPOS_FOOTER' . $_SESSION['takeposterminal'];
-if (!empty($conf->global->TAKEPOS_FOOTER) || !empty($conf->global->{$constFreeText}))
+if ($conf->global->TAKEPOS_CUSTOM_RECEIPT)
 {
-	$newfreetext = '';
 	$substitutionarray = getCommonSubstitutionArray($langs);
-	if (!empty($conf->global->{$constFreeText}))    $newfreetext .= make_substitutions($conf->global->{$constFreeText}, $substitutionarray);
-	if (!empty($conf->global->TAKEPOS_FOOTER))      $newfreetext .= make_substitutions($conf->global->TAKEPOS_FOOTER, $substitutionarray);
-	print $newfreetext;
+	if (!empty($conf->global->TAKEPOS_FOOTER)) {
+		$newfreetext = make_substitutions($conf->global->TAKEPOS_FOOTER, $substitutionarray);
+		echo $newfreetext;
+	}
 }
 ?>
 

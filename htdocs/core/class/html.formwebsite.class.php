@@ -79,7 +79,9 @@ class FormWebsite
                 if ($selected == $obj->rowid)
                 {
                     $out .= '<option value="'.$obj->rowid.'" selected>';
-                } else {
+                }
+                else
+                {
                     $out .= '<option value="'.$obj->rowid.'">';
                 }
                 $out .= $obj->ref;
@@ -87,7 +89,8 @@ class FormWebsite
                 $i++;
             }
             $out .= "</select>";
-        } else {
+        }
+        else {
             dol_print_error($this->db);
         }
 
@@ -135,7 +138,9 @@ class FormWebsite
     				if ($selected == $obj->rowid || $selected == $obj->code)
     				{
     					print '<option value="'.$obj->code.'" selected>';
-    				} else {
+    				}
+    				else
+    				{
     					print '<option value="'.$obj->code.'">';
     				}
     				print $obj->label;
@@ -144,10 +149,13 @@ class FormWebsite
     			}
     			print "</select>";
     			if ($user->admin) print info_admin($langs->trans("YouCanChangeValuesForThisListFromDictionarySetup"), 1);
-    		} else {
+    		}
+    		else
+    		{
     			print $langs->trans("NoTypeOfPagePleaseEditDictionary");
     		}
-    	} else {
+    	}
+    	else {
     		dol_print_error($this->db);
     	}
     }
@@ -197,7 +205,9 @@ class FormWebsite
     		if ($selected == $key)
     		{
     			$out .= '<option value="'.$key.'" selected>';
-    		} else {
+    		}
+    		else
+    		{
     			$out .= '<option value="'.$key.'">';
     		}
     		$out .= $langs->trans($val);
@@ -232,7 +242,9 @@ class FormWebsite
 	    if ($atleastonepage && $action != 'editsource')
 	    {
 	    	$out .= '<select name="'.$htmlname.'" id="'.$htmlname.'" class="maxwidth300'.($morecss ? ' '.$morecss : '').'">';
-	    } else {
+	    }
+	    else
+	    {
 	    	$out .= '<select name="pageidbis" id="pageid" class="maxwidth300'.($morecss ? ' '.$morecss : '').'" disabled="disabled">';
 	    }
 
@@ -257,15 +269,7 @@ class FormWebsite
 
 	    		$valueforoption = '<span class="opacitymedium">['.$valpage->type_container.' '.sprintf("%03d", $valpage->id).']</span> ';
 	    		$valueforoption .= $valpage->pageurl.' - '.$valpage->title;
-	    		if ($website->otherlang) {	// If there is alternative lang for this web site, we show the language code
-	    			if ($valpage->lang) {
-	    				$valueforoption .= ' <span class="opacitymedium">('.$valpage->lang.')</span>';
-	    			}
-	    		}
-	    		if ($website->fk_default_home && $key == $website->fk_default_home) {
-	    			//$valueforoption .= ' <span class="opacitymedium">('.$langs->trans("HomePage").')</span>';
-	    			$valueforoption .= ' <span class="opacitymedium fa fa-home"></span>';
-	    		}
+	    		if ($website->fk_default_home && $key == $website->fk_default_home) $valueforoption .= ' <span class="opacitymedium">('.$langs->trans("HomePage").')</span>';
 
 	    		$out .= '<option value="'.$key.'"';
 	    		if ($pageid > 0 && $pageid == $key) $out .= ' selected'; // To preselect a value
@@ -280,7 +284,9 @@ class FormWebsite
 	    if ($atleastonepage && $action != 'editsource')
 	    {
 	    	$out .= ajax_combobox($htmlname);
-	    } else {
+	    }
+	    else
+	    {
 	    	$out .= '<input type="hidden" name="'.$htmlname.'" value="'.$pageid.'">';
 	    	$out .= ajax_combobox($htmlname);
 	    }

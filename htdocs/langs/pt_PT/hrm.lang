@@ -5,13 +5,12 @@ Establishments=Estabelecimento
 Establishment=Estabelecimento
 NewEstablishment=Novo estabelecimento
 DeleteEstablishment=Eliminar estabelecimento
-ConfirmDeleteEstablishment=Are you sure you wish to delete this establishment?
+ConfirmDeleteEstablishment=Tem a certeza que deseja eliminar este estabelecimento?
 OpenEtablishment=Abrir estabelecimento
 CloseEtablishment=Fechar estabelecimento
 # Dictionary
-DictionaryPublicHolidays=HRM - Public holidays
 DictionaryDepartment=GRH - Lista departamentos
-DictionaryFunction=HRM - Job positions
+DictionaryFunction=GRH - Lista de funções
 # Module
 Employees=Funcionários
 Employee=Funcionário

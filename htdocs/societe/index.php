@@ -38,7 +38,7 @@ $hookmanager->initHooks(array('thirdpartiesindex'));
 $langs->load("companies");
 
 $socid = GETPOST('socid', 'int');
-if ($user->socid) $socid = $user->socid;
+if ($user->socid) $socid=$user->socid;
 
 // Security check
 $result = restrictedArea($user, 'societe', 0, '', '', '', '');
@@ -95,7 +95,8 @@ if ($result)
         if (!empty($conf->societe->enabled) && $objp->client == 0 && $objp->fournisseur == 0) { $found = 1; $third['other']++; }
         if ($found) $total++;
     }
-} else dol_print_error($db);
+}
+else dol_print_error($db);
 
 print '<div class="div-table-responsive-no-min">';
 print '<table class="noborder nohover centpercent">'."\n";
@@ -111,14 +112,16 @@ if (!empty($conf->use_javascript_ajax) && ((round($third['prospect']) ? 1 : 0) +
     include_once DOL_DOCUMENT_ROOT.'/core/class/dolgraph.class.php';
     $dolgraph = new DolGraph();
 	$dolgraph->SetData($dataseries);
-	$dolgraph->setShowLegend(2);
+	$dolgraph->setShowLegend(1);
 	$dolgraph->setShowPercent(1);
 	$dolgraph->SetType(array('pie'));
-	$dolgraph->setHeight('200');
+	$dolgraph->setWidth('100%');
 	$dolgraph->draw('idgraphthirdparties');
 	print $dolgraph->show();
     print '</td></tr>'."\n";
-} else {
+}
+else
+{
     if (!empty($conf->societe->enabled) && $user->rights->societe->lire && empty($conf->global->SOCIETE_DISABLE_PROSPECTS) && empty($conf->global->SOCIETE_DISABLE_PROSPECTS_STATS))
     {
         $statstring = "<tr>";
@@ -131,7 +134,7 @@ if (!empty($conf->use_javascript_ajax) && ((round($third['prospect']) ? 1 : 0) +
         $statstring .= '<td><a href="'.DOL_URL_ROOT.'/societe/list.php?type=c">'.$langs->trans("Customers").'</a></td><td class="right">'.round($third['customer']).'</td>';
         $statstring .= "</tr>";
     }
-    if ((!empty($conf->fournisseur->enabled) && empty($conf->global->MAIN_USE_NEW_SUPPLIERMOD) || !empty($conf->supplier_order->enabled) || !empty($conf->supplier_invoice->enabled)) && empty($conf->global->SOCIETE_DISABLE_SUPPLIERS_STATS) && $user->rights->fournisseur->lire)
+    if (!empty($conf->fournisseur->enabled) && empty($conf->global->SOCIETE_DISABLE_SUPPLIERS_STATS) && $user->rights->fournisseur->lire)
     {
         $statstring2 = "<tr>";
         $statstring2 .= '<td><a href="'.DOL_URL_ROOT.'/societe/list.php?type=f">'.$langs->trans("Suppliers").'</a></td><td class="right">'.round($third['supplier']).'</td>';
@@ -182,7 +185,9 @@ if (!empty($conf->categorie->enabled) && !empty($conf->global->CATEGORY_GRAPHSTA
 				if ($i < $nbmax)
 				{
 					$dataseries[] = array($obj->label, round($obj->nb));
-				} else {
+				}
+				else
+				{
 					$rest += $obj->nb;
 				}
 				$total += $obj->nb;
@@ -195,13 +200,15 @@ if (!empty($conf->categorie->enabled) && !empty($conf->global->CATEGORY_GRAPHSTA
 			include_once DOL_DOCUMENT_ROOT.'/core/class/dolgraph.class.php';
 			$dolgraph = new DolGraph();
 			$dolgraph->SetData($dataseries);
-			$dolgraph->setShowLegend(2);
+			$dolgraph->setShowLegend(1);
 			$dolgraph->setShowPercent(1);
 			$dolgraph->SetType(array('pie'));
-			$dolgraph->setHeight('200');
+			$dolgraph->setWidth('100%');
 			$dolgraph->draw('idgraphcateg');
 			print $dolgraph->show();
-		} else {
+		}
+		else
+		{
 			while ($i < $num)
 			{
 				$obj = $db->fetch_object($result);
@@ -231,10 +238,7 @@ $max = 15;
 $sql = "SELECT s.rowid, s.nom as name, s.email, s.client, s.fournisseur";
 $sql .= ", s.code_client";
 $sql .= ", s.code_fournisseur";
-$sql .= ", s.code_compta_fournisseur";
-$sql .= ", s.code_compta";
 $sql .= ", s.logo";
-$sql .= ", s.entity";
 $sql .= ", s.canvas, s.tms as date_modification, s.status as status";
 $sql .= " FROM ".MAIN_DB_PREFIX."societe as s";
 if (!$user->rights->societe->client->voir && !$socid) $sql .= ", ".MAIN_DB_PREFIX."societe_commerciaux as sc";
@@ -281,9 +285,6 @@ if ($result)
             $thirdparty_static->code_fournisseur = $objp->code_fournisseur;
             $thirdparty_static->canvas = $objp->canvas;
             $thirdparty_static->email = $objp->email;
-			$thirdparty_static->entity = $objp->entity;
-            $thirdparty_static->code_compta_fournisseur = $objp->code_compta_fournisseur;
-            $thirdparty_static->code_compta = $objp->code_compta;
 
             print '<tr class="oddeven">';
             // Name
@@ -303,7 +304,7 @@ if ($result)
             	$thirdparty_static->name = $langs->trans("Prospect");
             	print $thirdparty_static->getNomUrl(0, 'prospect', 0, 1);
             }
-            if ((!empty($conf->fournisseur->enabled) && empty($conf->global->MAIN_USE_NEW_SUPPLIERMOD) || !empty($conf->supplier_order->enabled) || !empty($conf->supplier_invoice->enabled)) && $thirdparty_static->fournisseur)
+            if (!empty($conf->fournisseur->enabled) && $thirdparty_static->fournisseur)
             {
                 if ($thirdparty_static->client) print " / ";
             	$thirdparty_static->name = $langs->trans("Supplier");
@@ -327,7 +328,9 @@ if ($result)
         print '</div>';
         print "<!-- End last thirdparties modified -->\n";
     }
-} else {
+}
+else
+{
     dol_print_error($db);
 }
 

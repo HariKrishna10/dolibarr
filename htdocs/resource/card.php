@@ -99,7 +99,9 @@ if (empty($reshook))
 			{
 				setEventMessages($langs->trans("ErrorFieldRequired", $langs->transnoentities("Ref")), null, 'errors');
 				$action = 'create';
-			} else {
+			}
+			else
+			{
 				$object->ref                    = $ref;
 				$object->description            = $description;
 				$object->fk_code_type_resource  = $fk_code_type_resource;
@@ -116,13 +118,17 @@ if (empty($reshook))
 					setEventMessages($langs->trans('ResourceCreatedWithSuccess'), null, 'mesgs');
 					Header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 					exit;
-				} else {
+				}
+				else
+				{
 					// Creation KO
 					setEventMessages($object->error, $object->errors, 'errors');
 					$action = 'create';
 				}
 			}
-		} else {
+		}
+		else
+		{
 			Header("Location: list.php");
 			exit;
 		}
@@ -159,11 +165,15 @@ if (empty($reshook))
 				{
 					Header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 					exit;
-				} else {
+				}
+				else
+				{
 					setEventMessages($object->error, $object->errors, 'errors');
 					$error++;
 				}
-			} else {
+			}
+			else
+			{
 				setEventMessages($object->error, $object->errors, 'errors');
 				$error++;
 			}
@@ -187,10 +197,14 @@ if (empty($reshook))
 				setEventMessages($langs->trans('RessourceSuccessfullyDeleted'), null, 'mesgs');
 				Header('Location: '.DOL_URL_ROOT.'/resource/list.php');
 				exit;
-			} else {
+			}
+			else
+			{
 				setEventMessages($object->error, $object->errors, 'errors');
 			}
-		} else {
+		}
+		else
+		{
 			setEventMessages($object->error, $object->errors, 'errors');
 		}
 	}
@@ -211,9 +225,11 @@ if ($action == 'create' || $object->fetch($id, $ref) > 0)
 {
 	if ($action == 'create')
 	{
-		print load_fiche_titre($title, '', 'object_resource');
+		print load_fiche_titre($title, '', 'generic');
 		dol_fiche_head('');
-	} else {
+	}
+	else
+	{
 		$head = resource_prepare_head($object);
 		dol_fiche_head($head, 'resource', $title, -1, 'resource');
 	}
@@ -275,7 +291,9 @@ if ($action == 'create' || $object->fetch($id, $ref) > 0)
 		print '</div>';
 
 		print '</form>';
-	} else {
+	}
+	else
+	{
 		$formconfirm = '';
 
 		// Confirm deleting resource line
@@ -375,7 +393,8 @@ if ($action == 'create' || $object->fetch($id, $ref) > 0)
 		}
 	}
 	print '</div>';
-} else {
+}
+else {
 	dol_print_error();
 }
 

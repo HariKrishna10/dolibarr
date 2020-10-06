@@ -50,7 +50,9 @@ if ($action == 'update' && is_array($arrayofparameters))
 	{
 		$db->commit();
 		if (empty($nomessageinupdate)) setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
-	} else {
+	}
+	else
+	{
 		$db->rollback();
 		if (empty($nomessageinupdate)) setEventMessages($langs->trans("SetupNotSaved"), null, 'errors');
 	}
@@ -66,7 +68,6 @@ if ($action == 'setModuleOptions')
     {
         foreach ($_POST as $key => $val)
         {
-        	$reg = array();
             if (preg_match('/^param(\d*)$/', $key, $reg))    // Works for POST['param'], POST['param1'], POST['param2'], ...
             {
                 $param = GETPOST("param".$reg[1], 'alpha');
@@ -94,7 +95,8 @@ if ($action == 'setModuleOptions')
                 unset($listofdir[$key]); continue;
             }
             if (!is_dir($tmpdir)) $texttitle .= img_warning($langs->trans("ErrorDirNotFound", $tmpdir), 0);
-            else {
+            else
+            {
                 $upload_dir = $tmpdir;
             }
         }
@@ -109,7 +111,9 @@ if ($action == 'setModuleOptions')
     {
         $db->commit();
         if (empty($nomessageinsetmoduleoptions)) setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
-    } else {
+    }
+    else
+    {
         $db->rollback();
         if (empty($nomessageinsetmoduleoptions)) setEventMessages($langs->trans("SetupNotSaved"), null, 'errors');
     }

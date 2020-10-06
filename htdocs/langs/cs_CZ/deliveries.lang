@@ -2,7 +2,7 @@
 Delivery=Dodávka
 DeliveryRef=Ref Doručení
 DeliveryCard=Příjmová karta
-DeliveryOrder=Potvrzení o doručení
+DeliveryOrder=Delivery receipt
 DeliveryDate=Termín dodání
 CreateDeliveryOrder=Generovat doklad o doručení
 DeliveryStateSaved=Stav doručení byl uložen

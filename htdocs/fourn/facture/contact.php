@@ -30,18 +30,18 @@ require_once DOL_DOCUMENT_ROOT.'/fourn/class/fournisseur.facture.class.php';
 require_once DOL_DOCUMENT_ROOT.'/contact/class/contact.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/fourn.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
-if (!empty($conf->projet->enabled)) {
-	require_once DOL_DOCUMENT_ROOT.'/projet/class/project.class.php';
+if (! empty($conf->projet->enabled)) {
+	require_once DOL_DOCUMENT_ROOT . '/projet/class/project.class.php';
 }
 
 $langs->loadLangs(array("bills", "other", "companies"));
 
 $id		= (GETPOST('id', 'int') ? GETPOST('id', 'int') : GETPOST('facid', 'int'));
 $ref	= GETPOST('ref', 'alpha');
-$action = GETPOST('action', 'alpha');
+$action	= GETPOST('action', 'alpha');
 
 // Security check
-if ($user->socid) $socid = $user->socid;
+if ($user->socid) $socid=$user->socid;
 $result = restrictedArea($user, 'fournisseur', $id, 'facture_fourn', 'facture');
 
 $object = new FactureFournisseur($db);
@@ -65,12 +65,16 @@ if ($action == 'addcontact' && $user->rights->fournisseur->facture->creer)
 	{
 		header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 		exit;
-	} else {
+	}
+	else
+	{
 		if ($object->error == 'DB_ERROR_RECORD_ALREADY_EXISTS')
 		{
 			$langs->load("errors");
 			setEventMessages($langs->trans("ErrorThisContactIsAlreadyDefinedAsThisType"), null, 'errors');
-		} else {
+		}
+		else
+		{
 			setEventMessages($object->error, $object->errors, 'errors');
 		}
 	}
@@ -82,7 +86,9 @@ elseif ($action == 'swapstatut' && $user->rights->fournisseur->facture->creer)
 	if ($object->fetch($id))
 	{
 	    $result = $object->swapContactStatus(GETPOST('ligne'));
-	} else {
+	}
+	else
+	{
 		dol_print_error($db);
 	}
 }
@@ -97,7 +103,8 @@ elseif ($action == 'deletecontact' && $user->rights->fournisseur->facture->creer
 	{
 		header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 		exit;
-	} else {
+	}
+	else {
 		dol_print_error($db);
 	}
 }
@@ -186,7 +193,7 @@ if ($id > 0 || !empty($ref))
 		print '<div class="fichecenter">';
 		print '<div class="underbanner clearboth"></div>';
 
-		print '<table class="border centpercent tableforfield">';
+		print '<table class="border centpercent">';
 
 		// Type
 		print '<tr><td class="titlefield">'.$langs->trans('Type').'</td><td colspan="4">';
@@ -260,7 +267,9 @@ if ($id > 0 || !empty($ref))
 
 		// Contacts lines
 		include DOL_DOCUMENT_ROOT.'/core/tpl/contacts.tpl.php';
-	} else {
+	}
+	else
+	{
 		print "ErrorRecordNotFound";
 	}
 }

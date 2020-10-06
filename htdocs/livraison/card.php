@@ -34,30 +34,30 @@ require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/lib/sendings.lib.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
-if (!empty($conf->product->enabled) || !empty($conf->service->enabled))
+if (! empty($conf->product->enabled) || ! empty($conf->service->enabled))
 	require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
-if (!empty($conf->expedition_bon->enabled))
+if (! empty($conf->expedition_bon->enabled))
 	require_once DOL_DOCUMENT_ROOT.'/expedition/class/expedition.class.php';
-if (!empty($conf->stock->enabled))
+if (! empty($conf->stock->enabled))
 	require_once DOL_DOCUMENT_ROOT.'/product/stock/class/entrepot.class.php';
-if (!empty($conf->projet->enabled)) {
+if (! empty($conf->projet->enabled)) {
     require_once DOL_DOCUMENT_ROOT.'/projet/class/project.class.php';
     require_once DOL_DOCUMENT_ROOT.'/core/class/html.formprojet.class.php';
 }
 
 // Load translation files required by the page
-$langs->loadLangs(array("sendings", "bills", 'deliveries', 'orders'));
+$langs->loadLangs(array("sendings","bills",'deliveries','orders'));
 
 if (!empty($conf->incoterm->enabled)) $langs->load('incoterm');
 
-$action = GETPOST('action', 'alpha');
-$confirm = GETPOST('confirm', 'alpha');
-$backtopage = GETPOST('backtopage', 'alpha');
+$action=GETPOST('action', 'alpha');
+$confirm=GETPOST('confirm', 'alpha');
+$backtopage=GETPOST('backtopage', 'alpha');
 
 // Security check
 $id = GETPOST('id', 'int');
-if ($user->socid) $socid = $user->socid;
-$result = restrictedArea($user, 'expedition', $id, 'livraison', 'livraison');
+if ($user->socid) $socid=$user->socid;
+$result=restrictedArea($user, 'expedition', $id, 'livraison', 'livraison');
 
 $object = new Livraison($db);
 $extrafields = new ExtraFields($db);
@@ -118,14 +118,18 @@ if ($action == 'add')
 		$db->commit();
 		header("Location: ".$_SERVER['PHP_SELF']."?id=".$object->id);
 		exit;
-	} else {
+	}
+	else
+	{
 		setEventMessages($object->error, $object->errors, 'errors');
 		$db->rollback();
 
 		$_GET["commande_id"] = $_POST["commande_id"];
 		$action = 'create';
 	}
-} elseif ($action == 'confirm_valid' && $confirm == 'yes' &&
+}
+
+elseif ($action == 'confirm_valid' && $confirm == 'yes' &&
     ((empty($conf->global->MAIN_USE_ADVANCED_PERMS) && !empty($user->rights->expedition->livraison->creer))
     || (!empty($conf->global->MAIN_USE_ADVANCED_PERMS) && !empty($user->rights->expedition->livraison_advance->validate)))
 )
@@ -162,7 +166,9 @@ if ($action == 'confirm_delete' && $confirm == 'yes' && $user->rights->expeditio
 		if (!empty($backtopage)) header("Location: ".$backtopage);
 		else header("Location: ".DOL_URL_ROOT.'/expedition/list.php?restore_lastsearch_values=1');
 		exit;
-	} else {
+	}
+	else
+	{
 		$db->rollback();
 	}
 }
@@ -255,7 +261,8 @@ $formfile = new FormFile($db);
 
 if ($action == 'create')    // Create. Seems to no be used
 {
-} else // View
+}
+else	// View
 {
 	if ($object->id > 0)
 	{
@@ -445,7 +452,9 @@ if ($action == 'create')    // Create. Seems to no be used
 				print $form->selectDate($object->date_delivery ? $object->date_delivery : -1, 'liv_', 1, 1, '', "setdate_livraison", 1, 1);
 				print '<input type="submit" class="button" value="'.$langs->trans('Modify').'">';
 				print '</form>';
-			} else {
+			}
+			else
+			{
 				print $object->date_delivery ? dol_print_date($object->date_delivery, 'dayhour') : '&nbsp;';
 			}
 			print '</td>';
@@ -466,7 +475,9 @@ if ($action == 'create')    // Create. Seems to no be used
 				if ($action != 'editincoterm')
 				{
 					print $form->textwithpicto($object->display_incoterms(), $object->label_incoterms, 1);
-				} else {
+				}
+				else
+				{
 					print $form->select_incoterms((!empty($object->fk_incoterms) ? $object->fk_incoterms : ''), (!empty($object->location_incoterms) ? $object->location_incoterms : ''), $_SERVER['PHP_SELF'].'?id='.$object->id);
 				}
 		        print '</td></tr>';
@@ -504,8 +515,9 @@ if ($action == 'create')    // Create. Seems to no be used
 			// Other attributes
 			if ($action == 'create_delivery') {
 				// copy from expedition
-				$extrafields->fetch_name_optionals_label($expedition->table_element);
-				if ($expedition->fetch_optionals() > 0) {
+				$expeditionExtrafields = new Extrafields($db);
+				$expeditionExtrafieldLabels = $expeditionExtrafields->fetch_name_optionals_label($expedition->table_element);
+				if ($expedition->fetch_optionals($object->origin_id) > 0) {
 					$object->array_options = array_merge($object->array_options, $expedition->array_options);
 				}
 			}
@@ -563,7 +575,9 @@ if ($action == 'create')    // Create. Seems to no be used
 							}
 
 							$label = (!empty($product->multilangs[$outputlangs->defaultlang]["label"])) ? $product->multilangs[$outputlangs->defaultlang]["label"] : $object->lines[$i]->product_label;
-						} else {
+						}
+						else
+						{
 							$label = (!empty($object->lines[$i]->label) ? $object->lines[$i]->label : $object->lines[$i]->product_label);
 						}
 
@@ -583,7 +597,9 @@ if ($action == 'create')    // Create. Seems to no be used
 						{
 							print (!empty($object->lines[$i]->description) && $object->lines[$i]->description != $object->lines[$i]->product_label) ? '<br>'.dol_htmlentitiesbr($object->lines[$i]->description) : '';
 						}
-					} else {
+					}
+					else
+					{
 						print "<td>";
 						if ($object->lines[$i]->fk_product_type == 1) $text = img_object($langs->trans('Service'), 'service');
 						else $text = img_object($langs->trans('Product'), 'product');
@@ -609,14 +625,12 @@ if ($action == 'create')    // Create. Seems to no be used
 						$colspan = 2;
 						$mode = ($object->statut == 0) ? 'edit' : 'view';
 
-						$object->lines[$i]->fetch_optionals();
-
+						$object->lines[$i]->fetch_optionals($object->lines[$i]->id);
 						if ($action == 'create_delivery') {
 							$srcLine = new ExpeditionLigne($db);
 
 							$extrafields->fetch_name_optionals_label($srcLine->table_element);
-							$srcLine->id = $expedition->lines[$i]->id;
-							$srcLine->fetch_optionals();
+							$srcLine->fetch_optionals($expedition->lines[$i]->id);
 
 							$object->lines[$i]->array_options = array_merge($object->lines[$i]->array_options, $srcLine->array_options);
 						}
@@ -659,7 +673,9 @@ if ($action == 'create')    // Create. Seems to no be used
 					if ($conf->expedition_bon->enabled)
 					{
 						print '<a class="butActionDelete" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&amp;expid='.$object->origin_id.'&amp;action=delete&amp;backtopage='.urlencode(DOL_URL_ROOT.'/expedition/card.php?id='.$object->origin_id).'">'.$langs->trans("Delete").'</a>';
-					} else {
+					}
+					else
+					{
 						print '<a class="butActionDelete" href="'.$_SERVER['PHP_SELF'].'?id='.$object->id.'&amp;action=delete">'.$langs->trans("Delete").'</a>';
 					}
 				}
@@ -702,11 +718,15 @@ if ($action == 'create')    // Create. Seems to no be used
 			// Rien a droite
 
 			print '</td></tr></table>';
-		} else {
+		}
+		else
+		{
 			/* Expedition non trouvee */
 			print "Expedition inexistante ou acces refuse";
 		}
-	} else {
+	}
+	else
+	{
 		/* Expedition non trouvee */
 		print "Expedition inexistante ou acces refuse";
 	}

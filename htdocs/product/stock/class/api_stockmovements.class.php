@@ -144,7 +144,8 @@ class StockMovements extends DolibarrApi
                 }
                 $i++;
             }
-        } else {
+        }
+        else {
             throw new RestException(503, 'Error when retrieve stock movement list : '.$db->lasterror());
         }
         if (!count($obj_ret)) {

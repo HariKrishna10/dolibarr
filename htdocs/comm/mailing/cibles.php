@@ -43,13 +43,13 @@ if (!$user->rights->mailing->lire || $user->socid > 0) accessforbidden();
 $limit = GETPOST('limit', 'int') ?GETPOST('limit', 'int') : $conf->liste_limit;
 $sortfield = GETPOST('sortfield', 'alpha');
 $sortorder = GETPOST('sortorder', 'alpha');
-$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
+$page = GETPOST('page', 'int');
 if (empty($page) || $page == -1) { $page = 0; }     // If $page is not defined, or '' or -1
 $offset = $limit * $page;
 $pageprev = $page - 1;
 $pagenext = $page + 1;
-if (!$sortfield) $sortfield = "mc.statut,email";
-if (!$sortorder) $sortorder = "DESC,ASC";
+if (!$sortfield) $sortfield = "email";
+if (!$sortorder) $sortorder = "ASC";
 
 $id = GETPOST('id', 'int');
 $rowid = GETPOST('rowid', 'int');
@@ -160,7 +160,9 @@ if (GETPOST('exportcsv', 'int'))
 		}
 
 		exit;
-	} else {
+	}
+	else
+	{
 		dol_print_error($db);
 	}
 	exit;
@@ -179,11 +181,15 @@ if ($action == 'delete')
 			$obj->update_nb($id);
 
 			setEventMessages($langs->trans("RecordDeleted"), null, 'mesgs');
-		} else {
+		}
+		else
+		{
 			header("Location: list.php");
 			exit;
 		}
-	} else {
+	}
+	else
+	{
 		dol_print_error($db);
 	}
 }
@@ -287,7 +293,9 @@ if ($object->fetch($id) >= 0)
 			if ($conf->global->MAILING_LIMIT_SENDBYWEB > 0)
 			{
 				$text .= $langs->trans('LimitSendingEmailing', $conf->global->MAILING_LIMIT_SENDBYWEB);
-			} else {
+			}
+			else
+			{
 				$text .= $langs->trans('SendingFromWebInterfaceIsNotAllowed');
 			}
 		}
@@ -295,7 +303,9 @@ if ($object->fetch($id) >= 0)
 		if ($text)
 		{
 			print $form->textwithpicto($nbemail, $text, 1, 'warning');
-		} else {
+		}
+		else
+		{
 			print $nbemail;
 		}
 	}
@@ -395,7 +405,9 @@ if ($object->fetch($id) >= 0)
 					{
 						print '<form '.$bctag[$var].' name="'.$modulename.'" action="'.$_SERVER['PHP_SELF'].'?action=add&id='.$object->id.'&module='.$modulename.'" method="POST" enctype="multipart/form-data">';
 						print '<input type="hidden" name="token" value="'.newToken().'">';
-					} else {
+					}
+					else
+					{
 					    print '<div '.$bctag[$var].'>';
 					}
 
@@ -408,7 +420,8 @@ if ($object->fetch($id) >= 0)
 
 					try {
 						$nbofrecipient = $obj->getNbOfRecipients('');
-					} catch (Exception $e)
+					}
+					catch (Exception $e)
 					{
 						dol_syslog($e->getMessage(), LOG_ERR);
 					}
@@ -417,7 +430,9 @@ if ($object->fetch($id) >= 0)
 					if ($nbofrecipient >= 0)
 					{
 						print $nbofrecipient;
-					} else {
+					}
+					else
+					{
 						print $langs->trans("Error").' '.img_error($obj->error);
 					}
 					print '</div>';
@@ -427,7 +442,8 @@ if ($object->fetch($id) >= 0)
 					{
     					try {
     						$filter = $obj->formFilter();
-    					} catch (Exception $e)
+    					}
+    					catch (Exception $e)
     					{
     						dol_syslog($e->getMessage(), LOG_ERR);
     					}
@@ -440,7 +456,9 @@ if ($object->fetch($id) >= 0)
 					if ($allowaddtarget)
 					{
 						print '<input type="submit" class="button" name="button_'.$modulename.'" value="'.$langs->trans("Add").'">';
-					} else {
+					}
+					else
+					{
 					    print '<input type="submit" class="button disabled" disabled="disabled" name="button_'.$modulename.'" value="'.$langs->trans("Add").'">';
 						//print $langs->trans("MailNoChangePossible");
 						print "&nbsp;";
@@ -614,24 +632,31 @@ if ($object->fetch($id) >= 0)
                 if (empty($obj->source_id) || empty($obj->source_type))
                 {
                     print empty($obj->source_url) ? '' : $obj->source_url; // For backward compatibility
-                } else {
+                }
+                else
+                {
                     if ($obj->source_type == 'member')
                     {
 						$objectstaticmember->fetch($obj->source_id);
                         print $objectstaticmember->getNomUrl(1);
-                    } elseif ($obj->source_type == 'user')
+                    }
+                    elseif ($obj->source_type == 'user')
                     {
 						$objectstaticuser->fetch($obj->source_id);
                         print $objectstaticuser->getNomUrl(1);
-                    } elseif ($obj->source_type == 'thirdparty')
+                    }
+                    elseif ($obj->source_type == 'thirdparty')
                     {
 						$objectstaticcompany->fetch($obj->source_id);
                         print $objectstaticcompany->getNomUrl(1);
-                    } elseif ($obj->source_type == 'contact')
+                    }
+                    elseif ($obj->source_type == 'contact')
                     {
                     	$objectstaticcontact->fetch($obj->source_id);
                     	print $objectstaticcontact->getNomUrl(1);
-                    } else {
+                    }
+                    else
+                    {
                         print $obj->source_url;
                     }
                 }
@@ -648,10 +673,11 @@ if ($object->fetch($id) >= 0)
 					// Date sent
 					print '<td align="center">&nbsp;</td>';
 
-					print '<td class="nowrap right">';
-					print $object::libStatutDest($obj->statut, 2, '');
+					print '<td class="nowrap right">'.$langs->trans("MailingStatusNotSent");
 					print '</td>';
-				} else {
+				}
+				else
+				{
 					// Date sent
 					print '<td class="center">'.$obj->date_envoi.'</td>';
 
@@ -677,7 +703,9 @@ if ($object->fetch($id) >= 0)
 
 				$i++;
 			}
-		} else {
+		}
+		else
+		{
 			if ($object->statut < 2)
 			{
 			    print '<tr><td colspan="9" class="opacitymedium">';
@@ -691,7 +719,9 @@ if ($object->fetch($id) >= 0)
 		print '</form>';
 
 		$db->free($resql);
-	} else {
+	}
+	else
+	{
 		dol_print_error($db);
 	}
 

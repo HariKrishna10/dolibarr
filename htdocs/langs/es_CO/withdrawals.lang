@@ -1,5 +1,0 @@
-# Dolibarr language file - Source file is en_US - withdrawals
-StandingOrderPayment=Orden de pago de domiciliación bancaria
-WithdrawalsReceipts=Órdenes de débito directo
-WithdrawalReceipt=Orden de domiciliación bancaria
-StatusRefused=Rechazado
